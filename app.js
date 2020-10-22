@@ -1,9 +1,24 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const mysql      = require('mysql');
 
 const hostname = '127.0.0.1';
 const port = 3000;
+const db = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : '111111',
+    database : 'mysql'
+});
+
+db.connect();
+
+db.query('SELECT host,user from user', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0]);
+});   
+db.end();
 
 const mimeType = {
     "": "text/html",
