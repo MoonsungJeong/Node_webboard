@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MS Webboard</title>
+
+        <!-- Basic site meta -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <!-- Social media meta -->
+        <meta property="title" content="NodeJS Webboard">
+        <meta property="description" content="The example of Moonsung Jeong, Web Developer">
+        <!-- css files -->
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/23c505e967.js" crossorigin="anonymous"></script> 
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                Moonsung Jeong, Web Developer.
+                This example is built with VanillaJS.
+            </strong>
+        </noscript>
+        <header>
+            <div class="flex_between space_3 font_white">
+                <div><i class="fas fa-bars fa-2x"></i></div>
+                <h1><a href="/" class="font_white">Kangaroo</a></h1>
+                <div class="none">
+                    <ul class="flex">
+                        <li>sign up</li>
+                        <li>log in</li>
+                        <li>searchbar</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="flex_around">
+                        <li class="margin_right"><a><i class="fas fa-search fa-2x"></i></a></li>
+                        <li><a><i class="far fa-user fa-2x"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav>
+                <ul class="flex_around line_top space_4 font_white padding">
+                    <li>Total</li>
+                    <li>Free</li>
+                    <li>Info</li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <div class="flex_col h_size_90">
+                    <form class="space_5 margin_top_5 padding_3">
+                        <table>
+                            <tr>
+                                <td>ID</td>
+                                <td><input type="text" name="id"></td>
+                            </tr>
+                            <tr>
+                                <td>PW</td>
+                                <td><input type="password" name="password"></td>
+                            </tr>
+                            <tr>
+                                <td>PW-re</td>
+                                <td><input type="password" name="password_check"></td>
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                                <td><input type="text" name="name"></td>
+                            </tr>
+                            <tr>
+                                <td>Birth</td>
+                                <td><input type="date" name="birth"></td>
+                            </tr>
+                            <tr>
+                                <td>Nick</td>
+                                <td><input type="text" name="nickname"></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><input type="text" name="email"></td>
+                            </tr>
+                        </table>
+                        <input type="submit" value="sign-up">
+                    </form>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="center line_top space_2">
+                <a href="/">© Kangaroo 2020</a>
+            </div>
+        </footer>
+    </body>
+</html>

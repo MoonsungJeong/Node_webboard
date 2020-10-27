@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MS Webboard</title>
+
+        <!-- Basic site meta -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <!-- Social media meta -->
+        <meta property="title" content="NodeJS Webboard">
+        <meta property="description" content="The example of Moonsung Jeong, Web Developer">
+        <!-- css files -->
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/23c505e967.js" crossorigin="anonymous"></script> 
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                Moonsung Jeong, Web Developer.
+                This example is built with VanillaJS.
+            </strong>
+        </noscript>
+        <header>
+            <div class="flex_between space_3 font_white">
+                <div><i class="fas fa-bars fa-2x"></i></div>
+                <h1><a href="/" class="font_white">Kangaroo</a></h1>
+                <div class="none">
+                    <ul class="flex">
+                        <li>sign up</li>
+                        <li>log in</li>
+                        <li>searchbar</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="flex_around">
+                        <li class="margin_right"><a><i class="fas fa-search fa-2x"></i></a></li>
+                        <li><a><i class="far fa-user fa-2x"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav>
+                <ul class="flex_around line_top space_4 font_white padding">
+                    <li>Total</li>
+                    <li>Free</li>
+                    <li>Info</li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <div class="center">
+                    <img class="ad_1" src="kangaroo.png">
+                </div>
+            </section>
+            <article class="flex_col">
+                <section class="board">
+                    <h2 class="post_header flex_between">
+                        <a href="/board/free">Free Board</a>
+                        <a href="/board/free">+</a>
+                    </h2>
+                    <ul>
+                        <li><div><a href="/post/1">this is free board notice</a></div></li>
+                        <li><div><a href="/post/2">hello this is free board</a></div></li>
+                        <li><div><a href="/post/4">today is sunny day wow~~</a></div></li>
+                    </ul>
+                </section>
+                <section class="board">
+                    <h2 class="post_header flex_between">
+                        <a href="/board/info">Info Board</a>
+                        <a href="/board/info">+</a>
+                    </h2>
+                    <ul>
+                        <li><div><a href="/post/3">this is info board notice</a></div></li>
+                        <li><div><a href="/post/5">hello this is info board</a></div></li>
+                        <li><div><a href="/post/6">today is rainy day wow~~</a></div></li>
+                    </ul>
+                </section>
+            </article>
+        </main>
+        <aside>
+            <section>
+                <div>
+                    <dl class="space_1 margin">
+                    </dl>
+                    <div class="left">
+                        <input class="size_20" placeholder="ID" type="text" />
+                        <input class="size_60" type="text" />
+                        <input type="submit" value="submit" />
+                    </div>
+                </div>
+                
+            </section>
+            <section>
+                <div class="center">
+                    <img class="ad_1" src="kangaroo.png">
+                </div>
+            </section>
+        </aside>
+        <footer>
+            <div class="center line_top space_2">
+                <a href="/">© Kangaroo 2020</a>
+            </div>
+        </footer>
+    </body>
+</html>
