@@ -31,9 +31,16 @@ div{
 .margin_right{
     margin-right:1rem;
 }
+.margin_left{
+    margin-left: 0rem;
+}
+.margin_tb_3{
+    margin:3rem 0;
+}
 .margin_top_5{
     margin-top:5rem;
 }
+
 .padding{
     padding:0.5rem;
 }
@@ -69,21 +76,51 @@ div{
     width: 66%;
     border:1px solid #0099ff;
 }
+.space_6{
+    border:1px solid #0099ff;
+}
 .font_white{
     color:#ffffff;
+}
+.size_10{
+    width:20rem;
 }
 .size_20{
     width:20%;
 }
-.size_60{
-    width:60%;
+.size_55{
+    width:55%;
 }
-.h_size_90{
+.size_90{
+    width: 90%;
+}
+.h_size_50{
+    height:60vh;
+}
+.h_size_75{
+    height:75vh;
+}
+.h_size_80{
     height:79vh;
+}
+.max_size_15{
+    max-width:15rem;
+}
+.min_size_6{
+    min-width: 6rem;
+}
+.min_height{
+    min-height: 80vh;
+}
+.line-bottom{
+    border-bottom: 1px solid #999999;
 }
 .line_top{
     border-top:1px solid #999999;
 }
 .none{
     display:none;
+}
+.test{
+    border:1px solid red;
 }
