@@ -1,0 +1,75 @@
+CREATE DATABASE web_board;
+
+USE web_board;
+
+CREATE TABLE IF NOT EXISTS `members` (
+	`mcode` Numeric(5,0) NOT NULL,
+	`uid` VARCHAR(20) NOT NULL,
+	`upwd` VARCHAR(20) NOT NULL,
+	`uname` VARCHAR(30) NOT NULL,
+	`unickname` VARCHAR(30) NOT NULL,
+	`email` VARCHAR(30) NOT NULL,
+	`udate` datetime NOT NULL,
+	`uip` VARCHAR(15),
+	`birthdate` datetime,
+	PRIMARY KEY (`mcode`)
+);
+
+CREATE TABLE IF NOT EXISTS `board` (
+	`pcode` Numeric(5,0) NOT NULL,
+	`bcode` Numeric(5,0) NOT NULL,
+	`mcode` Numeric(5,0) NOT NULL,
+	`btitle` VARCHAR(100) NOT NULL,
+	`bcontent` BLOB NOT NULL,
+	`bdate` datetime NOT NULL,
+	`bip` VARCHAR(15),
+	`bcount` Numeric(5,0) NOT NULL,
+	`blikes` Numeric(4,0) NOT NULL,
+	`ppwd` VARCHAR(20),
+	PRIMARY KEY (`pcode`),
+	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)
+);
+
+CREATE TABLE IF NOT EXISTS `comment` (
+	`ccode` Numeric(5,0) NOT NULL,
+	`pcode` Numeric(5,0) NOT NULL,
+	`mcode` Numeric(5,0) NOT NULL,
+	`comment`VARCHAR(100) NOT NULL,
+	`cclass` Numeric(1,0) NOT NULL,
+	`corder` Numeric(4,0) NOT NULL,
+	`groupnum` Numeric(4,0) NOT NULL,
+	`cdate` datetime NOT NULL,
+	`cip` VARCHAR(15),
+	PRIMARY KEY (`ccode`),
+	FOREIGN KEY (`pcode`) REFERENCES board (`pcode`),
+	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)
+);
+
+CREATE TABLE IF NOT EXISTS `message` (
+	`ncode` Numeric(5,0) NOT NULL,
+	`mcode` Numeric(5,0) NOT NULL,
+	`recv_id` VARCHAR(20) NOT NULL,
+	`sent_id` VARCHAR(20) NOT NULL,
+	`ntitle` VARCHAR(100) NOT NULL,
+	`ncontent` BLOB NOT NULL,
+	`ndate` datetime NOT NULL,
+	`recv_del` boolean NOT NULL,
+	`sent_del` boolean NOT NULL,
+	PRIMARY KEY (`ncode`),
+	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
