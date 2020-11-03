@@ -1,64 +1,51 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const mysql      = require('mysql');
+const express = require('express');
+const bodyParser = require('body-parser');
+const database = require('./lib/mysql.js');
 
-const hostname = '127.0.0.1';
+const page_main = require('./lib/main.js');
+const page_login = require('./lib/login.js');
+const page_signup = require('./lib/sign-up.js');
+
+const app = express();
+const db = database();
+
+const hostname = '192.168.1.223';
 const port = 3000;
-const db = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : '111111',
-    database : 'mysql'
-});
+let html;
+let sql = 'SELECT host,user from user';
 
-db.connect();
-
-db.query('SELECT host,user from user', function (error, results, fields) {
+db.query(sql, function (error, results, fields) {
     if (error) throw error;
-    console.log('The solution is: ', results[0]);
-});   
-db.end();
-
-const mimeType = {
-    "": "text/html",
-    ".ico": "image/x-icon",
-    ".html": "text/html",
-    ".js": "text/javascript",
-    ".css": "text/css",
-    ".png": "image/png",
-    ".jpg": "image/jpeg",
-    ".eot": "aplication/vnd.ms-fontobject",
-    ".ttf": "aplication/font-sfnt",
-}
-
-
-const app = http.createServer(function(req, res){
-    const ext = path.parse(req.url).ext;
-    const publicPath = path.join(__dirname, "./public")
-    let filePath;
-    let url = req.url;
-    console.log(ext);
-    if(req.url == '/'){
-        url = '/index.html';
-    }
-    if(req.url == '/favicon.ico'){
-        return res.writeHead(404);
-    }
-    filePath = publicPath+url;
-    
-    fs.readFile(filePath, function(err, data){
-        if(err){
-            res.statusCode = 404;
-            res.end('Not found');
-        }else{
-            res.statusCode = 200;
-            res.setHeader("Content-Type", mimeType[ext]);
-            res.end(data);
-        }
-    })
+    console.log('The solution is: ', results);
 });
 
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/', function(req,res){
+    html = page_main();
+    res.writeHead(200);
+    res.end(html);
+});
+app.get('/login',function(req,res){
+    html = page_login();
+    res.writeHead(200);
+    res.end(html);
+});
+app.post('/login',function(req,res){
+    res.writeHead(200);
+    res.end("success");
+});
+app.get('/sign-up',function(req,res){
+    html = page_signup();
+    res.writeHead(200);
+    res.end(html);
+});
+app.post('/sign-up',function(req,res){
+    console.log(req.body);
+    res.writeHead(200);
+    res.end("success");
+});
 app.listen(port,hostname, function(){
     console.log("Server running at 3000");
 })
