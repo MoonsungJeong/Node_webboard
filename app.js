@@ -21,6 +21,7 @@ let sql = "SELECT host,user from user";
 }); */
 
 app.use(express.static("public"));
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/", function(req,res){
@@ -56,11 +57,19 @@ app.post("/sign-up",function(req,res){
     +` VALUES ('${code}', '${info.id}', '${info.password}', '${info.name}', '${info.nickname}', '${info.email}', '${date}', '${ip}', '${info.birth}');`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
-        
-        res.writeHead(200);
-        res.end("success"); 
+        res.redirect(301,'/login');
     });
 });
+app.post("/form-check",function(req,res){
+    sql = "SELECT COUNT(*) FROM `members` WHERE `"+`${req.body.column}`+"` = '"+`${req.body.value}`+"'"; 
+    db.query(sql, function (error, results, fields) {
+        if (error)throw error;
+        if(results[0]['COUNT(*)'])
+            res.send(true);
+        else
+            res.send(false);
+    });
+})
 app.listen(port,hostname, function(){
     console.log("Server running at 3000");
 })
