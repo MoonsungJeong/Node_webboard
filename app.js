@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const database = require("./lib/mysql.js");
+const hash = require("./lib/hash.js");
 
 const page_main = require("./lib/main.js");
 const page_login = require("./lib/login.js");
@@ -47,6 +48,8 @@ app.post("/sign-up",function(req,res){
     const info = req.body;
     const code = Math.floor(Math.random()*100000);
     const ip = req.connection.remoteAddress;
+    const hashedPW = hash.generate(info.password);
+
     let date = new Date();
     let dd = String(date.getDate()).padStart(2, '0');
     let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -54,7 +57,7 @@ app.post("/sign-up",function(req,res){
     date = yyyy + '-' + mm + '-' + dd;
     
     sql = "INSERT INTO `members` (`mcode`, `uid`, `upwd`, `uname`, `unickname`, `email`, `udate`, `uip`, `birthdate`)"
-    +` VALUES ('${code}', '${info.id}', '${info.password}', '${info.name}', '${info.nickname}', '${info.email}', '${date}', '${ip}', '${info.birth}');`;
+    +` VALUES ('${code}', '${info.id}', '${hashedPW}', '${info.name}', '${info.nickname}', '${info.email}', '${date}', '${ip}', '${info.birth}');`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         res.redirect(301,'/login');

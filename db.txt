@@ -5,7 +5,7 @@ USE web_board;
 CREATE TABLE IF NOT EXISTS `members` (
 	`mcode` Numeric(5,0) NOT NULL,
 	`uid` VARCHAR(20) NOT NULL,
-	`upwd` VARCHAR(20) NOT NULL,
+	`upwd` VARCHAR(60) NOT NULL,
 	`uname` VARCHAR(30) NOT NULL,
 	`unickname` VARCHAR(30) NOT NULL,
 	`email` VARCHAR(30) NOT NULL,
