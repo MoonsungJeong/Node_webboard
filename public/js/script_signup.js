@@ -1,7 +1,8 @@
 const form = document.getElementById("sign_form");
 const id_check = form.id;
 const nick_check = form.nickname;
-function _PRE_CHECK(){
+
+function _PRE_CHECK_SIGNUP(){
     const id = form.id.value;
     const password = form.password.value;
     const password_check = form.password_check.value;
@@ -54,7 +55,6 @@ function _PRE_CHECK(){
     }
     if(id_validation != ""){
         alert("Please write other ID");
-        console.log(id_validation)
         form.id.focus();
         return false;
     }
@@ -63,7 +63,30 @@ function _PRE_CHECK(){
         form.nickname.focus();
         return false;
     }   
-    return true;
+    //return true;
+    _AJAX_SIGNIN_SEND(form);
+    return false;
+}
+function _AJAX_SIGNIN_SEND(form){
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST","http://192.168.1.223:3000/sign-up/");  // Ajax connect
+    oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
+    oReq.send(JSON.stringify({                                  // Ajax send with JSON
+        'id' : `${form.id.value}`,
+        'password': `${form.password.value}`,
+        'name': `${form.name.value}`,
+        'nickname': `${form.nickname.value}`,
+        'email': `${form.email.value}`,
+        'birth': `${form.birth.value}`
+    }));
+    oReq.onreadystatechange = function(){                   // Ajax result from Server
+        if(oReq.readyState === 4 && oReq.status === 200){
+            if(oReq.responseText === "true"){
+                alert("SIGN In Success!!");
+                location.href="/login";
+            }
+        }
+    }
 }
 id_check.addEventListener("focusout",function(event){
     _AJAX_FORM_CHECK(event.target.value,"uid",this);

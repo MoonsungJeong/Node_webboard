@@ -1,48 +1,87 @@
 const express = require("express");
+const session = require("express-session");
+const FileStore = require("session-file-store")(session);
 const bodyParser = require("body-parser");
-const database = require("./lib/mysql.js");
-const hash = require("./lib/hash.js");
+const database = require("./lib/mysql");
+const hash = require("./lib/hash");
+const auth = require("./lib/auth");
 
-const page_main = require("./lib/main.js");
-const page_login = require("./lib/login.js");
-const page_signup = require("./lib/sign-up.js");
+const parts_header = require('./parts/header.js');
+
+const page_main = require("./page/main.js");
+const page_login = require("./page/login.js");
+const page_signup = require("./page/sign-up.js");
+const template = require("./page/template.js");
 
 const app = express();
 const db = database();
 
 const hostname = "192.168.1.223";
 const port = 3000;
+let header;
+let main;
 let html;
-let sql = "SELECT host,user from user";
-
-// db test code 
-/* db.query(sql, function (error, results, fields) {
-    if (error) throw error;
-    console.log("The solution is: ", results);
-}); */
+let sql;
 
 app.use(express.static("public"));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+    secret: 'iwanttogotothemoon',
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore()
+}))
 
 app.get("/", function(req,res){
-    html = page_main();
+    header = parts_header(auth.statusUI(req,res));
+    main = page_main();
+    html = template(header,main,"");
     res.writeHead(200);
     res.end(html);
 });
 app.get("/login",function(req,res){
-    html = page_login();
+    header = parts_header(auth.statusUI(req,res));
+    main = page_login();
+    html = template(header,main,"<script src='/js/script_login.js'></script>");
+    res.writeHead(200);
+    res.end(html);
+});
+app.get("/logout",function(req,res){
+    req.session.destroy(function(err){
+        res.redirect('/');
+    });
+});
+app.get("/sign-up",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_signup();
+    html = template(header,main,"<script src='/js/script_signup.js'></script>");
     res.writeHead(200);
     res.end(html);
 });
 app.post("/login",function(req,res){
-    res.writeHead(200);
-    res.end("success");
-});
-app.get("/sign-up",function(req,res){
-    html = page_signup();
-    res.writeHead(200);
-    res.end(html);
+    const info = req.body;
+    sql = "SELECT * FROM `members` WHERE `uid` =" + ` '${info.id}';`
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        if(results[0] !== undefined){
+            sql = "SELECT * FROM `members` WHERE `uid` =" + ` '${info.id}';`
+            db.query(sql, function (error, results, fields) {
+                if(error)throw error;
+                if(!hash.check(info.password,results[0]['upwd'])){ // incorrect
+                    res.send(false);
+                }else{                                             // correct
+                    req.session.is_logined = true;
+                    req.session.nickname = results[0]['unickname'];
+                    req.session.save(function(){
+                        res.send(true);
+                    });
+                } 
+            });
+        }else{
+            res.send(false);    // incorrect
+        }
+    });
 });
 app.post("/sign-up",function(req,res){
     const info = req.body;
@@ -60,7 +99,7 @@ app.post("/sign-up",function(req,res){
     +` VALUES ('${code}', '${info.id}', '${hashedPW}', '${info.name}', '${info.nickname}', '${info.email}', '${date}', '${ip}', '${info.birth}');`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
-        res.redirect(301,'/login');
+        res.send(true);
     });
 });
 app.post("/form-check",function(req,res){
