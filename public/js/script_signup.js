@@ -69,7 +69,7 @@ function _PRE_CHECK_SIGNUP(){
 }
 function _AJAX_SIGNIN_SEND(form){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://192.168.1.223:3000/sign-up/");  // Ajax connect
+    oReq.open("POST","http://192.168.1.223:3000/account/sign-up");  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'id' : `${form.id.value}`,
@@ -83,7 +83,7 @@ function _AJAX_SIGNIN_SEND(form){
         if(oReq.readyState === 4 && oReq.status === 200){
             if(oReq.responseText === "true"){
                 alert("SIGN In Success!!");
-                location.href="/login";
+                location.href="/account/login";
             }
         }
     }
@@ -96,7 +96,7 @@ nick_check.addEventListener("focusout",function(event){
 })
 function _AJAX_FORM_CHECK(value, column, node){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://192.168.1.223:3000/form-check/");  // Ajax connect
+    oReq.open("POST","http://192.168.1.223:3000/account/form-check/");  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'value' : `${value}`,

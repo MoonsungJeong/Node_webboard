@@ -3,7 +3,7 @@ module.exports = function(){
     <main>
         <section>
             <div class="flex_col h_size_80">
-                <form class="space_5 margin_top_5 padding_3" action="/sign-up" id="sign_form" method="post" onsubmit="return _PRE_CHECK_SIGNUP();">
+                <form class="space_5 margin_top_5 padding_3" action="/account/sign-up" id="sign_form" method="post" onsubmit="return _PRE_CHECK_SIGNUP();">
                     <table>
                         <tr>
                             <td>ID</td>

@@ -1,4 +1,4 @@
-module.exports = function(authStatusUI='<a href="/login" class="font_white"><i class="far fa-user fa-2x"></i></a>'){
+module.exports = function(authStatusUI='<a href="/account/login" class="font_white"><i class="far fa-user fa-2x"></i></a>'){
     return `
     <header>
         <div class="flex_between space_3 font_white">
