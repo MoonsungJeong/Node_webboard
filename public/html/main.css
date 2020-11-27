@@ -127,3 +127,69 @@ div{
 .test{
     border:1px solid red;
 }
+
+.menu{
+    padding:0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.menuScreen{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color:#000000;
+    opacity: 0.3;
+    display:none;
+}
+.menuList{
+    width: 66%;
+    height: 98vh;
+    background-color:#222233;
+    padding:0;
+    display:none;
+}
+.list_box{
+}
+.list{
+    margin-bottom:1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:2rem;
+    color:#ffffff;
+    background-color:#555555;
+}
+.btn_box{
+    padding:1rem;
+    display: flex;
+    justify-content: center;
+}
+.animate-left{
+    position:relative;
+    animation:animateleft 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes animateleft{
+    from{left:0px;opacity:1;} 
+    to{left:-300px;opacity:0;}
+}
+.animate-right{
+    position:relative;
+    animation:animateright 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes animateright{
+    from{left:-300px;opacity:0;} 
+    to{left:0px;opacity:1;}
+}
+.btn_click{
+    position: fixed;
+    top:0;
+    right:0;
+    z-index: 4;
+}

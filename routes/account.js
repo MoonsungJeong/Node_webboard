@@ -26,9 +26,7 @@ router.get("/login",function(req,res){
 });
 router.get("/logout",function(req,res){
     req.session.destroy(function(err){
-        //req.session.save(function(err){
         res.redirect('/');
-        //});
     });
 });
 router.get("/sign-up",function(req,res){

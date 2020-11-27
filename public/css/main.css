@@ -124,6 +124,9 @@ div{
 .none{
     display:none;
 }
+.pointer{
+    cursor: pointer;
+}
 .test{
     border:1px solid red;
 }

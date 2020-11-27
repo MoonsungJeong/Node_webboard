@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const indexRouter = require("./routes/index.js");
 const accountRouter = require("./routes/account.js");
+const boardRouter = require("./routes/board.js");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(session({
 
 app.use("/", indexRouter);
 app.use("/account", accountRouter);
+app.use("/board",boardRouter);
 
 app.listen(port,hostname, function(){
     console.log("Server running at 3000");

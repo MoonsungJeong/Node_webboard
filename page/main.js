@@ -11,9 +11,9 @@ module.exports = function(){
                     <a href="/board/free">+</a>
                 </h2>
                 <ul>
-                    <li><div><a href="/post/1">this is free board notice</a></div></li>
-                    <li><div><a href="/post/2">hello this is free board</a></div></li>
-                    <li><div><a href="/post/4">today is sunny day wow~~</a></div></li>
+                    <li><div><a href="/board/5">this is free board notice</a></div></li>
+                    <li><div><a href="/board/3">hello this is free board</a></div></li>
+                    <li><div><a href="/board/1">today is sunny day wow~~</a></div></li>
                 </ul>
             </section>
             <section class="board">
@@ -22,9 +22,9 @@ module.exports = function(){
                     <a href="/board/info">+</a>
                 </h2>
                 <ul>
-                    <li><div><a href="/post/3">this is info board notice</a></div></li>
-                    <li><div><a href="/post/5">hello this is info board</a></div></li>
-                    <li><div><a href="/post/6">today is rainy day wow~~</a></div></li>
+                    <li><div><a href="/board/6">this is info board notice</a></div></li>
+                    <li><div><a href="/board/4">hello this is info board</a></div></li>
+                    <li><div><a href="/board/2">today is rainy day wow~~</a></div></li>
                 </ul>
             </section>
         </article>

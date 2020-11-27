@@ -2,7 +2,7 @@ module.exports = function(authStatusUI='<a href="/account/login" class="font_whi
     return `
     <header>
         <div class="flex_between space_3 font_white">
-            <div><i class="fas fa-bars fa-2x"></i></div>
+            <div><a class="btn_sidemenu pointer"><i class="fas fa-bars fa-2x"></i></a></div>
             <h1><a href="/" class="font_white">Kangaroo</a></h1>
             <div class="none">
                 <ul class="flex">
@@ -20,9 +20,9 @@ module.exports = function(authStatusUI='<a href="/account/login" class="font_whi
         </div>
         <nav>
             <ul class="flex_around line_top space_4 font_white padding">
-                <li>Total</li>
-                <li>Free</li>
-                <li>Info</li>
+                <li><a href="/board/total" class="font_white">Total</a></li>
+                <li><a href="/board/free" class="font_white">Free</a></li>
+                <li><a href="/board/info" class="font_white">Info</a></li>
             </ul>
         </nav>
     </header>

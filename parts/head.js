@@ -12,6 +12,7 @@ module.exports = header =`
     <!-- css files -->
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/screen.css">
     <script src="https://kit.fontawesome.com/23c505e967.js" crossorigin="anonymous"></script> 
 </head>
 `
