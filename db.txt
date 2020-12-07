@@ -16,23 +16,24 @@ CREATE TABLE IF NOT EXISTS `members` (
 );
 
 CREATE TABLE IF NOT EXISTS `board` (
-	`pcode` Numeric(5,0) NOT NULL,
+	`pcode` INT(10) NOT NULL AUTO_INCREMENT,
 	`bcode` Numeric(5,0) NOT NULL,
 	`mcode` Numeric(5,0) NOT NULL,
 	`btitle` VARCHAR(100) NOT NULL,
-	`bcontent` BLOB NOT NULL,
+	`bcontent` TEXT NOT NULL,
 	`bdate` datetime NOT NULL,
 	`bip` VARCHAR(15),
-	`bcount` Numeric(5,0) NOT NULL,
-	`blikes` Numeric(4,0) NOT NULL,
-	`ppwd` VARCHAR(20),
+	`bcount` Numeric(5,0) NOT NULL DEFAULT '0',
+	`blikes` Numeric(4,0) NOT NULL DEFAULT '0',
+	`ppwd` VARCHAR(20) DEFAULT NULL,
+	`author` VARCHAR(30) DEFAULT NULL,
 	PRIMARY KEY (`pcode`),
 	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)
 );
 
 CREATE TABLE IF NOT EXISTS `comment` (
-	`ccode` Numeric(5,0) NOT NULL,
-	`pcode` Numeric(5,0) NOT NULL,
+	`ccode` INT(10) NOT NULL AUTO_INCREMENT,
+	`pcode` INT(10) NOT NULL,
 	`mcode` Numeric(5,0) NOT NULL,
 	`comment`VARCHAR(100) NOT NULL,
 	`cclass` Numeric(1,0) NOT NULL,
@@ -46,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
 );
 
 CREATE TABLE IF NOT EXISTS `message` (
-	`ncode` Numeric(5,0) NOT NULL,
+	`ncode` INT(10) NOT NULL AUTO_INCREMENT,
 	`mcode` Numeric(5,0) NOT NULL,
 	`recv_id` VARCHAR(20) NOT NULL,
 	`sent_id` VARCHAR(20) NOT NULL,

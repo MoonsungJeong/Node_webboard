@@ -1,5 +1,6 @@
 a{
     text-decoration: none;
+    color:black;
 }
 div{
     padding: 0.3rem;
@@ -37,6 +38,9 @@ div{
 .margin_tb_3{
     margin:3rem 0;
 }
+.margin_side_1{
+    margin:0 1rem;
+}
 .margin_top_5{
     margin-top:5rem;
 }
@@ -53,6 +57,14 @@ div{
 }
 .post_header{
     border-bottom: 1px solid #bbbbbb;
+}
+.post_top{
+    border-top: 1px solid #333333;
+    border-top-width: medium;
+}
+.post_item{
+    border-top:0.5px solid #999999;
+    border-bottom:0.5px solid #999999;
 }
 .board{
     margin:1rem;
@@ -81,6 +93,18 @@ div{
 }
 .font_white{
     color:#ffffff;
+}
+.font_gray{
+    color: #888888;
+}
+.font_skyblue{
+    color: #4ba1db;
+}
+.font_orange{
+    color: orangered;
+}
+.f_size_1{
+    font-size: small;
 }
 .size_5{
     width:15rem;

@@ -4,6 +4,7 @@ const router = express.Router();
 const auth = require("../lib/auth");
 const hash = require("../lib/hash");
 const database = require("../lib/mysql");
+const time = require("../lib/time");
 
 const parts_header = require('../parts/header.js');
 
@@ -26,7 +27,7 @@ router.get("/login",function(req,res){
 });
 router.get("/logout",function(req,res){
     req.session.destroy(function(err){
-        res.redirect('/');
+        res.redirect(req.headers.referer);
     });
 });
 router.get("/sign-up",function(req,res){
@@ -66,11 +67,7 @@ router.post("/sign-up",function(req,res){
     const ip = req.connection.remoteAddress;
     const hashedPW = hash.generate(info.password);
 
-    let date = new Date();
-    let dd = String(date.getDate()).padStart(2, '0');
-    let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = date.getFullYear();
-    date = yyyy + '-' + mm + '-' + dd;
+    let date = time.currentTime();
     
     sql = "INSERT INTO `members` (`mcode`, `uid`, `upwd`, `uname`, `unickname`, `email`, `udate`, `uip`, `birthdate`)"
     +` VALUES ('${code}', '${info.id}', '${hashedPW}', '${info.name}', '${info.nickname}', '${info.email}', '${date}', '${ip}', '${info.birth}');`;

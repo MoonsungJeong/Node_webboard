@@ -7,8 +7,8 @@ module.exports = function(){
         <article class="flex_col">
             <section class="board">
                 <h2 class="post_header flex_between">
-                    <a href="/board/free">Free Board</a>
-                    <a href="/board/free">+</a>
+                    <a href="/board/free/1">Free Board</a>
+                    <a href="/board/free/1">+</a>
                 </h2>
                 <ul>
                     <li><div><a href="/board/5">this is free board notice</a></div></li>
@@ -18,8 +18,8 @@ module.exports = function(){
             </section>
             <section class="board">
                 <h2 class="post_header flex_between">
-                    <a href="/board/info">Info Board</a>
-                    <a href="/board/info">+</a>
+                    <a href="/board/info/1">Info Board</a>
+                    <a href="/board/info/1">+</a>
                 </h2>
                 <ul>
                     <li><div><a href="/board/6">this is info board notice</a></div></li>
