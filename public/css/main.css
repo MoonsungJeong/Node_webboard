@@ -15,6 +15,11 @@ div{
     flex-direction: column;
     align-items: center;
 }
+.flex_col_2{
+    display:flex;
+    flex-direction: column;
+    align-items: left;
+}
 .flex_between{
     display: flex;
     justify-content: space-between;
@@ -25,6 +30,9 @@ div{
 }
 .left{
     text-align: left;
+}
+.right{
+    text-align: right;
 }
 .margin{
     margin:auto;
@@ -37,6 +45,9 @@ div{
 }
 .margin_tb_3{
     margin:3rem 0;
+}
+.margin_side_05{
+    margin:0 0.5rem;
 }
 .margin_side_1{
     margin:0 1rem;
@@ -138,6 +149,9 @@ div{
 }
 .min_height{
     min-height: 80vh;
+}
+.line-bottom-dot{
+    border-bottom: 1px dotted #999999;
 }
 .line-bottom{
     border-bottom: 1px solid #999999;

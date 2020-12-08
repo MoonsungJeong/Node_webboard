@@ -1,6 +1,4 @@
 const ad_1 = require('../parts/ad_1.js');
-//<div><input type="hidden" name="author" value="NULL"></div>
-//<div>PW &nbsp;<input type="hidden" name="password" value="NULL"></div>
                     
 module.exports = function(authStatusWrite='<div>Author<input type="text" name="author"></div><div>PW &nbsp;<input type="password" name="password"></div>'){
     return `

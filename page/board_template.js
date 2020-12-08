@@ -1,7 +1,7 @@
 const ad_1 = require('../parts/ad_1.js');
 const time = require('../lib/time.js');
 
-module.exports = function(board,results, page){
+module.exports = function(board,results,page){
     let info;
     let perPage = 10;
     let start = (page-1)*perPage;
@@ -14,7 +14,7 @@ module.exports = function(board,results, page){
             break;
         list = list +`  
         <li class="post_item">
-            <a href="/board/list/${info.pcode}">
+            <a href="/board/${board}/${page}/${info.pcode}">
                 <div>
                     <div>${info.btitle}<!--<span>[3]</span>--></div>
                     <div class="font_gray f_size_1">
@@ -28,6 +28,7 @@ module.exports = function(board,results, page){
         </li>
         `
     } 
+    // pagination 
     let pagination = '';
     let pageMax = 5;
     let totalPage = Math.ceil(results.length/perPage);
