@@ -1,7 +1,7 @@
 const ad_1 = require('../parts/ad_1.js');
 const time = require('../lib/time.js');
 
-module.exports = function(board,results,page){
+module.exports = function(board,page,results){
     let info;
     let perPage = 10;
     let start = (page-1)*perPage;

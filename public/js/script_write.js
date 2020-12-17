@@ -5,7 +5,7 @@ function _PRE_CHECK_WRITE(e){
     const password = form.password.value;
     const title = form.title.value;
     const content = form.content.value;
-
+    
     if(author == null || author == ""){
         alert("Please write author");
         form.author.focus();
@@ -27,4 +27,11 @@ function _PRE_CHECK_WRITE(e){
         return false;
     }
     return true;
+}
+function _WRITE_CANCEL_CHECK(e){
+    if(confirm("Are you sure?")){
+        history.back();
+        return false;
+    }    
+    return false;
 }

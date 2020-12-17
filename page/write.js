@@ -15,7 +15,7 @@ module.exports = function(authStatusWrite='<div>Author<input type="text" name="a
                 <textarea class="size_90 h_size_50" name="content"></textarea>
                 <br>
                 <button type="submit">write</button>
-                <button onclick="">cancel</button>
+                <button onclick="return _WRITE_CANCEL_CHECK()">cancel</button>
             </form>
         </section>
         ${ad_1}

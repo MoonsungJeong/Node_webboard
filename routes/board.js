@@ -11,6 +11,7 @@ const parts_header = require('../parts/header.js');
 const page_board = require("../page/board_template.js");
 const page_write = require("../page/write.js");
 const page_read = require("../page/read.js");
+const page_update = require("../page/update.js");
 const template = require("../page/template.js");
 
 const db = database();
@@ -26,7 +27,7 @@ router.get("/total/:pageId",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
-        main = page_board("total",results,page);
+        main = page_board("total",page,results);
         html = template(header,main,"");
         res.writeHead(200);
         res.end(html);
@@ -38,7 +39,7 @@ router.get("/free/:pageId",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
-        main = page_board("free",results,page);
+        main = page_board("free",page,results);
         html = template(header,main,"");
         res.writeHead(200);
         res.end(html);
@@ -50,33 +51,32 @@ router.get("/info/:pageId",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
-        main = page_board("info",results,page);
+        main = page_board("info",page,results);
         html = template(header,main,"");
         res.writeHead(200);
         res.end(html);
     });
 })
 router.get("/:boardId/:pageId/:postId",function(req,res){
-    let data = req.params;
-    sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${data.pageId}'`;
-    db.query(sql, function (error, results, fields) {
+    sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+    db.query(sql, function (error, results, fields) {      
         if (error)throw error;
-        main = page_read(results,data);  // read post
-        if(data.boardId === 'total')
+        main = page_read(results[0],auth.statusReadBtn(req,res,results[0]));  // read post
+        if(req.params.boardId === 'total')
             sql = "SELECT * FROM `board` ORDER BY `pcode` DESC;";
-        if(data.boardId === 'free')
+        if(req.params.boardId === 'free')
             sql = "SELECT * FROM `board` WHERE `bcode` = 1 ORDER BY `pcode` DESC;";
-        if(data.boardId === 'info')
-            sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";
+        if(req.params.boardId === 'info')
+            sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";    
         db.query(sql, function (error, results, fields) {
-            if (error)throw error;
+            if (error)throw error;    
             header = parts_header(auth.statusUI(req,res));
-            main += page_board(data.boardId,results,data.pageId);    // attach board bottom
-            html = template(header,main,"");
+            main += page_board(req.params.boardId, req.params.pageId, results);    // attach board bottom
+            html = template(header,main,"<script src='/js/script_post.js'></script>");
             res.writeHead(200);
             res.end(html);
-        });
-    });
+        })
+    })
 })
 router.get("/new",function(req,res){
     header = parts_header(auth.statusUI(req,res));
@@ -113,5 +113,74 @@ router.post("/new",function(req,res){
         });
     }
 })
+router.post("/review/:postId",function(req,res){
+    if(auth.isUser(req,res)){
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+        db.query(sql, function (error, results, fields){
+            if(results[0].mcode === req.session.code){
+                req.session.post = hash.generate(req.params.postId);
+                res.send("ok");
+            }else{
+                res.send("no");
+            }
+        })
+    }else{
+        if(req.body.pw != null){
+            sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+            db.query(sql, function (error, results, fields){
+                if(hash.check(req.body.pw,results[0].ppwd)){
+                    req.session.post = hash.generate(req.params.postId);
+                    res.send("ok");
+                }else{
+                    res.send("no");
+                }
+            });
+        }else{
+            res.send("password");
+        }
+    }
+});
+router.get("/review/:postId",function(req,res){
+    if(req.session.post == null){
+        console.log("unexpected access");
+        res.redirect("/");
+        return;
+    } 
+    if(hash.check(req.params.postId,req.session.post)){
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+        db.query(sql, function (error, results, fields){
+            header = parts_header(auth.statusUI(req,res));
+            main = page_update(results[0].pcode, results[0].btitle, results[0].bcontent, results[0].bcode);
+            html = template(header,main,"<script src='/js/script_update.js'></script>");
+            res.writeHead(200);
+            res.end(html);
+        });
+    }else{
+        console.log("wrong user access");
+        delete req.session.post;
+        res.redirect("/");
+    }
+});
+router.put("/review/:postId",function(req,res){
+    if(req.session.post == null){
+        console.log("unexpected access");
+        res.redirect("/");
+        return;
+    }
+    
+    if(hash.check(req.params.postId,req.session.post)){
+        sql = "UPDATE `board` SET `bcode` = "+`'${req.body.board}',`+" `btitle` = "+`'${req.body.title}',`+" `bcontent` = "+`'${req.body.content}' `+"WHERE `board`.`pcode` = "+`${req.params.postId};`;
+        db.query(sql, function (error, results, fields){
+            if (error)throw error;
+            delete req.session.post;
+            req.session.save();
+            res.send(true);
+        });
+    }
+});
 
+router.get("/cancel",function(req,res){
+    delete req.session.post;
+    req.session.save();
+});
 module.exports = router;

@@ -20,7 +20,7 @@ function _PRE_CHECK_LOGIN(e){
 
 function _AJAX_LOGIN_SEND(ID, PW){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://localhost:3000/account/login");  // Ajax connect
+    oReq.open("POST","http://192.168.1.223:3000/account/login");  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'id' : `${ID}`,

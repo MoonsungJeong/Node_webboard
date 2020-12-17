@@ -9,7 +9,7 @@ const boardRouter = require("./routes/board.js");
 
 const app = express();
 
-const hostname = "localhost";
+const hostname = "192.168.1.223";
 const port = 3000;
 
 app.use(express.static("public"));

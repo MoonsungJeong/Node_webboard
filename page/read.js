@@ -1,13 +1,14 @@
 const ad_1 = require('../parts/ad_1.js');
 const time = require('../lib/time.js');
 
-module.exports = function(results, referer){
-    const title = results[0].btitle;
-    const author = results[0].author;
-    const count = results[0].bcount;
-    const date = results[0].bdate;
-    const content = results[0].bcontent;
-    const like = results[0].blikes;
+module.exports = function(data, authStatusReadBtn = '<button><a href="/board/new">write</a></button><button><a href="/board/total/1">list</a></button>'){
+    const post = data.pcode;
+    const title = data.btitle;
+    const author = data.author;
+    const count = data.bcount;
+    const date = data.bdate;
+    const content = data.bcontent;
+    const like = data.blikes;
     return `
     <main>
         ${ad_1}
@@ -28,9 +29,13 @@ module.exports = function(results, referer){
             </div>
             <div>
                 <div class="right">
-                    <button>update</button>
+                    ${authStatusReadBtn}
+                    <!--
+                    <button><a href="/board/new">write</a></button>
+                    <button><a href="/board/review/${post}">update</a></button>
                     <button>delete</button>
-                    <button><a href="/board/${referer.boardId}/${referer.pageId}">list</a></button>
+                    <button><a href="/board/${data.boardId}/${data.pageId}">list</a></button>
+                    -->
                 </div>
                 <br>
                 comments

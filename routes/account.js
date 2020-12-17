@@ -51,6 +51,7 @@ router.post("/login",function(req,res){
                 }else{                                             // correct
                     req.session.is_logined = true;
                     req.session.nickname = results[0]['unickname'];
+                    req.session.code = results[0]['mcode'];
                     req.session.save(function(){
                         res.send(true);
                     });
