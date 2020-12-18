@@ -1,6 +1,14 @@
 const ad_1 = require('../parts/ad_1.js');
 
-module.exports = function(){
+module.exports = function(res_1,res_2){
+    let list_1 = '';
+    let list_2 = '';
+    res_1.forEach(function(item,index){
+       list_1 += `<li class="line-bottom-dot"><div><a href="/board/free/1/${item.pcode}">${item.btitle}</a></div></li>`;
+    })
+    res_2.forEach(function(item,index){
+        list_2 += `<li class="line-bottom-dot"><div><a href="/board/info/1/${item.pcode}">${item.btitle}</a></div></li>`;
+     })
     return `
     <main>
         ${ad_1}
@@ -11,9 +19,7 @@ module.exports = function(){
                     <a href="/board/free/1">+</a>
                 </h2>
                 <ul>
-                    <li><div><a href="/board/5">this is free board notice</a></div></li>
-                    <li><div><a href="/board/3">hello this is free board</a></div></li>
-                    <li><div><a href="/board/1">today is sunny day wow~~</a></div></li>
+                    ${list_1}
                 </ul>
             </section>
             <section class="board">
@@ -22,9 +28,7 @@ module.exports = function(){
                     <a href="/board/info/1">+</a>
                 </h2>
                 <ul>
-                    <li><div><a href="/board/6">this is info board notice</a></div></li>
-                    <li><div><a href="/board/4">hello this is info board</a></div></li>
-                    <li><div><a href="/board/2">today is rainy day wow~~</a></div></li>
+                    ${list_2}
                 </ul>
             </section>
         </article>
