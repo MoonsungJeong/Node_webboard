@@ -24,3 +24,11 @@ screen_side.addEventListener("click",function(){
         frame.style.zIndex = -1;
     }
 })
+window.addEventListener("load",function(){
+    let res = document.referrer.match(/review/g);
+    if(res=='review'){
+        var oReq = new XMLHttpRequest();
+        oReq.open("GET",`http://192.168.1.223:3000/board/cancel`,true);  // Ajax connect
+        oReq.send();
+    }
+})

@@ -158,6 +158,7 @@ router.get("/review/:postId",function(req,res){
     }else{
         console.log("wrong user access");
         delete req.session.post;
+        req.session.save();
         res.redirect("/");
     }
 });
@@ -167,7 +168,6 @@ router.put("/review/:postId",function(req,res){
         res.redirect("/");
         return;
     }
-    
     if(hash.check(req.params.postId,req.session.post)){
         sql = "UPDATE `board` SET `bcode` = "+`'${req.body.board}',`+" `btitle` = "+`'${req.body.title}',`+" `bcontent` = "+`'${req.body.content}' `+"WHERE `board`.`pcode` = "+`${req.params.postId};`;
         db.query(sql, function (error, results, fields){
@@ -178,7 +178,37 @@ router.put("/review/:postId",function(req,res){
         });
     }
 });
-
+router.delete("/list/:postId",function(req,res){
+    if(auth.isUser(req,res)){
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+        db.query(sql, function (error, results, fields){
+            if(results[0].mcode === req.session.code){
+                sql = "DELETE FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+                db.query(sql, function (error, results, fields){
+                    res.send("ok");
+                })
+            }else{
+                res.send("no");
+            }
+        })
+    }else{
+        if(req.body.pw != null){
+            sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+            db.query(sql, function (error, results, fields){
+                if(hash.check(req.body.pw,results[0].ppwd)){
+                    sql = "DELETE FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+                    db.query(sql, function (error, results, fields){
+                        res.send("ok");
+                    })
+                }else{
+                    res.send("no");
+                }
+            });
+        }else{
+            res.send("password");
+        }
+    }
+})
 router.get("/cancel",function(req,res){
     delete req.session.post;
     req.session.save();
