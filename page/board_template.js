@@ -1,18 +1,41 @@
 const ad_1 = require('../parts/ad_1.js');
 const time = require('../lib/time.js');
 
-module.exports = function(board,page,results){
+module.exports = function(board,page,post,results){
     let info;
     let perPage = 10;
     let start = (page-1)*perPage;
     let end = start+perPage;
     let list = '';
     // list
+    /* if(i == page){
+        pagination += `<a class="font_orange" href="/board/${board}/${i}">${i}</a> `; 
+        continue;
+    } */
     for(;start<end; start++){
         info = results[start]; 
         if(info === undefined)
             break;
-        list = list +`  
+        //console.log(info);
+        if(info.pcode == post){
+            list += `  
+            <li class="post_item space_7">
+                <a href="/board/${board}/${page}/${info.pcode}">
+                    <div>
+                        <div>${info.btitle}<!--<span>[3]</span>--></div>
+                        <div class="font_gray f_size_1">
+                            <span>${info.author} | </span>
+                            <span>${time.formatDate(info.bdate)} | </span>
+                            <span>count ${info.bcount} | </span>
+                            <span class="font_skyblue">likes ${info.blikes}</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            `
+            continue;
+        }
+        list += `  
         <li class="post_item">
             <a href="/board/${board}/${page}/${info.pcode}">
                 <div>

@@ -27,7 +27,7 @@ router.get("/total/:pageId",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
-        main = page_board("total",page,results);
+        main = page_board("total",page,"",results);
         html = template(header,main,"");
         res.writeHead(200);
         res.end(html);
@@ -39,7 +39,7 @@ router.get("/free/:pageId",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
-        main = page_board("free",page,results);
+        main = page_board("free",page,"",results);
         html = template(header,main,"");
         res.writeHead(200);
         res.end(html);
@@ -51,13 +51,14 @@ router.get("/info/:pageId",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
-        main = page_board("info",page,results);
+        main = page_board("info",page,"",results);
         html = template(header,main,"");
         res.writeHead(200);
         res.end(html);
     });
 })
 router.get("/:boardId/:pageId/:postId",function(req,res){
+    page = req.params.pageId;
     sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
     db.query(sql, function (error, results, fields) {      
         if (error)throw error;
@@ -71,7 +72,7 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
         db.query(sql, function (error, results, fields) {
             if (error)throw error;    
             header = parts_header(auth.statusUI(req,res));
-            main += page_board(req.params.boardId, req.params.pageId, results);    // attach board bottom
+            main += page_board(req.params.boardId, page, req.params.postId, results);    // attach board bottom
             html = template(header,main,"<script src='/js/script_post.js'></script>");
             res.writeHead(200);
             res.end(html);
