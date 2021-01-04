@@ -8,15 +8,10 @@ module.exports = function(board,page,post,results){
     let end = start+perPage;
     let list = '';
     // list
-    /* if(i == page){
-        pagination += `<a class="font_orange" href="/board/${board}/${i}">${i}</a> `; 
-        continue;
-    } */
     for(;start<end; start++){
         info = results[start]; 
         if(info === undefined)
             break;
-        //console.log(info);
         if(info.pcode == post){
             list += `  
             <li class="post_item space_7">
@@ -71,12 +66,13 @@ module.exports = function(board,page,post,results){
         }
         pagination += `<a href="/board/${board}/${i}">${i}</a> `;
     }
-
     if(Math.ceil(page/pageMax)-1 != Math.ceil(totalPage/pageMax)-1) pagination += `<a href="/board/${board}/${i}"><i class="fas fa-angle-right"></i></a> `;
     else pagination += `<a class="font_gray"><i class="fas fa-angle-right"></i></a> `;
     if(page != totalPage) pagination += `<a href="/board/${board}/${totalPage}"><i class="fas fa-angle-double-right"></i></a> `;
     else pagination += `<a class="font_gray"><i class="fas fa-angle-double-right"></i></a> `;
     
+    if(results[0] == undefined) pagination = '';            // if no post, no pagination
+
     return `
     <main>
         ${ad_1}

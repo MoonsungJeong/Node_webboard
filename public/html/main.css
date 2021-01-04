@@ -82,6 +82,16 @@ div{
 .font_white{
     color:#ffffff;
 }
+.font_gray{
+    color: #666666;
+}
+.f_size_1{
+    font-size: small;
+}
+.f_size_b{
+    font-weight: bold;
+    font-size:small;
+}
 .size_5{
     width:15rem;
 }
@@ -192,4 +202,21 @@ div{
     top:0;
     right:0;
     z-index: 4;
+}
+.comment{
+    border-bottom: 1px solid #cccccc;
+}
+.comment_new{
+    border:1px solid #cccccc;
+    background-color:rgba(180, 180, 180,0.1);
+    margin:1rem;
+    padding:1rem;
+}
+.comment_form{
+    text-align: right;
+}
+.comment_box{
+    border:1px solid #cccccc;
+    width: 99%;
+    height: 5rem;
 }
