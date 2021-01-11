@@ -64,7 +64,7 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
     sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;         // post query
     db.query(sql, function (error, results, fields) {      
         if (error)throw error;
-        sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+        sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
         db.query(sql_2, function (error,results_2,fields){
             if (error)throw error;
             main = page_read(results[0], page_comment(req,res,results_2), auth.statusReadBtn(req,res,results[0]), auth.statusComment(req,res,results[0]));  // read post
@@ -93,7 +93,7 @@ router.post("/comment/new",function(req,res){
         sql = "UPDATE `comment` SET `groupnum` = "+ `'${results[1][0]['LAST_INSERT_ID()']}' WHERE `+"`ccode` = "+`${results[1][0]['LAST_INSERT_ID()']}`;
         db.query(sql, function (error, results, fields) {
             if (error)throw error;
-            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
                 res.send(page_comment(req,res,results));
@@ -115,7 +115,7 @@ router.post("/comment/:ccodeId",function(req,res){
             +` VALUES ('${req.body.post}','${req.session.code}','${req.body.content}','${req.body.class}', '${results[0].corder+1}', '${req.params.ccodeId}', '${date}', '${ip}');`;
         db.query(sql, function (error, results, fields) {
             if (error)throw error;
-            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
                 res.send(page_comment(req,res,results));
@@ -137,10 +137,10 @@ router.delete("/comment/:ccodeId",function(req,res){
             res.send("no");
             return;
         }
-        sql = "UPDATE `comment` SET `cclass` = '2' WHERE `ccode` = "+`${req.params.ccodeId}`;
+        sql = "UPDATE `comment` SET `cdlt` = '1' WHERE `ccode` = "+`${req.params.ccodeId}`;
         db.query(sql, function(error, results,fields){
             if(error)throw error;
-            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
                 res.send(page_comment(req,res,results));

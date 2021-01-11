@@ -181,6 +181,11 @@ div{
 .comment{
     border-bottom: 1px solid #cccccc;
 }
+.comment_dlt{
+    border-top:1px dotted #cccccc;
+    border-bottom:1px dotted #cccccc;
+    margin: -5px 0;
+}
 .comment_new{
     border:1px solid #cccccc;
     background-color:rgba(180, 180, 180,0.1);

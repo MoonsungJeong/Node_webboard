@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
 	`groupnum` Numeric(4,0) NOT NULL,
 	`cdate` datetime NOT NULL,
 	`cip` VARCHAR(15),
+	`cdlt` BOOLEAN NOT NULL DEFAULT '0',
 	PRIMARY KEY (`ccode`),
 	FOREIGN KEY (`pcode`) REFERENCES board (`pcode`),
 	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)

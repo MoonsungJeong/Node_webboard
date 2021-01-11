@@ -82,7 +82,7 @@ function _AJAX_DELETE_COMMENT_SEND(comId){
                 alert("Not your Comment!");
                 return;
             }
-            //document.getElementById("comment_area").innerHTML = oReq.responseText;
+            document.getElementById("comment_area").innerHTML = oReq.responseText;
             //form.content.value="";
         }
     }
