@@ -120,8 +120,15 @@ div{
 .font_orange{
     color: orangered;
 }
+.font_green{
+    color:#00aa00;
+}
 .f_size_1{
     font-size: small;
+}
+.f_size_b{
+    font-weight: bold;
+    font-size:small;
 }
 .size_5{
     width:15rem;
@@ -170,6 +177,23 @@ div{
 }
 .pointer{
     cursor: pointer;
+}
+.comment{
+    border-bottom: 1px solid #cccccc;
+}
+.comment_new{
+    border:1px solid #cccccc;
+    background-color:rgba(180, 180, 180,0.1);
+    margin:1rem 0;
+    padding:1rem;
+}
+.comment_form{
+    text-align: right;
+}
+.comment_box{
+    border:1px solid #cccccc;
+    width: 99%;
+    height: 5rem;
 }
 .test{
     border:1px solid red;

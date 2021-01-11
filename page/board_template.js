@@ -7,9 +7,9 @@ module.exports = function(board,page,post,results){
     let start = (page-1)*perPage;
     let end = start+perPage;
     let list = '';
-    // list
+    // ---------------------list--------------------------
     for(;start<end; start++){
-        info = results[start]; 
+        info = results[start];
         if(info === undefined)
             break;
         if(info.pcode == post){
@@ -46,7 +46,7 @@ module.exports = function(board,page,post,results){
         </li>
         `
     } 
-    // pagination 
+    // ----------------------pagination-------------------------- 
     let pagination = '';
     let pageMax = 5;
     let totalPage = Math.ceil(results.length/perPage);
@@ -74,7 +74,7 @@ module.exports = function(board,page,post,results){
     if(results[0] == undefined) pagination = '';            // if no post, no pagination
 
     return `
-    <main>
+    <div>
         ${ad_1}
         <section class="board">
             <h2 class="flex_between">
@@ -111,6 +111,6 @@ module.exports = function(board,page,post,results){
             </div>
         </section>
         ${ad_1}
-    </main>
+    </div>
     `;
 }
