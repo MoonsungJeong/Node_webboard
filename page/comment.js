@@ -1,17 +1,21 @@
 const time = require('../lib/time.js');
 const convert = require('../lib/convert.js');
 
-module.exports = function(req,res,data){
+module.exports = function(req,res,data,page){
+    let postId = data[0].pcode;
     let list ='';
-    let b_list = '';
-    let c_list = '';
-    let count = 0;
-    let authColor = ""; 
+    let storage = [];
+    let b_list = '';    // parent comment list
+    let c_list = '';    // child comment list
+    let count = 0;      // comment count
+    let pCount = 0;     // parent comment count
+    let authColor = "";
+    
     data.forEach(function(item,index){
         if(item.mcode == item.p_mcode) authColor = "font_green";
         if(item.mcode != item.p_mcode) authColor = "";
         
-        if(item.cclass == 1){
+        if(item.cclass == 1){           // child comment  c_list
             if(item.cdlt == 1){             // deleted?
                 c_list = `
                 <div class="cbox">
@@ -42,8 +46,8 @@ module.exports = function(req,res,data){
                 return;
             }
         }
-        if(item.cclass == 0){
-            if(item.cdlt == 1){
+        if(item.cclass == 0){           // parent comment b_list
+            if(item.cdlt == 1){             // // deleted?
                 b_list = `
                 <div class="comment">
                     <div class="comment_content ${authColor}">
@@ -97,9 +101,53 @@ module.exports = function(req,res,data){
                 c_list = "";
                 count = 0;
             }
+            pCount++;
         }
-        list = b_list + list;
+        storage.unshift(b_list);
     });
-    list = `<span class="font_skyblue">comment ${data.length}</span><br>` + list;
+    /// pCount = n; 
+    let perPage = 10; //total parent comment count
+    let totalPage = Math.ceil(pCount/perPage);
+    let start;
+    if(page == "") {start = (totalPage-1)*perPage; page=totalPage;}
+    if(page != "") {start = (page-1)*perPage;}
+    let end = start + perPage;
+    // ---------------------list--------------------------
+    list += `<span class="font_skyblue">comment [${data.length}]</span><br>`;
+    for(;start<end; start++){
+        if(storage[start] == undefined) break;
+        list += storage[start];
+    }
+    // ----------------------pagination--------------------------
+    /// totalPage = n;
+    /// page = n;
+    let pagination = '';
+    let pageMax = 5;
+    let i = 1 + (Math.ceil(page/pageMax) - 1)*5;
+    let j = i+4;
+    // onsubmit="return _COMMENT_CHECK(this)";
+    if(page != 1) pagination += `<a href="/board/comment/${postId}/1" onclick="return _COMMENT_PAGE_CHANGE(${postId},1)";><i class="fas fa-angle-double-left"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-double-left"></i></a> `;
+    if((Math.ceil(page/pageMax)-1) != 0) pagination += `<a href="/board/comment/${postId}/${i-1}" onclick="return _COMMENT_PAGE_CHANGE(${postId},${i-1})";><i class="fas fa-angle-left"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-left"></i></a> `;
+
+    for(; i<=j; i++){
+        if(i >totalPage) break;
+        if(i == page){
+            pagination += `<a class="font_orange" href="/board/comment/${postId}/${i}" onclick="return _COMMENT_PAGE_CHANGE(${postId},${i})";>${i}</a> `; 
+            continue;
+        }
+        pagination += `<a href="/board/comment/${postId}/${i}" onclick="return _COMMENT_PAGE_CHANGE(${postId},${i})";>${i}</a> `;
+    }
+
+    if(Math.ceil(page/pageMax)-1 != Math.ceil(totalPage/pageMax)-1) pagination += `<a href="/board/comment/${postId}/${i}" onclick="return _COMMENT_PAGE_CHANGE(${postId},${i})";><i class="fas fa-angle-right"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-right"></i></a> `;
+    if(page != totalPage) pagination += `<a href="/board/comment/${postId}/${totalPage}" onclick="return _COMMENT_PAGE_CHANGE(${postId},${totalPage})";><i class="fas fa-angle-double-right"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-double-right"></i></a> `;
+    
+    if(storage[0] == undefined) pagination = '';
+    pagination = `<div class="center">${pagination}</div>`;
+    list += pagination;
+
     return list;
 }

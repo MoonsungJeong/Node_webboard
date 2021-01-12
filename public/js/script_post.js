@@ -82,8 +82,9 @@ function _AJAX_DELETE_COMMENT_SEND(comId){
                 alert("Not your Comment!");
                 return;
             }
-            document.getElementById("comment_area").innerHTML = oReq.responseText;
-            //form.content.value="";
+            var box = document.getElementById("comment_area");
+            box.innerHTML = oReq.responseText;
+            window.scrollTo({top: box.offsetTop-10, behavior: 'smooth'});
         }
     }
 }
@@ -115,8 +116,23 @@ function _COMMENT_CHECK(form){
                 alert("Login First!");
                 return;
             }
-            document.getElementById("comment_area").innerHTML = oReq.responseText;
+            var box = document.getElementById("comment_area");
+            box.innerHTML = oReq.responseText;
+            window.scrollTo({top: box.offsetTop-10, behavior: 'smooth'});
             form.content.value="";
+        }
+    }
+    return false;
+}
+function _COMMENT_PAGE_CHANGE(postId,page){
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET",`http://192.168.1.223:3000/board/comment/${postId}/${page}`,true);  // Ajax connect
+    oReq.send();
+    oReq.onreadystatechange = function(){           // Ajax result from Server
+        if(oReq.readyState === 4 && oReq.status === 200){
+            var box = document.getElementById("comment_area");
+            box.innerHTML = oReq.responseText;
+            window.scrollTo({top: box.offsetTop-10, behavior: 'smooth'});
         }
     }
     return false;

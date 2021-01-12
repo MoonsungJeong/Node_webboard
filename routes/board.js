@@ -59,6 +59,13 @@ router.get("/info/:pageId",function(req,res){
         res.end(html);
     });
 })
+router.get("/comment/:postId/:pageId", function(req,res){
+    sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+    db.query(sql, function (error,results,fields){
+        if (error)throw error;
+        res.send(page_comment(req,res,results,req.params.pageId));
+     })
+})
 router.get("/:boardId/:pageId/:postId",function(req,res){
     page = req.params.pageId;
     sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;         // post query
@@ -67,7 +74,7 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
         sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
         db.query(sql_2, function (error,results_2,fields){
             if (error)throw error;
-            main = page_read(results[0], page_comment(req,res,results_2), auth.statusReadBtn(req,res,results[0]), auth.statusComment(req,res,results[0]));  // read post
+            main = page_read(results[0], page_comment(req,res,results_2,""), auth.statusReadBtn(req,res,results[0]), auth.statusComment(req,res,results[0]));  // read post
             if(req.params.boardId === 'total')sql = "SELECT * FROM `board` ORDER BY `pcode` DESC;";
             if(req.params.boardId === 'free')sql = "SELECT * FROM `board` WHERE `bcode` = 1 ORDER BY `pcode` DESC;";
             if(req.params.boardId === 'info')sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";    
@@ -96,7 +103,7 @@ router.post("/comment/new",function(req,res){
             sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
-                res.send(page_comment(req,res,results));
+                res.send(page_comment(req,res,results,""));
             })
         })
     })
@@ -118,7 +125,7 @@ router.post("/comment/:ccodeId",function(req,res){
             sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
-                res.send(page_comment(req,res,results));
+                res.send(page_comment(req,res,results,""));
             })
         })         
     })
@@ -143,7 +150,7 @@ router.delete("/comment/:ccodeId",function(req,res){
             sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
-                res.send(page_comment(req,res,results));
+                res.send(page_comment(req,res,results,""));
             }) 
         })
     })
