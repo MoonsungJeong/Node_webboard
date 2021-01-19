@@ -68,13 +68,14 @@ router.get("/comment/:postId/:pageId", function(req,res){
 })
 router.get("/:boardId/:pageId/:postId",function(req,res){
     page = req.params.pageId;
-    sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;         // post query
+    sql = "UPDATE `board` SET `bcount` = `bcount` + 1 WHERE `pcode` = "+`'${req.params.postId}';`+
+            "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}';`;         // post query
     db.query(sql, function (error, results, fields) {      
         if (error)throw error;
         sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
         db.query(sql_2, function (error,results_2,fields){
             if (error)throw error;
-            main = page_read(results[0], page_comment(req,res,results_2,""), auth.statusReadBtn(req,res,results[0]), auth.statusComment(req,res,results[0]));  // read post
+            main = page_read(results[1][0], page_comment(req,res,results_2,""), auth.statusReadBtn(req,res,results[1][0]), auth.statusComment(req,res,results[1][0]));  // read post
             if(req.params.boardId === 'total')sql = "SELECT * FROM `board` ORDER BY `pcode` DESC;";
             if(req.params.boardId === 'free')sql = "SELECT * FROM `board` WHERE `bcode` = 1 ORDER BY `pcode` DESC;";
             if(req.params.boardId === 'info')sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";    

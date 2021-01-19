@@ -2,19 +2,18 @@ const time = require('../lib/time.js');
 const convert = require('../lib/convert.js');
 
 module.exports = function(req,res,data,page){
-    let postId = data[0].pcode;
     let list ='';
+    if(data[0] == undefined){ return list += `<span class="font_skyblue">comment [0]</span><br>`;};
+    let postId = data[0].pcode;
     let storage = [];
     let b_list = '';    // parent comment list
     let c_list = '';    // child comment list
     let count = 0;      // comment count
     let pCount = 0;     // parent comment count
     let authColor = "";
-    
     data.forEach(function(item,index){
         if(item.mcode == item.p_mcode) authColor = "font_green";
-        if(item.mcode != item.p_mcode) authColor = "";
-        
+        if(item.mcode != item.p_mcode) authColor = "";    
         if(item.cclass == 1){           // child comment  c_list
             if(item.cdlt == 1){             // deleted?
                 c_list = `
@@ -125,7 +124,7 @@ module.exports = function(req,res,data,page){
     let pageMax = 5;
     let i = 1 + (Math.ceil(page/pageMax) - 1)*5;
     let j = i+4;
-    // onsubmit="return _COMMENT_CHECK(this)";
+
     if(page != 1) pagination += `<a href="/board/comment/${postId}/1" onclick="return _COMMENT_PAGE_CHANGE(${postId},1)";><i class="fas fa-angle-double-left"></i></a> `;
     else pagination += `<a class="font_gray"><i class="fas fa-angle-double-left"></i></a> `;
     if((Math.ceil(page/pageMax)-1) != 0) pagination += `<a href="/board/comment/${postId}/${i-1}" onclick="return _COMMENT_PAGE_CHANGE(${postId},${i-1})";><i class="fas fa-angle-left"></i></a> `;

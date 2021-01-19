@@ -21,7 +21,7 @@ module.exports = function(board,page,post,results){
                         <div class="font_gray f_size_1">
                             <span>${info.author} | </span>
                             <span>${time.formatDate(info.bdate)} | </span>
-                            <span>count ${info.bcount} | </span>
+                            <span>view ${info.bcount} | </span>
                             <span class="font_skyblue">likes ${info.blikes}</span>
                         </div>
                     </div>
@@ -38,7 +38,7 @@ module.exports = function(board,page,post,results){
                     <div class="font_gray f_size_1">
                         <span>${info.author} | </span>
                         <span>${time.formatDate(info.bdate)} | </span>
-                        <span>count ${info.bcount} | </span>
+                        <span>view ${info.bcount} | </span>
                         <span class="font_skyblue">likes ${info.blikes}</span>
                     </div>
                 </div>
