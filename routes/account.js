@@ -113,7 +113,6 @@ router.post("/lost/pw",function(req,res){
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0] != undefined){
-            console.log(results[0].email);
             mailer(results[0].email, 'Kangaroo password reset', '<p>Awsome! nodemailer do the trick!</p>');
             res.send(`<div class="padding_1">Sent reset password page to<span class="f_size_c"> <br> your Email!</span></div>`);
         }else{
