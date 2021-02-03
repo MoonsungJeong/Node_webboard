@@ -3,14 +3,13 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const bodyParser = require("body-parser");
 
+const init = require("./init.js");
+
 const indexRouter = require("./routes/index.js");
 const accountRouter = require("./routes/account.js");
 const boardRouter = require("./routes/board.js");
 
 const app = express();
-
-const hostname = "192.168.1.223";
-const port = 3000;
 
 app.use(express.static("public"));
 app.use(bodyParser.json())
@@ -28,6 +27,6 @@ app.use("/", indexRouter);
 app.use("/account", accountRouter);
 app.use("/board",boardRouter);
 
-app.listen(port,hostname, function(){
+app.listen(init.connect.port, init.connect.hostname, function(){
     console.log("Server running at 3000");
 })

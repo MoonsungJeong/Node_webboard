@@ -59,6 +59,12 @@ div{
 .padding{
     padding:0.5rem;
 }
+.padding_1{
+    padding:1rem;
+}
+.padding_2{
+    padding:2rem;
+}
 .padding_3{
     padding:3rem;
 }
@@ -129,6 +135,10 @@ div{
 .f_size_b{
     font-weight: bold;
     font-size:small;
+}
+.f_size_c{
+    font-weight: bold;
+    font-size:large;
 }
 .size_5{
     width:15rem;

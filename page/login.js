@@ -17,7 +17,7 @@ module.exports = function(){
                     <button type="submit">log-in</button>
                     <div>
                         <a href="/account/sign-up">sign-up</a>&nbsp|&nbsp
-                        <a href="/account/id-pw">lost ID/PW</a>
+                        <a href="/account/lost">lost ID/PW</a>
                     </div>
                 </form>
             </div>
