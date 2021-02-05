@@ -1,10 +1,11 @@
+// import const 'init' from script init.js
 function _UPDATE_POST(postId){
     _AJAX_UPDATE_SEND(postId);
     return false;
 }
 function _AJAX_UPDATE_SEND(postId){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST",`http://192.168.1.223:3000/board/review/${postId}`,true);  // Ajax connect
+    oReq.open("POST",`${init.hostname}/board/review/${postId}`,true);  // Ajax connect
     oReq.send();
     
     oReq.onreadystatechange = function(){                   // Ajax result from Server
@@ -13,7 +14,7 @@ function _AJAX_UPDATE_SEND(postId){
             if(oReq.responseText === "password"){
                 pw = prompt("Input Password!");
                 if(pw != null && pw != ''){
-                    oReq.open("POST",`http://192.168.1.223:3000/board/review/${postId}`,true);  // Ajax connect
+                    oReq.open("POST",`${init.hostname}/board/review/${postId}`,true);  // Ajax connect
                     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
                     oReq.send(JSON.stringify({                                  // Ajax send with JSON
                         'pw' : pw
@@ -21,7 +22,7 @@ function _AJAX_UPDATE_SEND(postId){
                 }  
             }
             if(oReq.responseText === "ok"){
-                location.href=`http://192.168.1.223:3000/board/review/${postId}`;
+                location.href=`${init.hostname}/board/review/${postId}`;
             }
             if(oReq.responseText === "no"){
                 alert("Not your post!");
@@ -38,7 +39,7 @@ function _DELETE_POST(postId){
 }
 function _AJAX_DELETE_SEND(postId){
     var oReq = new XMLHttpRequest();
-    oReq.open("DELETE",`http://192.168.1.223:3000/board/list/${postId}`,true);  // Ajax connect
+    oReq.open("DELETE",`${init.hostname}/board/list/${postId}`,true);  // Ajax connect
     oReq.send();
     //console.log(document.referrer);
     oReq.onreadystatechange = function(){                   // Ajax result from Server
@@ -47,7 +48,7 @@ function _AJAX_DELETE_SEND(postId){
             if(oReq.responseText === "password"){
                 pw = prompt("Input Password!");
                 if(pw != null && pw != ''){
-                    oReq.open("DELETE",`http://192.168.1.223:3000/board/list/${postId}`,true);  // Ajax connect
+                    oReq.open("DELETE",`${init.hostname}/board/list/${postId}`,true);  // Ajax connect
                     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
                     oReq.send(JSON.stringify({                                  // Ajax send with JSON
                         'pw' : pw
@@ -73,7 +74,7 @@ function _DELETE_COMMENT(comId){
 }
 function _AJAX_DELETE_COMMENT_SEND(comId){
     var oReq = new XMLHttpRequest();
-    oReq.open("DELETE",`http://192.168.1.223:3000/board/comment/${comId}`,true);  // Ajax connect
+    oReq.open("DELETE",`${init.hostname}/board/comment/${comId}`,true);  // Ajax connect
     oReq.send();
     
     oReq.onreadystatechange = function(){           // Ajax result from Server
@@ -94,7 +95,7 @@ function _COMMENT_CHECK(form){
     }
     var oReq = new XMLHttpRequest();
     if(form.class.value == '0'){      // first comment
-        oReq.open("POST","http://192.168.1.223:3000/board/comment/new");  // Ajax connect
+        oReq.open("POST",`${init.hostname}/board/comment/new`);  // Ajax connect
         oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
         oReq.send(JSON.stringify({                                  // Ajax send with JSON
             'post' : `${form.post.value}`,
@@ -102,7 +103,7 @@ function _COMMENT_CHECK(form){
             'content': `${form.content.value}`
         }));
     }else{
-        oReq.open("POST",`http://192.168.1.223:3000/board/comment/${form.ccode.value}`);  // Ajax connect
+        oReq.open("POST",`${init.hostname}/board/comment/${form.ccode.value}`);  // Ajax connect
         oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
         oReq.send(JSON.stringify({                                  // Ajax send with JSON
             'post' : `${form.post.value}`,
@@ -126,7 +127,7 @@ function _COMMENT_CHECK(form){
 }
 function _COMMENT_PAGE_CHANGE(postId,page){
     var oReq = new XMLHttpRequest();
-    oReq.open("GET",`http://192.168.1.223:3000/board/comment/${postId}/${page}`,true);  // Ajax connect
+    oReq.open("GET",`${init.hostname}/board/comment/${postId}/${page}`,true);  // Ajax connect
     oReq.send();
     oReq.onreadystatechange = function(){           // Ajax result from Server
         if(oReq.readyState === 4 && oReq.status === 200){

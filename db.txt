@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `members` (
 	`udate` datetime NOT NULL,
 	`uip` VARCHAR(15),
 	`birthdate` datetime,
+	`uauth` JSON,
 	PRIMARY KEY (`mcode`)
 );
 

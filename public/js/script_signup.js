@@ -1,8 +1,9 @@
+// import const 'init' from script init.js
 const form = document.getElementById("sign_form");
 const id_check = form.id;
 const nick_check = form.nickname;
 
-function _PRE_CHECK_SIGNUP(){
+function _PRE_CHECK_SIGNUP(e){
     const id = form.id.value;
     const password = form.password.value;
     const password_check = form.password_check.value;
@@ -69,7 +70,7 @@ function _PRE_CHECK_SIGNUP(){
 }
 function _AJAX_SIGNIN_SEND(form){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://192.168.1.223:3000/account/sign-up");  // Ajax connect
+    oReq.open("POST",`${init.hostname}/account/sign-up`);  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'id' : `${form.id.value}`,
@@ -96,7 +97,7 @@ nick_check.addEventListener("focusout",function(event){
 })
 function _AJAX_FORM_CHECK(value, column, node){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://192.168.1.223:3000/account/form-check/");  // Ajax connect
+    oReq.open("POST",`${init.hostname}/account/form-check/`);  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'value' : `${value}`,

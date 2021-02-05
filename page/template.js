@@ -14,8 +14,9 @@ module.exports = function(header,main,script){
             ${main}
             ${footer}
             ${screen}
-            ${script}
+            <script src='/js/script_init.js'></script>
             <script src='/js/script_parts.js'></script>
+            ${script}
         </body>
     </html>
     `;

@@ -1,3 +1,4 @@
+// import const 'init' from script init.js
 const form_1 = document.getElementById("lost_form_id");
 const form_2 = document.getElementById("lost_form_pw");
 
@@ -37,7 +38,7 @@ function _PRE_CHECK_LOST_PW(e){
 }
 function _AJAX_LOST_ID_SEND(NAME, EMAIL){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://192.168.1.223:3000/account/lost/id");  // Ajax connect
+    oReq.open("POST",`${init.hostname}/account/lost/id`);  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'name' : `${NAME}`,
@@ -58,7 +59,7 @@ function _AJAX_LOST_ID_SEND(NAME, EMAIL){
 }
 function _AJAX_LOST_PW_SEND(NAME, ID){
     var oReq = new XMLHttpRequest();
-    oReq.open("POST","http://192.168.1.223:3000/account/lost/pw");  // Ajax connect
+    oReq.open("POST",`${init.hostname}/account/lost/pw`);  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
         'name' : `${NAME}`,

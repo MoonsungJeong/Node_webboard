@@ -1,3 +1,4 @@
+// import const 'init' from script init.js
 const btn_side = document.querySelector(".btn_sidemenu");
 btn_side.addEventListener("click",function(){
     let frame = document.querySelector(".side_menu");
@@ -28,7 +29,7 @@ window.addEventListener("load",function(){
     let res = document.referrer.match(/review/g);
     if(res=='review'){
         var oReq = new XMLHttpRequest();
-        oReq.open("GET",`http://192.168.1.223:3000/board/cancel`,true);  // Ajax connect
+        oReq.open("GET",`${init.hostname}/board/cancel`,true);  // Ajax connect
         oReq.send();
     }
 })

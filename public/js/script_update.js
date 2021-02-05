@@ -1,3 +1,4 @@
+// import const 'init' from script init.js
 const form = document.getElementById("update_form");
 
 function _PRE_CHECK_UPDATE(e){
@@ -31,7 +32,7 @@ function _PRE_CHECK_UPDATE(e){
 }
 function _AJAX_UPDATE_SEND(form){
     var oReq = new XMLHttpRequest();
-    oReq.open("PUT",`http://192.168.1.223:3000/board/review/${form.code.value}`);  // Ajax connect
+    oReq.open("PUT",`${init.hostname}/board/review/${form.code.value}`);  // Ajax connect
     oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
     
     oReq.send(JSON.stringify({                                  // Ajax send with JSON
@@ -43,7 +44,7 @@ function _AJAX_UPDATE_SEND(form){
         if(oReq.readyState === 4 && oReq.status === 200){
             if(oReq.responseText === "true"){
                 alert("Update success!!");
-                location.href=`http://192.168.1.223:3000/board/total/1/${form.code.value}`;
+                location.href=`${init.hostname}/board/total/1/${form.code.value}`;
             }
         }
     }
@@ -52,7 +53,7 @@ function _AJAX_UPDATE_SEND(form){
 function _UPDATE_CANCEL_CHECK(e){
     if(confirm("Are you sure?")){
         var oReq = new XMLHttpRequest();
-        oReq.open("GET",`http://192.168.1.223:3000/board/cancel`,true);  // Ajax connect
+        oReq.open("GET",`${init.hostname}/board/cancel`,true);  // Ajax connect
         oReq.send();
         history.back();
         return false;

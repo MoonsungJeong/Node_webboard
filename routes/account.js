@@ -7,7 +7,6 @@ const database = require("../lib/mysql");
 const time = require("../lib/time");
 const mailer = require("../lib/mail.js");
 
-
 const parts_header = require('../parts/header.js');
 
 const page_login = require("../page/login.js");
@@ -108,6 +107,8 @@ router.post("/lost/id",function(req,res){
         }
     });
 })
+//  select data from test where json_extract(data, '$."dpt"') = 'cat';
+//  console.log(hash.generate(`${Math.random()}`));
 router.post("/lost/pw",function(req,res){
     sql = "SELECT * FROM `members` WHERE `uname` =" + ` '${req.body.name}'` + " AND `uid` =" + ` '${req.body.id}';`
     db.query(sql, function (error, results, fields) {

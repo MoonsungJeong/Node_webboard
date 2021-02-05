@@ -1,3 +1,4 @@
+// import const 'init' from script init.js
 const form = document.getElementById("write_form");
 
 function _PRE_CHECK_WRITE(e){
