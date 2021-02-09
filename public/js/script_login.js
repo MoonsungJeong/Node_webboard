@@ -1,4 +1,5 @@
 // import const 'init' from script init.js
+
 const form = document.getElementById("login_form");
 function _PRE_CHECK_LOGIN(e){
     const id = form.id.value;
@@ -17,7 +18,6 @@ function _PRE_CHECK_LOGIN(e){
     _AJAX_LOGIN_SEND(id,password);
     return false;
 }
-
 function _AJAX_LOGIN_SEND(ID, PW){
     var oReq = new XMLHttpRequest();
     oReq.open("POST",`${init.hostname}/account/login`);  // Ajax connect

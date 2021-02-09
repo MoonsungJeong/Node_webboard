@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const init = require("../init.js");
+
 const auth = require("../lib/auth");
 const hash = require("../lib/hash");
 const database = require("../lib/mysql");
@@ -107,18 +109,26 @@ router.post("/lost/id",function(req,res){
         }
     });
 })
-//  select data from test where json_extract(data, '$."dpt"') = 'cat';
-//  console.log(hash.generate(`${Math.random()}`));
 router.post("/lost/pw",function(req,res){
     sql = "SELECT * FROM `members` WHERE `uname` =" + ` '${req.body.name}'` + " AND `uid` =" + ` '${req.body.id}';`
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0] != undefined){
-            mailer(results[0].email, 'Kangaroo password reset', '<p>Awsome! nodemailer do the trick!</p>');
-            res.send(`<div class="padding_1">Sent reset password page to<span class="f_size_c"> <br> your Email!</span></div>`);
+            const key = hash.generate(`${Math.random()}`).replace('/','');
+            const ttl = time.currentTime();
+            sql = "UPDATE `members` SET `uauth` = " +`'{"key":"${key}", "ttl":"${ttl}"}'`+ "WHERE `mcode` = "+`'${results[0].mcode}';`;
+            db.query(sql, function(error, results_2, fields){
+                const link = init.connect.address+'/account/lost/'+key;
+                mailer(results[0].email, 'Kangaroo password reset', `<p>Hi! This is Admin of Kangaroo website!</p><br><p>This is your password reset link: <a href="${link}">${link}</a></p><br><p>This link last for 24hours</p>`);
+                res.send(`<div class="padding_1">Sent reset password page to<span class="f_size_c"> <br> your Email!</span></div>`);
+            })
         }else{
             res.send(false)
         }
     })
+})
+//  select * from members where json_extract(uauth, '$."key"') = '$2b$05$SMrIyu2HvIcwQ0mdG2AkguNzv3.S13QO2DcEjXOadrt9N1aWmSXG'
+router.get("/lost/:keyId",function(req,res){
+    res.end("hi key: "+req.params.keyId);
 })
 module.exports = router;
