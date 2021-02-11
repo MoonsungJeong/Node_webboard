@@ -43,6 +43,9 @@ div{
 .margin_left{
     margin-left: 0rem;
 }
+.margin_tb{
+    margin:7rem 0rem;
+}
 .margin_tb_3{
     margin:3rem 0;
 }
@@ -132,6 +135,9 @@ div{
 .f_size_1{
     font-size: small;
 }
+.f_size_a{
+    font-weight: bold;
+}
 .f_size_b{
     font-weight: bold;
     font-size:small;
@@ -157,6 +163,9 @@ div{
 }
 .h_size_50{
     height:60vh;
+}
+.h_size_65{
+    height:65vh;
 }
 .h_size_75{
     height:75vh;

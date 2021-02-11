@@ -26,6 +26,9 @@ app.use(session({
 app.use("/", indexRouter);
 app.use("/account", accountRouter);
 app.use("/board",boardRouter);
+app.get('*', (req, res) => {
+    res.redirect('/')
+})
 
 app.listen(init.connect.port, init.connect.hostname, function(){
     console.log("Server running at 3000");

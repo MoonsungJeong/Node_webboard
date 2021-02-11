@@ -14,6 +14,8 @@ const parts_header = require('../parts/header.js');
 const page_login = require("../page/login.js");
 const page_signup = require("../page/sign-up.js");
 const page_lost = require("../page/lost.js");
+const page_reset = require("../page/lost_reset.js");
+const page_wrong = require("../page/lost_wrong.js");
 const template = require("../page/template.js");
 
 const db = database();
@@ -127,8 +129,56 @@ router.post("/lost/pw",function(req,res){
         }
     })
 })
-//  select * from members where json_extract(uauth, '$."key"') = '$2b$05$SMrIyu2HvIcwQ0mdG2AkguNzv3.S13QO2DcEjXOadrt9N1aWmSXG'
 router.get("/lost/:keyId",function(req,res){
-    res.end("hi key: "+req.params.keyId);
+    sql = "SELECT * FROM `members` WHERE "+ `json_extract(uauth, '$."key"') = '${req.params.keyId}'`; // key check
+    db.query(sql, function (error, results, fields) {
+        if (error)throw error;
+        if(results[0] != undefined){
+            const ttl = JSON.parse(results[0].uauth)['ttl'];
+            if(time.timeDifference(ttl) <= 1){      // ttl check 
+                    header = parts_header(auth.statusUI(req,res));
+                    main = page_reset(results[0].uid,results[0].mcode,`${req.params.keyId}`);
+                    html = template(header,main,"<script src='/js/script_reset.js'></script>");
+                    res.writeHead(200);
+                    res.end(html);
+            }else{  // timeout
+                header = parts_header(auth.statusUI(req,res));
+                main = page_wrong("The link is expired");
+                html = template(header,main,"");
+                res.writeHead(200);
+                res.end(html);
+            }
+        }else{  // wrong link
+            header = parts_header(auth.statusUI(req,res));
+            main = page_wrong("This is wrong link");
+            html = template(header,main,"");
+            res.writeHead(200);
+            res.end(html);
+        }
+    })
+})
+router.post("/lost",function(req,res){
+    const hashedPW = hash.generate(req.body.password);
+    sql = "SELECT * FROM `members` WHERE `mcode` = "+`'${req.body.code}'`+" AND "+`json_extract(uauth, '$."key"') = '${req.body.key}'`;
+    db.query(sql, function (error, results, fields) {
+        if (error)throw error;
+        if(results[0] != undefined){
+            const ttl = JSON.parse(results[0].uauth)['ttl'];
+            if(time.timeDifference(ttl) <= 1){      // ttl check 
+                sql = "UPDATE `members` SET `upwd` = "+`'${hashedPW}',`+ " `uauth` = "+`NULL`+
+                    " WHERE `mcode` = "+`'${req.body.code}'`+" AND "+`json_extract(uauth, '$."key"') = '${req.body.key}'`;
+                db.query(sql,function(error,results_2,fields){
+                    if (error)throw error;
+                    req.session.destroy(function(err){
+                        res.send(true); 
+                    });
+                })
+            }else{  //timeout
+                res.send(false);
+            }
+        }else{  // wrong link
+            res.send(false);
+        }
+    })    
 })
 module.exports = router;

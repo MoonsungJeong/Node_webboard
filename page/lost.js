@@ -4,7 +4,7 @@ module.exports = function(){
         <section>
             <div class="flex_col">
                 <form class="space_5 margin_tb_3 padding_3" action="/account/lost/id" id="lost_form_id" method="post" onsubmit="return _PRE_CHECK_LOST_ID()">
-                    Find your ID
+                    Find your <span class="f_size_a">ID</span>
                     <table>
                         <tr>
                             <td>Name</td>
@@ -22,7 +22,7 @@ module.exports = function(){
         <section>
             <div class="flex_col">
                 <form class="space_5 margin_tb_3 padding_3" action="/account/lost/pw" id="lost_form_pw" method="post" onsubmit="return _PRE_CHECK_LOST_PW()">
-                    Find your Password
+                    Find your <span class="f_size_a">Password</span>
                     <table>
                         <tr>
                             <td>Name</td>

@@ -34,6 +34,9 @@ div{
 .margin_left{
     margin-left: 0rem;
 }
+.margin_tb{
+    margin:8rem 1rem;
+}
 .margin_tb_3{
     margin:3rem 0;
 }
@@ -109,6 +112,9 @@ div{
 }
 .h_size_50{
     height:60vh;
+}
+.h_size_65{
+    height:65vh;
 }
 .h_size_75{
     height:75vh;
