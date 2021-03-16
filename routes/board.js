@@ -7,6 +7,7 @@ const database = require("../lib/mysql");
 const time = require("../lib/time");
 
 const parts_header = require('../parts/header.js');
+const parts_screen = require('../parts/screen.js');
 
 const page_board = require("../page/board_template.js");
 const page_write = require("../page/write.js");
@@ -18,6 +19,7 @@ const template = require("../page/template.js");
 const db = database();
 let header;
 let main;
+let screen;
 let html;
 let sql;
 let sql_2;
@@ -30,7 +32,8 @@ router.get("/total/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_board("total",page,"",results);
-        html = template(header,main,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
     });
@@ -42,7 +45,8 @@ router.get("/free/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_board("free",page,"",results);
-        html = template(header,main,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
     });
@@ -54,7 +58,8 @@ router.get("/info/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_board("info",page,"",results);
-        html = template(header,main,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
     });
@@ -83,7 +88,8 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
                 if (error)throw error;    
                 header = parts_header(auth.statusUI(req,res));
                 main += page_board(req.params.boardId, page, req.params.postId, results);    // attach board bottom
-                html = template(header,main,"<script src='/js/script_post.js'></script>");
+                screen = parts_screen(auth.statusScreenBtn(req,res));
+                html = template(header,main,screen,"<script src='/js/script_post.js'></script>");
                 res.writeHead(200);
                 res.end(html);
             })
@@ -159,7 +165,8 @@ router.delete("/comment/:ccodeId",function(req,res){
 router.get("/new",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_write(auth.statusWrite(req,res));
-    html = template(header,main,"<script src='/js/script_write.js'></script>");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"<script src='/js/script_write.js'></script>");
     res.writeHead(200);
     res.end(html);
 })
@@ -229,7 +236,8 @@ router.get("/review/:postId",function(req,res){
         db.query(sql, function (error, results, fields){
             header = parts_header(auth.statusUI(req,res));
             main = page_update(results[0].pcode, results[0].btitle, results[0].bcontent, results[0].bcode);
-            html = template(header,main,"<script src='/js/script_update.js'></script>");
+            screen = parts_screen(auth.statusScreenBtn(req,res));
+            html = template(header,main,screen,"<script src='/js/script_update.js'></script>");
             res.writeHead(200);
             res.end(html);
         });

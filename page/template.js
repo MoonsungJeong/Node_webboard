@@ -1,9 +1,8 @@
 const head = require('../parts/head.js');
 const noscript = require('../parts/noscript.js');
 const footer = require('../parts/footer.js');
-const screen = require('../parts/screen.js');
 
-module.exports = function(header,main,script){
+module.exports = function(header,main,screen,script){
     return `
     <!DOCTYPE html>
     <html lang="en">

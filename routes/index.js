@@ -5,6 +5,7 @@ const auth = require("../lib/auth");
 const database = require("../lib/mysql");
 
 const parts_header = require('../parts/header.js');
+const parts_screen = require('../parts/screen.js');
 
 const page_main = require("../page/main.js");
 const template = require("../page/template.js");
@@ -12,6 +13,7 @@ const template = require("../page/template.js");
 const db = database();
 let header;
 let main;
+let screen;
 let html;
 let sql;
 
@@ -25,7 +27,8 @@ router.get("/", function(req,res){
             if (error)throw error;
             header = parts_header(auth.statusUI(req,res));
             main = page_main(res_1, res_2);
-            html = template(header,main,"");
+            screen = parts_screen(auth.statusScreenBtn(req,res));
+            html = template(header,main,screen,"");
             res.writeHead(200);
             res.end(html);
         });

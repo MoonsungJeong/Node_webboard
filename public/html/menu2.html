@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MS Webboard</title>
+
+        <!-- Basic site meta -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <!-- Social media meta -->
+        <meta property="title" content="NodeJS Webboard">
+        <meta property="description" content="The example of Moonsung Jeong, Web Developer">
+        <!-- css files -->
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/23c505e967.js" crossorigin="anonymous"></script> 
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                Moonsung Jeong, Web Developer.
+                This example is built with VanillaJS.
+            </strong>
+        </noscript>
+        <button class="btn_click">CLick</button>
+        <div class="menu3">
+            <div class="menuScreen3">
+            </div>
+            <div class="menuList3">
+                <ul class="list_box3 center">
+                    <br><br>
+                    <li><a href="/"><i class="far fa-address-card fa-2x"></i><br>Page</a></li><br>
+                    <li><a href="/"><i class="far fa-file-alt fa-2x"></i><br>Post</a></li><br>
+                    <li><a href="/"><i class="far fa-comment-dots fa-2x"></i><br>Comm</a></li><br>
+                    <li><a href="/"><i class="far fa-envelope fa-2x"></i><br>Msg</a></li><br>
+                    <li><a href="/"><i class="far fa-user-circle fa-2x"></i><br>Info</a></li><br>
+                    <li><a href="/"><i class="fas fa-unlock-alt fa-2x"></i><br>PW</a></li><br>
+                    <li><a href="/"><i class="fas fa-user fa-2x"></i><br>Logout</a></li><br>
+                </ul>
+            </div>
+        </div>
+        <script>
+            var el = document.querySelector(".btn_click");
+            el.addEventListener("click",function(){
+                menupop();
+            });
+            function menupop(){
+                var menu = document.querySelector(".list_box3");
+                var screen = document.querySelector(".menuScreen3");
+                menu.style.display = "block";
+                if(!menu.classList.contains("animate-left-3")){
+                    menu.classList.remove("animate-right-3");
+                    menu.classList.add("animate-left-3");
+                    screen.style.display = "block";
+                    return;
+                }else{
+                    menu.classList.remove("animate-left-3");
+                    menu.classList.add("animate-right-3"); 
+                    screen.style.display = "none";
+                    return;
+                }
+            }
+        </script>
+    </body>
+</html>

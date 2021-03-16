@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MS Webboard</title>
+
+        <!-- Basic site meta -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <!-- Social media meta -->
+        <meta property="title" content="NodeJS Webboard">
+        <meta property="description" content="The example of Moonsung Jeong, Web Developer">
+        <!-- css files -->
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/23c505e967.js" crossorigin="anonymous"></script> 
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                Moonsung Jeong, Web Developer.
+                This example is built with VanillaJS.
+            </strong>
+        </noscript>
+        <button class="btn_click">CLick</button>
+        <div class="menu2">
+            <div class="menuScreen">
+            </div>
+            <div class="menuList">
+                <ul class="list_box">
+                    <li class="">Total Board</li>
+                    <li class="">Free Board</li>
+                    <li class="">Info Board</li>
+                </ul>
+            </div>
+        </div>
+        <script>
+            var el = document.querySelector(".btn_click");
+            el.addEventListener("click",function(){
+                menupop();
+            });
+            function menupop(){
+                var menu = document.querySelector(".menuList");
+                var screen = document.querySelector(".menuScreen");
+                menu.style.display = "block";
+                if(!menu.classList.contains("animate-right-2")){
+                    menu.classList.remove("animate-left-2");
+                    menu.classList.add("animate-right-2");
+                    screen.style.display = "block";
+                    return;
+                }else{
+                    menu.classList.remove("animate-right-2");
+                    menu.classList.add("animate-left-2"); 
+                    screen.style.display = "none";
+                    return;
+                }
+            }
+        </script>
+    </body>
+</html>

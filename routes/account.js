@@ -10,6 +10,7 @@ const time = require("../lib/time");
 const mailer = require("../lib/mail.js");
 
 const parts_header = require('../parts/header.js');
+const parts_screen = require('../parts/screen.js');
 
 const page_login = require("../page/login.js");
 const page_signup = require("../page/sign-up.js");
@@ -21,13 +22,15 @@ const template = require("../page/template.js");
 const db = database();
 let header;
 let main;
+let screen;
 let html;
 let sql;
 
 router.get("/login",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_login();
-    html = template(header,main,"<script src='/js/script_login.js'></script>");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"<script src='/js/script_login.js'></script>");
     res.writeHead(200);
     res.end(html);
 });
@@ -39,7 +42,8 @@ router.get("/logout",function(req,res){
 router.get("/sign-up",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_signup();
-    html = template(header,main,"<script src='/js/script_signup.js'></script>");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"<script src='/js/script_signup.js'></script>");
     res.writeHead(200);
     res.end(html);
 });
@@ -96,7 +100,8 @@ router.post("/form-check",function(req,res){
 router.get("/lost",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_lost();
-    html = template(header,main,"<script src='/js/script_lost.js'></script>");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"<script src='/js/script_lost.js'></script>");
     res.writeHead(200);
     res.end(html);
 })
@@ -138,20 +143,23 @@ router.get("/lost/:keyId",function(req,res){
             if(time.timeDifference(ttl) <= 1){      // ttl check 
                     header = parts_header(auth.statusUI(req,res));
                     main = page_reset(results[0].uid,results[0].mcode,`${req.params.keyId}`);
-                    html = template(header,main,"<script src='/js/script_reset.js'></script>");
+                    screen = parts_screen(auth.statusScreenBtn(req,res));
+                    html = template(header,main,screen,"<script src='/js/script_reset.js'></script>");
                     res.writeHead(200);
                     res.end(html);
             }else{  // timeout
                 header = parts_header(auth.statusUI(req,res));
                 main = page_wrong("The link is expired");
-                html = template(header,main,"");
+                screen = parts_screen(auth.statusScreenBtn(req,res));
+                html = template(header,main,screen,"");
                 res.writeHead(200);
                 res.end(html);
             }
         }else{  // wrong link
             header = parts_header(auth.statusUI(req,res));
             main = page_wrong("This is wrong link");
-            html = template(header,main,"");
+            screen = parts_screen(auth.statusScreenBtn(req,res));
+            html = template(header,main,screen,"");
             res.writeHead(200);
             res.end(html);
         }
