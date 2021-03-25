@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MS Webboard</title>
+
+        <!-- Basic site meta -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <!-- Social media meta -->
+        <meta property="title" content="NodeJS Webboard">
+        <meta property="description" content="The example of Moonsung Jeong, Web Developer">
+        <!-- css files -->
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/23c505e967.js" crossorigin="anonymous"></script> 
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                Moonsung Jeong, Web Developer.
+                This example is built with VanillaJS.
+            </strong>
+        </noscript>
+        <header>
+            <div class="flex_between space_3 font_white">
+                <div><i class="fas fa-bars fa-2x"></i></div>
+                <h1><a href="/" class="font_white">Kangaroo</a></h1>
+                <div class="none">
+                    <ul class="flex">
+                        <li>sign up</li>
+                        <li>log in</li>
+                        <li>searchbar</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="flex_around">
+                        <li class="margin_right"><a><i class="fas fa-search fa-2x"></i></a></li>
+                        <li><a><i class="far fa-user fa-2x"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <nav>
+                <ul class="flex_around line_top space_4 font_white padding">
+                    <li>Total</li>
+                    <li>Free</li>
+                    <li>Info</li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section>
+                <div class="center">
+                    <img class="ad_1" src="kangaroo.png">
+                </div>
+            </section>
+            <section>
+                <div>
+                    <div>
+                        <span class="f_size_2"><a>MyPage</a></span>
+                    </div>
+                    <div>
+                        <div>
+                            <ul class="flex">
+                                <li class="line_mypage padding_side pointer">post</li>
+                                <li class="line_mypage padding_side pointer">comment</li>
+                                <li class="line_mypage padding_side pointer">message</li>
+                                <li class="line_mypage padding_side pointer">info</li>
+                                <li class="line_mypage padding_side pointer">pw</li>
+                                <li class="line_mypage line_selected padding_side pointer">dlt</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="flex_col h_size_57">
+                    <form class=" padding_3" action="" id="" method="post" onsubmit="//return _PRE_CHECK_SIGNUP();">
+                        <table>
+                            <tr>
+                                <td>PW</td>
+                                <td><input type="password" name="pw"><span><span></td>
+                            </tr>
+                            <tr>
+                                <td>PW-Re</td>
+                                <td><input type="password" name="pw-re"></td>
+                            </tr>
+                        </table>
+                        <button type="submit">delete</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="center line_top space_2">
+                <a href="/">© Kangaroo 2020</a>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -4,6 +4,14 @@ a{
 div{
     padding: 0.3rem;
 }
+.border{
+    border:1px solid red;
+}
+.flex{
+    display: flex;
+    justify-content:flex-start;   
+    align-items: center;
+}
 .flex_around{
     display: flex;
     justify-content:space-around;
@@ -43,9 +51,17 @@ div{
 .margin_top_5{
     margin-top:5rem;
 }
-
+.margin_bottom{
+    margin-bottom: 0.4rem;
+}
+.margin_side_1{
+    margin:0 1rem;
+}
 .padding{
     padding:0.5rem;
+}
+.padding_side{
+    padding:0.2rem 0.4rem;
 }
 .padding_3{
     padding:3rem;
@@ -56,6 +72,10 @@ div{
 }
 .post_header{
     border-bottom: 1px solid #bbbbbb;
+}
+.post_item{
+    border-top:0.5px solid #999999;
+    border-bottom:0.5px solid #999999;
 }
 .board{
     margin:1rem;
@@ -82,14 +102,24 @@ div{
 .space_6{
     border:1px solid #0099ff;
 }
+.space_7{
+    background-color: #eeeeee;
+    opacity: 1;
+}
 .font_white{
     color:#ffffff;
 }
 .font_gray{
     color: #666666;
 }
+.font_skyblue{
+    color: #4ba1db;
+}
 .f_size_1{
     font-size: small;
+}
+.f_size_2{
+    font-weight: bold;
 }
 .f_size_b{
     font-weight: bold;
@@ -109,6 +139,12 @@ div{
 }
 .size_90{
     width: 90%;
+}
+.size_100{
+    width:100%;
+}
+.h_size_57{
+    height:57vh;
 }
 .h_size_50{
     height:60vh;
@@ -131,8 +167,27 @@ div{
 .min_height{
     min-height: 80vh;
 }
+.li_test{
+    list-style-type: circle;
+}
+.line_mypage{
+    position: relative;
+    top:6px;
+    border: 1px solid #999999;
+    background: #f9f9f9;
+}
+.line_selected{
+    border-bottom:1px solid #ffffff;
+    background: #ffffff;
+}
+.line{
+    border:1px solid #999999;
+}
 .line-bottom{
     border-bottom: 1px solid #999999;
+}
+.line-bottom-dot{
+    border-bottom: 1px dotted #999999;
 }
 .line_top{
     border-top:1px solid #999999;
@@ -273,4 +328,7 @@ div{
     border:1px solid #cccccc;
     width: 99%;
     height: 5rem;
+}
+.pointer{
+    cursor: pointer;
 }
