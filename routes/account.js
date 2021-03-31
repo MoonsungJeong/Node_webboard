@@ -12,6 +12,15 @@ const mailer = require("../lib/mail.js");
 const parts_header = require('../parts/header.js');
 const parts_screen = require('../parts/screen.js');
 
+const info_page = require("../page/info_page.js");
+const info_post = require("../page/info_post.js");
+const info_comment = require("../page/info_comment.js");
+const info_message = require("../page/info_message.js");
+const info_info = require("../page/info_info.js");
+const info_pw = require("../page/info_pw.js");
+const info_dlt = require("../page/info_dlt.js");
+const page_info = require("../page/info_template.js");
+
 const page_login = require("../page/login.js");
 const page_signup = require("../page/sign-up.js");
 const page_lost = require("../page/lost.js");
@@ -188,5 +197,73 @@ router.post("/lost",function(req,res){
             res.send(false);
         }
     })    
+})
+router.get("/info/:pageId",function(req,res){
+    let page = req.params.pageId;
+    if(!auth.isUser(req,res)){res.redirect('/');return;} 
+    if(page === "page"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    if(page === "post"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    if(page === "comment"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    if(page === "message"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    if(page === "info"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    if(page === "pw"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    if(page === "dlt"){
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info(page,"");
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+        return; 
+    }
+    res.redirect('/');
 })
 module.exports = router;
