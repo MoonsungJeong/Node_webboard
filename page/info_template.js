@@ -8,10 +8,10 @@ const info_info = require("../page/info_info.js");
 const info_pw = require("../page/info_pw.js");
 const info_dlt = require("../page/info_dlt.js");
 
-module.exports = function(page,data){
+module.exports = function(page,data,data_2,data_3,data_4,user_info){
     let section;
     let list = [];
-    if(page === "page")     {section = info_page(data);}
+    if(page === "page")     {section = info_page(data,data_2,data_3,data_4,user_info);}
     if(page === "post")     {section = info_post(data); list[0]="line_selected";}
     if(page === "comment")  {section = info_comment(data); list[1]="line_selected";}
     if(page === "message")  {section = info_message(data); list[2]="line_selected";}

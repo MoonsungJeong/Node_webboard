@@ -198,72 +198,83 @@ router.post("/lost",function(req,res){
         }
     })    
 })
-router.get("/info/:pageId",function(req,res){
-    let page = req.params.pageId;
-    if(!auth.isUser(req,res)){res.redirect('/');return;} 
-    if(page === "page"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    if(page === "post"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    if(page === "comment"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    if(page === "message"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    if(page === "info"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    if(page === "pw"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    if(page === "dlt"){
-        header = parts_header(auth.statusUI(req,res));
-        main = page_info(page,"");
-        screen = parts_screen(auth.statusScreenBtn(req,res));
-        html = template(header,main,screen,"");
-        res.writeHead(200);
-        res.end(html);
-        return; 
-    }
-    res.redirect('/');
+
+router.get("/info/page",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    sql = "SELECT `pcode`, `btitle` from `board` WHERE mcode = "+`${req.session.code}`+" ORDER BY `bdate` desc limit 3";
+        db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        sql = "SELECT `pcode`, `comment` from `comment` WHERE mcode = "+`${req.session.code}`+" and cdlt = 0 ORDER BY `cdate` desc limit 3";
+        db.query(sql, function (error, results_2, fields) {
+            if(error)throw error;
+            sql = "SELECT `p`.`pcode`, `c`.`comment` from `board` AS p INNER JOIN `comment` AS c ON p.pcode = c.pcode WHERE p.mcode = "+`${req.session.code}`+ " and p.mcode != c.mcode and c.cclass = 0 and c.cdlt = 0 ORDER BY `cdate` desc limit 3";
+            db.query(sql, function (error, results_3, fields) {
+                if(error)throw error;
+                sql = "SELECT `c1`.`pcode`, `c2`.`comment` from `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.ccode = c2.groupnum WHERE c1.mcode = "+`${req.session.code}`+" and c1.mcode != c2.mcode and c1.cdlt = 0 ORDER BY c2.cdate desc limit 3";
+                db.query(sql, function (error, results_4, fields) {
+                    if(error)throw error;
+                    sql = "SELECT `unickname`,`udate` from `members` where mcode="+`${req.session.code}`;
+                    db.query(sql, function (error, results_5, fields) {
+                        if(error)throw error;
+                        header = parts_header(auth.statusUI(req,res));
+                        main = page_info("page",results,results_2,results_3,results_4,results_5);
+                        screen = parts_screen(auth.statusScreenBtn(req,res));
+                        html = template(header,main,screen,"");
+                        res.writeHead(200);
+                        res.end(html);
+                    });
+                });
+            });
+        });
+    });
 })
+router.get("/info/post",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_info("post","");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"");
+    res.writeHead(200);
+    res.end(html);
+})
+router.get("/info/comment",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_info("comment","");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"");
+    res.writeHead(200);
+    res.end(html);
+})
+router.get("/info/message",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_info("message","");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"");
+    res.writeHead(200);
+    res.end(html);
+})
+router.get("/info/info",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_info("info","");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"");
+    res.writeHead(200);
+    res.end(html);
+})
+router.get("/info/pw",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_info("pw","");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"");
+    res.writeHead(200);
+    res.end(html);
+})
+router.get("/info/dlt",function(req,res){
+    header = parts_header(auth.statusUI(req,res));
+    main = page_info("dlt","");
+    screen = parts_screen(auth.statusScreenBtn(req,res));
+    html = template(header,main,screen,"");
+    res.writeHead(200);
+    res.end(html);
+})
+
 module.exports = router;
