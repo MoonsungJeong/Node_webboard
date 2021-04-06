@@ -1,78 +1,72 @@
-module.exports = function(data){
+const time = require("../lib/time");
+
+module.exports = function(data, pageNum){
+    // ---------------------list--------------------------
+    let perPage = 10;
+    let start = (pageNum-1)*perPage;
+    let end = start+perPage;
+    let list = '';
+    
+    for(;start<end; start++){
+        if(data[start] === undefined)
+            break;
+        list += `
+        <li class="post_item">
+            <a href="/board/total/1/${data[start].pcode}">
+                <div>
+                    <div class="">${data[start].btitle}</div>
+                    <div class="font_gray f_size_1">
+                        <span>${time.formatDate(data[start].bdate)} | </span>
+                        <span>view ${data[start].bcount}</span>
+                    </div>
+                </div>
+            </a>
+        </li>
+        `
+    }
+    // ----------------------pagination-------------------------- 
+    let pagination = '';
+    let pageMax = 5;
+    let totalPage = Math.ceil(data.length/perPage);
+    let i = 1 + (Math.ceil(pageNum/pageMax) - 1)*5;
+    let j = i+4;
+    
+    if(pageNum != 1) pagination += `<a href="/account/info/post/1"><i class="fas fa-angle-double-left"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-double-left"></i></a> `;
+    if((Math.ceil(pageNum/pageMax)-1) != 0) pagination += `<a href="/account/info/post/${i-1}"><i class="fas fa-angle-left"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-left"></i></a> `;
+
+    for(; i <= j ; i++){
+        if(i > totalPage) break;
+        if(i == pageNum){
+            pagination += `<a class="font_orange" href="/account/info/post/${i}">${i}</a> `; 
+            continue;
+        }
+        pagination += `<a href="/account/info/post/${i}">${i}</a> `;
+    }
+    if(Math.ceil(pageNum/pageMax)-1 != Math.ceil(totalPage/pageMax)-1) pagination += `<a href="/account/info/post/${i}"><i class="fas fa-angle-right"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-right"></i></a> `;
+    if(pageNum != totalPage) pagination += `<a href="/account/info/post/${totalPage}"><i class="fas fa-angle-double-right"></i></a> `;
+    else pagination += `<a class="font_gray"><i class="fas fa-angle-double-right"></i></a> `;
+    
+    if(data[0] == undefined) pagination = '';            // if no post, no pagination
+
     return `
     <section>
         <div class="board">
             <h2>
-                <span class="font_gray">5 post (1/1 page)</span>
+                <span class="font_gray">${data.length} post (${pageNum}/${totalPage} page)</span>
             </h2>
         </div>
         <div>
             <ul class="post_top margin_side_1">
                 <li class="line-bottom"></li>
-                <li class="line-bottom">
-                    <a href="">
-                        <div>
-                            <div>title</div>
-                            <div class="font_gray f_size_1">
-                                <span>date | </span>
-                                <span>view N</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="line-bottom">
-                    <a href="">
-                        <div>
-                            <div>title</div>
-                            <div class="font_gray f_size_1">
-                                <span>date | </span>
-                                <span>view H</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="line-bottom">
-                    <a href="">
-                        <div>
-                            <div>title</div>
-                            <div class="font_gray f_size_1">
-                                <span>date | </span>
-                                <span>view H</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="line-bottom">
-                    <a href="">
-                        <div>
-                            <div>title</div>
-                            <div class="font_gray f_size_1">
-                                <span>date | </span>
-                                <span>view H</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="line-bottom">
-                    <a href="">
-                        <div>
-                            <div>title</div>
-                            <div class="font_gray f_size_1">
-                                <span>date | </span>
-                                <span>view H</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
+                ${list}
             </ul>
         </div>
         <div>
             <div class="center">
-                <a class="font_gray"><i class="fas fa-angle-double-left"></i></a> 
-                <a class="font_gray"><i class="fas fa-angle-left"></i></a>
-                <a>1</a>
-                <a class="font_gray"><i class="fas fa-angle-right"></i></a>
-                <a class="font_gray"><i class="fas fa-angle-double-right"></i></a>
+                ${pagination}
             </div>
         </div>
     </section>

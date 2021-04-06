@@ -12,13 +12,6 @@ const mailer = require("../lib/mail.js");
 const parts_header = require('../parts/header.js');
 const parts_screen = require('../parts/screen.js');
 
-const info_page = require("../page/info_page.js");
-const info_post = require("../page/info_post.js");
-const info_comment = require("../page/info_comment.js");
-const info_message = require("../page/info_message.js");
-const info_info = require("../page/info_info.js");
-const info_pw = require("../page/info_pw.js");
-const info_dlt = require("../page/info_dlt.js");
 const page_info = require("../page/info_template.js");
 
 const page_login = require("../page/login.js");
@@ -228,21 +221,31 @@ router.get("/info/page",function(req,res){
         });
     });
 })
-router.get("/info/post",function(req,res){
-    header = parts_header(auth.statusUI(req,res));
-    main = page_info("post","");
-    screen = parts_screen(auth.statusScreenBtn(req,res));
-    html = template(header,main,screen,"");
-    res.writeHead(200);
-    res.end(html);
+router.get("/info/post/:pageNum",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    sql = "SELECT `pcode`, `btitle`, `bdate`, `bcount` from `board` WHERE mcode = "+`${req.session.code}`+" ORDER BY `bdate` desc";
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info("post",results,req.params.pageNum);
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+    })
 })
-router.get("/info/comment",function(req,res){
-    header = parts_header(auth.statusUI(req,res));
-    main = page_info("comment","");
-    screen = parts_screen(auth.statusScreenBtn(req,res));
-    html = template(header,main,screen,"");
-    res.writeHead(200);
-    res.end(html);
+router.get("/info/comment/:pageNum",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    sql = "SELECT `pcode`, `comment`, `cdate` from `comment` WHERE mcode = "+`${req.session.code}`+" and cdlt = 0 ORDER BY `cdate` desc";
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info("comment",results,req.params.pageNum);
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"");
+        res.writeHead(200);
+        res.end(html);
+    })
 })
 router.get("/info/message",function(req,res){
     header = parts_header(auth.statusUI(req,res));

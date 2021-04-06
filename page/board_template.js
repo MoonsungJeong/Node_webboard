@@ -14,7 +14,7 @@ module.exports = function(board,page,post,results){
             break;
         if(info.pcode == post){
             list += `  
-            <li class="line-bottom space_7">
+            <li class="post_item space_7">
                 <a href="/board/${board}/${page}/${info.pcode}">
                     <div>
                         <div>${info.btitle}<!--<span>[3]</span>--></div>
@@ -31,7 +31,7 @@ module.exports = function(board,page,post,results){
             continue;
         }
         list += `  
-        <li class="line-bottom">
+        <li class="post_item">
             <a href="/board/${board}/${page}/${info.pcode}">
                 <div>
                     <div>${info.btitle}<!--<span>[3]</span>--></div>
