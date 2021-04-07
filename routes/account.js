@@ -191,7 +191,6 @@ router.post("/lost",function(req,res){
         }
     })    
 })
-
 router.get("/info/page",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     sql = "SELECT `pcode`, `btitle` from `board` WHERE mcode = "+`${req.session.code}`+" ORDER BY `bdate` desc limit 3";
@@ -256,20 +255,60 @@ router.get("/info/message",function(req,res){
     res.end(html);
 })
 router.get("/info/info",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    sql = "SELECT `mcode`, `uname`, `unickname`, `birthdate`, `email` from `members` WHERE mcode = "+`${req.session.code}`;
+    db.query(sql, function (error, results, fields) {
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info("info",results);
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"<script src='/js/script_info.js'></script>");
+        res.writeHead(200);
+        res.end(html);
+    })
+})
+router.post("/info/info",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    if(req.session.code != req.body.id){res.redirect('/');return;}
+    sql = "UPDATE `members` SET `uname` = "+`'${req.body.name}'`+", `unickname` = "+`'${req.body.nickname}'`+", `birthdate` = "+`'${req.body.birth}'`+", `email` = "+`'${req.body.email}'`+" WHERE `mcode` = "+`'${req.body.id}'`;
+    db.query(sql, function (error, results, fields) {
+        req.session.nickname=req.body.nickname;
+        req.session.save(function(){
+            res.send(true);
+        })
+    })
+})
+router.get("/info/pw",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
     header = parts_header(auth.statusUI(req,res));
-    main = page_info("info","");
+    main = page_info("pw",req.session.code);
     screen = parts_screen(auth.statusScreenBtn(req,res));
-    html = template(header,main,screen,"");
+    html = template(header,main,screen,"<script src='/js/script_info.js'></script>");
     res.writeHead(200);
     res.end(html);
 })
-router.get("/info/pw",function(req,res){
-    header = parts_header(auth.statusUI(req,res));
-    main = page_info("pw","");
-    screen = parts_screen(auth.statusScreenBtn(req,res));
-    html = template(header,main,screen,"");
-    res.writeHead(200);
-    res.end(html);
+router.post("/info/pw",function(req,res){
+    let hashedPW;
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    if(req.session.code != req.body.id){res.redirect('/');return;}
+    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `'${req.body.id}';`
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        if(results[0] !== undefined){
+            if(!hash.check(req.body.pw,results[0]['upwd'])){ // incorrect
+                res.send(false);
+                return;
+            }                                             // correct
+            hashedPW = hash.generate(req.body.new_pw);
+            sql = "UPDATE `members` SET `upwd` = "+`'${hashedPW}'`+" WHERE `mcode` = "+`'${req.body.id}'`;
+            db.query(sql, function (error, results, fields) {
+                if(error)throw error;
+                res.send(true);
+                return;   
+            })
+            return;
+        }
+        res.send(false);
+    })
 })
 router.get("/info/dlt",function(req,res){
     header = parts_header(auth.statusUI(req,res));

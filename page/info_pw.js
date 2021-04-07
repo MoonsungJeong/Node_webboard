@@ -2,7 +2,7 @@ module.exports = function(data){
     return `
     <section>
         <div class="flex_col h_size_57">
-            <form class=" padding_3" action="" id="" method="post" onsubmit="//return _PRE_CHECK_SIGNUP();">
+            <form class="padding_3" action="/account/info/pw" id="pw_form" method="post" onsubmit="return _PRE_CHECK_PW()">
                 <table>
                     <tr>
                         <td>PW</td>
@@ -10,13 +10,14 @@ module.exports = function(data){
                     </tr>
                     <tr>
                         <td>New PW</td>
-                        <td><input type="password" name="new-pw"><span><span></td>
+                        <td><input type="password" name="new_pw"><span><span></td>
                     </tr>
                     <tr>
                         <td>New PW-Re</td>
-                        <td><input type="password" name="new-pw-re"></td>
+                        <td><input type="password" name="new_pw_re"></td>
                     </tr>
                 </table>
+                <input type="hidden" name="id" value="${data}">
                 <button type="submit">change</button>
             </form>
         </div>
