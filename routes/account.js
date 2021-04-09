@@ -311,12 +311,40 @@ router.post("/info/pw",function(req,res){
     })
 })
 router.get("/info/dlt",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
     header = parts_header(auth.statusUI(req,res));
-    main = page_info("dlt","");
+    main = page_info("dlt",req.session.code);
     screen = parts_screen(auth.statusScreenBtn(req,res));
-    html = template(header,main,screen,"");
+    html = template(header,main,screen,"<script src='/js/script_info.js'></script>");
     res.writeHead(200);
     res.end(html);
 })
-
+router.post("/info/dlt",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    if(req.session.code != req.body.id){res.redirect('/');return;}
+    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `'${req.body.id}';`
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        if(results[0] !== undefined){
+            if(!hash.check(req.body.pw,results[0]['upwd'])){ // incorrect
+                res.send(false);
+                return;
+            }                                             // correct
+            sql = "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`'${req.body.id}';
+                   DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`'${req.body.id}';
+                   DELETE FROM `+"`comment` WHERE `mcode` = "+`'${req.body.id}';
+                   DELETE FROM `+"`board` WHERE `mcode` = "+`'${req.body.id}';
+                   DELETE FROM `+"`members` WHERE `mcode` = "+`'${req.body.id}';`
+                // DELETE FROM `message` WHERE `mcode` = ${req.body.id};
+            db.query(sql, function (error, results, fields) {
+                if(error)throw error;
+                req.session.destroy(function(err){
+                    res.send(true);
+                });
+            })
+            return;
+        }
+        res.send(false);
+    })
+})
 module.exports = router;
