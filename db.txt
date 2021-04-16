@@ -50,16 +50,12 @@ CREATE TABLE IF NOT EXISTS `comment` (
 
 CREATE TABLE IF NOT EXISTS `message` (
 	`ncode` INT(10) NOT NULL AUTO_INCREMENT,
-	`mcode` Numeric(5,0) NOT NULL,
-	`recv_id` VARCHAR(20) NOT NULL,
-	`sent_id` VARCHAR(20) NOT NULL,
-	`ntitle` VARCHAR(100) NOT NULL,
+	`recv_code` Numeric(5,0) NOT NULL,
+	`sent_code` Numeric(5,0) NOT NULL,
 	`ncontent` BLOB NOT NULL,
 	`ndate` datetime NOT NULL,
 	`recv_del` boolean NOT NULL,
-	`sent_del` boolean NOT NULL,
-	PRIMARY KEY (`ncode`),
-	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)
+	PRIMARY KEY (`ncode`)
 );
 
 
