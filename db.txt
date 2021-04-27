@@ -52,9 +52,9 @@ CREATE TABLE IF NOT EXISTS `message` (
 	`ncode` INT(10) NOT NULL AUTO_INCREMENT,
 	`recv_code` Numeric(5,0) NOT NULL,
 	`sent_code` Numeric(5,0) NOT NULL,
-	`ncontent` BLOB NOT NULL,
+	`ncontent` TEXT NOT NULL,
 	`ndate` datetime NOT NULL,
-	`recv_del` boolean NOT NULL,
+	`recv_del` boolean NOT NULL DEFAULT '0',
 	PRIMARY KEY (`ncode`)
 );
 

@@ -246,13 +246,50 @@ router.get("/info/comment/:pageNum",function(req,res){
         res.end(html);
     })
 })
-router.get("/info/message",function(req,res){
-    header = parts_header(auth.statusUI(req,res));
-    main = page_info("message","");
-    screen = parts_screen(auth.statusScreenBtn(req,res));
-    html = template(header,main,screen,"");
-    res.writeHead(200);
-    res.end(html);
+router.get("/info/message/:Status/:pageNum",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    if(req.params.Status  === "recv"){sql = "SELECT message.*, members.unickname from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `recv_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
+    if(req.params.Status  === "sent"){sql = "SELECT message.*, members.unickname from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `sent_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        header = parts_header(auth.statusUI(req,res));
+        main = page_info("message",results,req.params.Status,req.params.pageNum);
+        screen = parts_screen(auth.statusScreenBtn(req,res));
+        html = template(header,main,screen,"<script src='/js/script_message.js'></script>");
+        res.writeHead(200);
+        res.end(html);
+    })
+})
+router.post("/info/message",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    let date = time.currentTime();
+    sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.id}'`;
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        if(results[0] !== undefined){
+            sql = "INSERT INTO `message` (`recv_code`, `sent_code`, `ncontent`, `ndate`)"
+                         +` VALUES ('${results[0].mcode}','${req.session.code}','${req.body.content}', '${date}');`;
+            db.query(sql, function (error, results, fields) {
+                if(error)throw error;
+                res.send(true);
+            })
+            return;
+        }
+        res.send(false);
+    })
+})
+router.post("/info/message/delete",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    let i;
+    let item = req.body.delete_list;
+    sql="";
+    for(i=0; i< item.length; i++){
+        sql += ("UPDATE `message` SET `recv_del` = '1' WHERE `ncode` = "+`${item[i]};`);
+    } 
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        res.redirect(req.headers.referer);
+    })
 })
 router.get("/info/info",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}

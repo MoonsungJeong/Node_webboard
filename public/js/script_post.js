@@ -41,7 +41,6 @@ function _AJAX_DELETE_SEND(postId){
     var oReq = new XMLHttpRequest();
     oReq.open("DELETE",`${init.hostname}/board/list/${postId}`,true);  // Ajax connect
     oReq.send();
-    //console.log(document.referrer);
     oReq.onreadystatechange = function(){                   // Ajax result from Server
         let pw;
         if(oReq.readyState === 4 && oReq.status === 200){

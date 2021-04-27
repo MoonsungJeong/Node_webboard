@@ -14,7 +14,7 @@ module.exports = function(page,data,data_2,data_3,data_4,user_info){
     if(page === "page")     {section = info_page(data,data_2,data_3,data_4,user_info);}
     if(page === "post")     {section = info_post(data,data_2); list[0]="line_selected";}
     if(page === "comment")  {section = info_comment(data,data_2); list[1]="line_selected";}
-    if(page === "message")  {section = info_message(data); list[2]="line_selected";}
+    if(page === "message")  {section = info_message(data,data_2,data_3); list[2]="line_selected";}
     if(page === "info")     {section = info_info(data); list[3]="line_selected";}
     if(page === "pw")       {section = info_pw(data); list[4]="line_selected";}
     if(page === "dlt")      {section = info_dlt(data); list[5]="line_selected";}
@@ -30,7 +30,7 @@ module.exports = function(page,data,data_2,data_3,data_4,user_info){
                     <ul class="flex">
                         <li class="line_mypage ${list[0]} padding_side pointer"><a href="/account/info/post/1">post</a></li>
                         <li class="line_mypage ${list[1]} padding_side pointer"><a href="/account/info/comment/1">comment</a></li>
-                        <li class="line_mypage ${list[2]} padding_side pointer"><a href="/account/info/message">message</a></li>
+                        <li class="line_mypage ${list[2]} padding_side pointer"><a href="/account/info/message/recv/1">message</a></li>
                         <li class="line_mypage ${list[3]} padding_side pointer"><a href="/account/info/info">info</a></li>
                         <li class="line_mypage ${list[4]} padding_side pointer"><a href="/account/info/pw">pw</a></li>
                         <li class="line_mypage ${list[5]} padding_side pointer"><a href="/account/info/dlt">dlt</a></li>

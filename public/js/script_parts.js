@@ -56,7 +56,6 @@ if(document.querySelector(".btn_sidemenu_right") !== null){
         }
     })
 }
-
 window.addEventListener("load",function(){
     let res = document.referrer.match(/review/g);
     if(res=='review'){
