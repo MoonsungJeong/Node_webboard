@@ -250,7 +250,7 @@ router.get("/info/comment/:pageNum",function(req,res){
 router.get("/info/message/:Status/:pageNum",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     if(req.params.Status  === "recv"){sql = "SELECT message.*, members.unickname, members.mcode from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `recv_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
-    if(req.params.Status  === "sent"){sql = "SELECT message.*, members.unickname, members.mcode from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `sent_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
+    if(req.params.Status  === "sent"){sql = "SELECT message.*, members.unickname, members.mcode from  `message` LEFT JOIN `members` ON `recv_code` = `mcode` WHERE `sent_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         header = parts_header(auth.statusUI(req,res));
@@ -265,7 +265,7 @@ router.post("/info/message",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     let date = time.currentTime();
     if(req.body.hidden_id === ""){sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.id}'`;}
-    if(req.body.hidden_id !== ""){sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.hidden_id}'`;}
+    if(req.body.hidden_id !== ""){sql = "SELECT `mcode` from  `members` WHERE `mcode` = "+`'${codec.decode_num(req.body.hidden_id)}'`;}
     
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
@@ -297,10 +297,11 @@ router.delete("/info/message/delete",function(req,res){
 router.post("/info/message/user",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     let user_code = codec.decode_num(req.body.code);
-    sql = "SELECT `unickname`,`uid` from  `members` WHERE `mcode` = "+`'${user_code}'`;
+    sql = "SELECT `unickname` from  `members` WHERE `mcode` = "+`'${user_code}'`;
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
-        res.send({0:`${results[0].unickname}`, 1:`${results[0].uid}`});
+        if(results[0] === undefined || results[0].unickname ==='guest'){res.send({0:`Deleted User`, 1:``}); return;}
+        res.send({0:`${results[0].unickname}`, 1:`${codec.code_num(user_code)}`});
     })
 })
 router.get("/info/info",function(req,res){
@@ -383,8 +384,8 @@ router.post("/info/dlt",function(req,res){
                    DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`'${req.body.id}';
                    DELETE FROM `+"`comment` WHERE `mcode` = "+`'${req.body.id}';
                    DELETE FROM `+"`board` WHERE `mcode` = "+`'${req.body.id}';
-                   DELETE FROM `+"`members` WHERE `mcode` = "+`'${req.body.id}';`
-                // DELETE FROM `message` WHERE `mcode` = ${req.body.id};
+                   DELETE FROM `+"`members` WHERE `mcode` = "+`'${req.body.id}';
+                   DELETE FROM `+"`msg` using `message` AS msg LEFT JOIN `members` AS mem1 ON mem1.mcode = msg.recv_code LEFT JOIN `members` AS mem2 ON mem2.mcode = msg.sent_code WHERE mem1.mcode IS NULL and mem2.mcode IS NULL;"
             db.query(sql, function (error, results, fields) {
                 if(error)throw error;
                 req.session.destroy(function(err){

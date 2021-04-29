@@ -3,17 +3,18 @@ const codec = require("../lib/codec");
 const time = require("../lib/time");
 
 module.exports = function(data,Status,pageNum){
-    let select,button;
+    let select,button,person;
     if(Status === "recv"){select = "<option value='recv'selected>recv</option><option value='sent'>sent</option>"
-                          button = "<button id='msg_dlt_btn' type='submit'>Delete</button> <button id='msg_btn'>Message</button>"}
+                          button = "<button id='msg_dlt_btn' type='submit'>Delete</button> <button id='msg_btn'>Message</button>"
+                          person = "Sender"}
     if(Status === "sent"){select = "<option value='recv'>recv</option><option value='sent' selected>sent</option>"
-                          button = ""}
+                          button = ""
+                          person = "Receiver"}
     // ---------------------list--------------------------
     let perPage = 10;
     let start = (pageNum-1)*perPage;
     let end = start+perPage;
     let list = '';
-    
     for(;start<end; start++){
         if(data[start] === undefined)
             break;
@@ -70,7 +71,7 @@ module.exports = function(data,Status,pageNum){
                     <thead>
                         <tr class="line space_7">
                             <td class="padding_side">ⓥ</td>
-                            <td>Sender</td>
+                            <td>${person}</td>
                             <td>Content</td>
                             <td>Date</td>
                         </tr>
@@ -90,7 +91,6 @@ module.exports = function(data,Status,pageNum){
                 </div>
                 ${button}
             </form>
-            <button>test</button>
         </div>
         ${msg_box}
     </section>

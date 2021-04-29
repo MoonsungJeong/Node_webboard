@@ -60,10 +60,9 @@ function _MSG_USER_CODE(code){
     }));
     oReq.onreadystatechange = function(){                   // Ajax result from Server
         if(oReq.readyState === 4 && oReq.status === 200){
-            console.log(oReq.responseText);
             let res = JSON.parse(oReq.responseText);
             msg_box.style.display = "block";
-            msg_content.id.focus()
+            msg_content.content.focus()
             msg_content.id.value=res[0];
             msg_content.id.readOnly=true;
             msg_content.id.disabled=true;
