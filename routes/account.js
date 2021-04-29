@@ -7,6 +7,7 @@ const auth = require("../lib/auth");
 const hash = require("../lib/hash");
 const database = require("../lib/mysql");
 const time = require("../lib/time");
+const codec = require("../lib/codec");
 const mailer = require("../lib/mail.js");
 
 const parts_header = require('../parts/header.js');
@@ -248,8 +249,8 @@ router.get("/info/comment/:pageNum",function(req,res){
 })
 router.get("/info/message/:Status/:pageNum",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
-    if(req.params.Status  === "recv"){sql = "SELECT message.*, members.unickname from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `recv_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
-    if(req.params.Status  === "sent"){sql = "SELECT message.*, members.unickname from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `sent_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
+    if(req.params.Status  === "recv"){sql = "SELECT message.*, members.unickname, members.mcode from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `recv_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
+    if(req.params.Status  === "sent"){sql = "SELECT message.*, members.unickname, members.mcode from  `message` LEFT JOIN `members` ON `sent_code` = `mcode` WHERE `sent_code` = "+`'${req.session.code}'`+"and `recv_del` = '0' ORDER BY `ndate` DESC";}
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         header = parts_header(auth.statusUI(req,res));
@@ -263,7 +264,9 @@ router.get("/info/message/:Status/:pageNum",function(req,res){
 router.post("/info/message",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     let date = time.currentTime();
-    sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.id}'`;
+    if(req.body.hidden_id === ""){sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.id}'`;}
+    if(req.body.hidden_id !== ""){sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.hidden_id}'`;}
+    
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] !== undefined){
@@ -278,17 +281,26 @@ router.post("/info/message",function(req,res){
         res.send(false);
     })
 })
-router.post("/info/message/delete",function(req,res){
+router.delete("/info/message/delete",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     let i;
-    let item = req.body.delete_list;
+    let item = Object.values(req.body).map(x => Number(x));
     sql="";
     for(i=0; i< item.length; i++){
         sql += ("UPDATE `message` SET `recv_del` = '1' WHERE `ncode` = "+`${item[i]};`);
     } 
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
-        res.redirect(req.headers.referer);
+        res.send(true);
+    })
+})
+router.post("/info/message/user",function(req,res){
+    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    let user_code = codec.decode_num(req.body.code);
+    sql = "SELECT `unickname`,`uid` from  `members` WHERE `mcode` = "+`'${user_code}'`;
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        res.send({0:`${results[0].unickname}`, 1:`${results[0].uid}`});
     })
 })
 router.get("/info/info",function(req,res){

@@ -9,7 +9,8 @@ module.exports = msgbox =`
             ID
             <input class="size_90" type="text" name="id">
             <textarea class="h_size_10 size_90" name="content"></textarea>
-            <input id="msg_content_box" type="button" value="send">
+            <input type="hidden" name="hidden_id" value="">
+            <input id="msg_sent_btn" type="button" value="send">
         </form>
     </div>
 </div>
