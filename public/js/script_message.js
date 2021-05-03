@@ -60,6 +60,7 @@ function _MSG_USER_CODE(code){
     }));
     oReq.onreadystatechange = function(){                   // Ajax result from Server
         if(oReq.readyState === 4 && oReq.status === 200){
+            if(oReq.responseText === "false"){ alert("login first!"); return;}
             let res = JSON.parse(oReq.responseText);
             msg_box.style.display = "block";
             msg_content.content.focus()
@@ -67,6 +68,7 @@ function _MSG_USER_CODE(code){
             msg_content.id.readOnly=true;
             msg_content.id.disabled=true;
             msg_content.hidden_id.value=res[1];
+            
         }
     }
 }

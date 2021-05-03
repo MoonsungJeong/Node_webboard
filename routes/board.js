@@ -89,7 +89,8 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
                 header = parts_header(auth.statusUI(req,res));
                 main += page_board(req.params.boardId, page, req.params.postId, results);    // attach board bottom
                 screen = parts_screen(auth.statusScreenBtn(req,res));
-                html = template(header,main,screen,"<script src='/js/script_post.js'></script>");
+                html = template(header,main,screen,
+                    "<script src='/js/script_post.js'></script><script src='/js/script_message.js'></script><script src='/js/script_userinfo.js'></script>");
                 res.writeHead(200);
                 res.end(html);
             })

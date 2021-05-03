@@ -295,7 +295,7 @@ router.delete("/info/message/delete",function(req,res){
     })
 })
 router.post("/info/message/user",function(req,res){
-    if(!auth.isUser(req,res)){res.redirect('/');return;}
+    if(!auth.isUser(req,res)){res.send(false);return;}
     let user_code = codec.decode_num(req.body.code);
     sql = "SELECT `unickname` from  `members` WHERE `mcode` = "+`'${user_code}'`;
     db.query(sql, function (error, results, fields) {
@@ -395,6 +395,19 @@ router.post("/info/dlt",function(req,res){
             return;
         }
         res.send(false);
+    })
+})    
+router.post("/user/info",function(req,res){
+    let user_code = codec.decode_num(req.body.code);
+    sql = "SELECT `mcode` AS `code`, `unickname` AS `nick`, `udate` AS `date` FROM `members` WHERE `mcode` = "+`'${user_code}';`+
+          "SELECT `pcode` AS `code`, `btitle` AS `title` FROM `board` WHERE `mcode` = "+`'${user_code}'`+" ORDER BY `bdate` desc limit 3;"+
+          "SELECT `pcode` AS `code`, `comment` FROM `comment` WHERE `mcode` = "+`'${user_code}'`+" ORDER BY `cdate` desc limit 3;";
+    db.query(sql, function (error, results, fields) {
+        if(error)throw error;
+        results[0][0].code = codec.code_num(results[0][0].code);
+        results[0][0].date = time.formatDate_3(results[0][0].date);
+        const data = JSON.stringify(results);
+        res.send(data); 
     })
 })
 module.exports = router;

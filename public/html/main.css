@@ -36,6 +36,9 @@ div{
 .margin{
     margin:auto;
 }
+.margin_right_s{
+    margin-right:0.3rem;
+}
 .margin_right{
     margin-right:1rem;
 }
@@ -198,9 +201,6 @@ div{
 .none{
     display:none;
 }
-.test{
-    border:1px solid red;
-}
 .menu{
     padding:0;
     position: fixed;
@@ -334,4 +334,10 @@ div{
 }
 .pointer{
     cursor: pointer;
+}
+.user_info{
+    display:flex;
+}
+.user_info :last-child{
+    margin-left:auto;
 }

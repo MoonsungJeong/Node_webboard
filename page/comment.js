@@ -1,5 +1,6 @@
 const time = require('../lib/time.js');
 const convert = require('../lib/convert.js');
+const codec = require("../lib/codec");
 
 module.exports = function(req,res,data,page){
     let list ='';
@@ -29,7 +30,7 @@ module.exports = function(req,res,data,page){
                 c_list = `
                 <div class="cbox">
                     <div class="comment_info">
-                        <span class="f_size_b">${item.unickname}</span>
+                        <span class="f_size_b"><a class="pointer" onclick="_AJAX_USER_INFO(${codec.code_num(item.mcode)})">${item.unickname}</a></span>
                         <span class="f_size_1">${convert.IP(item.cip)}</span>
                     </div>
                     <div class="memo ${authColor}">
@@ -69,7 +70,7 @@ module.exports = function(req,res,data,page){
                 b_list = `
                 <div class="comment">
                     <div class="comment_info">
-                        <span class="f_size_b">${item.unickname}</span>
+                        <span class="f_size_b"><a class="pointer" onclick="_AJAX_USER_INFO(${codec.code_num(item.mcode)})">${item.unickname}</a></span>
                         <span class="f_size_1">${convert.IP(item.cip)}</span>
                         <span class="font_gray f_size_1">${time.commentDate(item.cdate)}</span>
                         <button><a href="/board/comment/${item.ccode}" onclick="return _DELETE_COMMENT(${item.ccode})">delete</a></button>

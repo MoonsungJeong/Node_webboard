@@ -1,5 +1,5 @@
 module.exports = msgbox =`
-<div id="msg_box" class="space_8 size_5 msg_box">
+<div id="msg_box" class="space_6 size_5 msg_box">
     <div class="flex_between line-bottom">
         <h2>Message</h2>
         <span><button id="msg_x_btn">x</button></span>

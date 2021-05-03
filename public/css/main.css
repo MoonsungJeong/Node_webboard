@@ -45,6 +45,9 @@ div{
 .margin_right{
     margin-right:1rem;
 }
+.margin_right_s{
+    margin-right:0.3rem;
+}
 .margin_left{
     margin-left: 0rem;
 }
@@ -62,6 +65,9 @@ div{
 }
 .margin_side_1{
     margin:0 1rem;
+}
+.margin_top{
+    margin-top:0.4rem;
 }
 .margin_top_5{
     margin-top:5rem;
@@ -274,6 +280,22 @@ div{
     background-color: #ffffff;
     z-index:4;
     display:none;
+    top:26%;
+    left:20%;
+}
+.user_box{
+    position: fixed;
+    background-color: #ffffff;
+    z-index:4;
+    display:none;
     top:20%;
     left:15%;
+}
+.user_info{
+    display:flex;
+    background-color: #ffffff;
+    z-index:4;
+}
+.user_info :last-child{
+    margin-left:auto;
 }
