@@ -94,18 +94,18 @@ module.exports = function(board,page,post,results){
             <div class="center flex_around">
                 <form>
                     <input type="hidden">
-                    <select>
+                    <select class="size_03">
                         <option>title</option>
                         <option>content</option>
                         <option>author</option>
                     </select>
                     <span>
-                        <input type="text">
+                        <input class="size_08" type="text">
                     </span>
                     <button type="submit">search</button>
                 </form>
                 <div>
-                    <button>list</button>
+                    <button><a href="/board/${board}/${page}">list</a></button>
                     <button><a href="/board/new">write</a></button>
                 </div>
             </div>

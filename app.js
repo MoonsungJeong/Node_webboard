@@ -8,6 +8,7 @@ const init = require("./init.js");
 const indexRouter = require("./routes/index.js");
 const accountRouter = require("./routes/account.js");
 const boardRouter = require("./routes/board.js");
+const searchRouter = require("./routes/search.js");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(session({
 app.use("/", indexRouter);
 app.use("/account", accountRouter);
 app.use("/board",boardRouter);
+app.use("/search",searchRouter);
 app.get('*', (req, res) => {
     res.redirect('/')
 })

@@ -15,6 +15,7 @@ module.exports = function(header,main,screen,script){
             ${screen}
             <script src='/js/script_init.js'></script>
             <script src='/js/script_parts.js'></script>
+            <script src='/js/script_search.js'></script>
             ${script}
         </body>
     </html>

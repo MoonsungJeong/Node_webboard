@@ -1,5 +1,4 @@
-module.exports = function(){ 
-    return`
+module.exports =  userbox =`
     <div id="user_box" class="space_6 size_5 user_box">
         <section>
             <div class="user_info">
@@ -28,5 +27,4 @@ module.exports = function(){
             </ul>
         </section>
     </div>
-    `
-}
+`

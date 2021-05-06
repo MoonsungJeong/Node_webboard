@@ -180,6 +180,12 @@ div{
     font-weight: bold;
     font-size:large;
 }
+.size_03{
+    width:3rem;
+}
+.size_08{
+    width:8rem;
+}
 .size_5{
     width:15rem;
 }
@@ -298,4 +304,12 @@ div{
 }
 .user_info :last-child{
     margin-left:auto;
+}
+.search_bar_wrapper{
+    display:none;
+    width:12rem;
+    position: absolute;
+    background-color: #ffffff;
+    top:9%;
+    left:40%;
 }

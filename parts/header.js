@@ -4,18 +4,16 @@ module.exports = function(authStatusUI='<a href="/account/login" class="font_whi
         <div class="flex_between space_3 font_white">
             <div><a class="btn_sidemenu pointer font_white"><i class="fas fa-bars fa-2x"></i></a></div>
             <h1><a href="/" class="font_white">Kangaroo</a></h1>
-            <div class="none">
-                <ul class="flex">
-                    <li>sign up</li>
-                    <li>log in</li>
-                    <li>searchbar</li>
-                </ul>
-            </div>
             <div>
                 <ul class="flex_around">
                     <li class="margin_right">${authStatusUI}</li>
-                    <li><a class="font_white"><i class="fas fa-search fa-2x"></i></a></li>
+                    <li><a id="search_btn" class="font_white pointer"><i class="fas fa-search fa-2x"></i></a></li>
                 </ul>
+                <div class="search_bar_wrapper space_6">
+                    <form onsubmit="search_test(this)">
+                        <input class="search_bar size_08" name="keyword" type="text"/><button>search</button>
+                    </form>
+                </div>
             </div>
         </div>
         <nav>
