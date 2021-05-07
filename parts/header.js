@@ -10,8 +10,10 @@ module.exports = function(authStatusUI='<a href="/account/login" class="font_whi
                     <li><a id="search_btn" class="font_white pointer"><i class="fas fa-search fa-2x"></i></a></li>
                 </ul>
                 <div class="search_bar_wrapper space_6">
-                    <form onsubmit="search_test(this)">
-                        <input class="search_bar size_08" name="keyword" type="text"/><button>search</button>
+                    <form onsubmit="return _AJAX_SEARCH_SEND(this)">
+                        <input type="hidden" name="option" value="content">
+                        <input class="search_bar size_010" name="keyword" type="text"/>
+                        <button>search</button>
                     </form>
                 </div>
             </div>

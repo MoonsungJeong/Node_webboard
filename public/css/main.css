@@ -186,6 +186,9 @@ div{
 .size_08{
     width:8rem;
 }
+.size_010{
+    width:10rem;
+}
 .size_5{
     width:15rem;
 }
@@ -307,9 +310,9 @@ div{
 }
 .search_bar_wrapper{
     display:none;
-    width:12rem;
+    width:15rem;
     position: absolute;
     background-color: #ffffff;
     top:9%;
-    left:40%;
+    left:30%;
 }

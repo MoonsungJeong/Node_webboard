@@ -17,7 +17,7 @@ module.exports = function(board,page,post,results){
             <li class="post_item space_7">
                 <a href="/board/${board}/${page}/${info.pcode}">
                     <div>
-                        <div>${info.btitle}<!--<span>[3]</span>--></div>
+                        <div>${info.btitle}</div>
                         <div class="font_gray f_size_1">
                             <span>${info.author} | </span>
                             <span>${time.formatDate(info.bdate)} | </span>
@@ -34,7 +34,7 @@ module.exports = function(board,page,post,results){
         <li class="post_item">
             <a href="/board/${board}/${page}/${info.pcode}">
                 <div>
-                    <div>${info.btitle}<!--<span>[3]</span>--></div>
+                    <div>${info.btitle}</div>
                     <div class="font_gray f_size_1">
                         <span>${info.author} | </span>
                         <span>${time.formatDate(info.bdate)} | </span>
@@ -92,17 +92,16 @@ module.exports = function(board,page,post,results){
                 ${pagination}
             </div>
             <div class="center flex_around">
-                <form>
-                    <input type="hidden">
-                    <select class="size_03">
-                        <option>title</option>
-                        <option>content</option>
-                        <option>author</option>
+                <form onsubmit="return _AJAX_SEARCH_SEND(this)">
+                    <select name="option" class="size_03">
+                        <option value="title">title</option>
+                        <option value="content">content</option>
+                        <option value="author">author</option>
                     </select>
                     <span>
-                        <input class="size_08" type="text">
+                        <input class="size_08" name="keyword" type="text">
                     </span>
-                    <button type="submit">search</button>
+                    <button>search</button>
                 </form>
                 <div>
                     <button><a href="/board/${board}/${page}">list</a></button>
