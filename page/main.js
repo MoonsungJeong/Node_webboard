@@ -1,6 +1,8 @@
 const ad_1 = require('../parts/ad_1.js');
 
-module.exports = function(res_1,res_2){
+module.exports = function(res_1,res_2,
+    authStatusChatId = '<input id="chat_id" class="size_20" placeholder="ID" type="text" disabled readonly/>'
+    ){
     let list_1 = '';
     let list_2 = '';
     res_1.forEach(function(item,index){
@@ -36,11 +38,11 @@ module.exports = function(res_1,res_2){
     <aside>
         <section>
             <div>
-                <ul id="chat_board" class="space_1 margin">
+                <ul id="chat_board" class="space_1 margin chat_box">
                 </ul>
                 <form id="chat_form">
                     <div class="left">
-                        <input id="chat_id" class="size_20" placeholder="ID" type="text" />
+                        ${authStatusChatId}
                         <input id="chat_message" class="size_55" type="text" />
                         <input type="submit" value="submit" />
                     </div>

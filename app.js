@@ -19,16 +19,10 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 
 io.on('connection',function(socket){
-    console.log('a user connected');
     socket.on('enter', (msg) => {
-        //io.emit('enter', msg);
-        console.log(msg);
+        io.emit('enter', msg);
     });
     socket.on('message', (msg) => {
-        //console.log('message: ' + msg);
-        //console.log(JSON.parse(msg))
-        //console.log(JSON.parse(msg).id)
-        //console.log(JSON.parse(msg).msg)
         io.emit('message', msg);
     });
 })

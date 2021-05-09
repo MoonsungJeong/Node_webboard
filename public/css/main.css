@@ -316,3 +316,6 @@ div{
     top:9%;
     left:30%;
 }
+.chat_box{
+    overflow-y: scroll;
+}
