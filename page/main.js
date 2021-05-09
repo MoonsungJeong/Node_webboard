@@ -36,13 +36,15 @@ module.exports = function(res_1,res_2){
     <aside>
         <section>
             <div>
-                <dl class="space_1 margin">
-                </dl>
-                <div class="left">
-                    <input class="size_20" placeholder="ID" type="text" />
-                    <input class="size_55" type="text" />
-                    <input type="submit" value="submit" />
-                </div>
+                <ul id="chat_board" class="space_1 margin">
+                </ul>
+                <form id="chat_form">
+                    <div class="left">
+                        <input id="chat_id" class="size_20" placeholder="ID" type="text" />
+                        <input id="chat_message" class="size_55" type="text" />
+                        <input type="submit" value="submit" />
+                    </div>
+                </form>
             </div>    
         </section>
         ${ad_1}

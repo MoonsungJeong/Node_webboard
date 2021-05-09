@@ -1,4 +1,8 @@
 const express = require("express");
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const bodyParser = require("body-parser");
@@ -10,7 +14,24 @@ const accountRouter = require("./routes/account.js");
 const boardRouter = require("./routes/board.js");
 const searchRouter = require("./routes/search.js");
 
-const app = express();
+// socket -> chating
+const { Server } = require('socket.io');
+const io = new Server(server);
+
+io.on('connection',function(socket){
+    console.log('a user connected');
+    socket.on('enter', (msg) => {
+        //io.emit('enter', msg);
+        console.log(msg);
+    });
+    socket.on('message', (msg) => {
+        //console.log('message: ' + msg);
+        //console.log(JSON.parse(msg))
+        //console.log(JSON.parse(msg).id)
+        //console.log(JSON.parse(msg).msg)
+        io.emit('message', msg);
+    });
+})
 
 app.use(express.static("public"));
 app.use(bodyParser.json())
@@ -32,6 +53,6 @@ app.get('*', (req, res) => {
     res.redirect('/')
 })
 
-app.listen(init.connect.port, init.connect.hostname, function(){
+server.listen(init.connect.port, init.connect.hostname, function(){
     console.log("Server running at 3000");
 })
