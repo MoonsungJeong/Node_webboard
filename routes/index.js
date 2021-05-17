@@ -27,7 +27,7 @@ router.get("/", function(req,res){
             if (error)throw error;
             header = parts_header(auth.statusUI(req,res));
             main = page_main(res_1, res_2,auth.statusChatId(req,res));
-            screen = parts_screen(auth.statusScreenBtn(req,res));
+            screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
             html = template(header,main,screen,"<script src='/socket.io/socket.io.js'></script><script src='/js/script_chat.js'></script>");
             res.writeHead(200);
             res.end(html);

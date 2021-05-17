@@ -19,7 +19,7 @@
 }
 .side_menu_List{
     width: 66%;
-    height: 98vh;
+    height: 100vh;
     background-color:#222233;
     padding:0;
     display:none;
@@ -36,7 +36,6 @@
     background-color:#555555;
 }
 .sm_btn_box{
-    padding:1rem;
     display: flex;
     justify-content: center;
 }
@@ -112,4 +111,49 @@
 @keyframes animateright2{
     from{right:20px;opacity:1;} 
     to{right:-300px;opacity:0;}
+}
+.side_menu_3{
+    padding:0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.side_menu_Screen_3{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color:#000000;
+    opacity: 0.7;
+    display:none;
+}
+.side_menu_List_3{
+    width: 70%;
+    height: 100vh;
+    background-color:#ffffff;
+    padding:0;
+    display:none;
+    overflow-y: auto;
+}
+.animate-up{
+    position:relative;
+    animation:animateup 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes animateup{
+    from{top:0px;opacity:1;} 
+    to{top:-100vh;opacity:0;}
+}
+.animate-down{
+    position:relative;
+    animation:animatedown 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes animatedown{
+    from{top:-100vh;opacity:0;} 
+    to{top:0px;opacity:1;}
 }

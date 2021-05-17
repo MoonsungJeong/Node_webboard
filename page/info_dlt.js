@@ -1,3 +1,4 @@
+const codec = require("../lib/codec.js");
 module.exports = function(data){
     return `
     <section>
@@ -13,7 +14,7 @@ module.exports = function(data){
                         <td><input type="password" name="pw_re"></td>
                     </tr>
                 </table>
-                <input type="hidden" name="id" value="${data}">
+                <input type="hidden" name="id" value="${codec.code_num(data)}">
                 <button type="submit">delete</button>
             </form>
         </div>

@@ -32,7 +32,7 @@ let sql;
 router.get("/login",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_login();
-    screen = parts_screen(auth.statusScreenBtn(req,res));
+    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
     html = template(header,main,screen,"<script src='/js/script_login.js'></script>");
     res.writeHead(200);
     res.end(html);
@@ -45,7 +45,7 @@ router.get("/logout",function(req,res){
 router.get("/sign-up",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_signup();
-    screen = parts_screen(auth.statusScreenBtn(req,res));
+    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
     html = template(header,main,screen,"<script src='/js/script_signup.js'></script>");
     res.writeHead(200);
     res.end(html);
@@ -103,7 +103,7 @@ router.post("/form-check",function(req,res){
 router.get("/lost",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_lost();
-    screen = parts_screen(auth.statusScreenBtn(req,res));
+    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
     html = template(header,main,screen,"<script src='/js/script_lost.js'></script>");
     res.writeHead(200);
     res.end(html);
@@ -146,14 +146,14 @@ router.get("/lost/:keyId",function(req,res){
             if(time.timeDifference(ttl) <= 1){      // ttl check 
                     header = parts_header(auth.statusUI(req,res));
                     main = page_reset(results[0].uid,results[0].mcode,`${req.params.keyId}`);
-                    screen = parts_screen(auth.statusScreenBtn(req,res));
+                    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
                     html = template(header,main,screen,"<script src='/js/script_reset.js'></script>");
                     res.writeHead(200);
                     res.end(html);
             }else{  // timeout
                 header = parts_header(auth.statusUI(req,res));
                 main = page_wrong("The link is expired");
-                screen = parts_screen(auth.statusScreenBtn(req,res));
+                screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
                 html = template(header,main,screen,"");
                 res.writeHead(200);
                 res.end(html);
@@ -161,7 +161,7 @@ router.get("/lost/:keyId",function(req,res){
         }else{  // wrong link
             header = parts_header(auth.statusUI(req,res));
             main = page_wrong("This is wrong link");
-            screen = parts_screen(auth.statusScreenBtn(req,res));
+            screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
             html = template(header,main,screen,"");
             res.writeHead(200);
             res.end(html);
@@ -211,7 +211,7 @@ router.get("/info/page",function(req,res){
                         if(error)throw error;
                         header = parts_header(auth.statusUI(req,res));
                         main = page_info("page",results,results_2,results_3,results_4,results_5);
-                        screen = parts_screen(auth.statusScreenBtn(req,res));
+                        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
                         html = template(header,main,screen,"");
                         res.writeHead(200);
                         res.end(html);
@@ -228,7 +228,7 @@ router.get("/info/post/:pageNum",function(req,res){
         if(error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_info("post",results,req.params.pageNum);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
@@ -241,7 +241,7 @@ router.get("/info/comment/:pageNum",function(req,res){
         if(error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_info("comment",results,req.params.pageNum);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
@@ -255,7 +255,7 @@ router.get("/info/message/:Status/:pageNum",function(req,res){
         if(error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_info("message",results,req.params.Status,req.params.pageNum);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"<script src='/js/script_message.js'></script>");
         res.writeHead(200);
         res.end(html);
@@ -310,7 +310,7 @@ router.get("/info/info",function(req,res){
     db.query(sql, function (error, results, fields) {
         header = parts_header(auth.statusUI(req,res));
         main = page_info("info",results);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"<script src='/js/script_info.js'></script>");
         res.writeHead(200);
         res.end(html);
@@ -331,7 +331,7 @@ router.get("/info/pw",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     header = parts_header(auth.statusUI(req,res));
     main = page_info("pw",req.session.code);
-    screen = parts_screen(auth.statusScreenBtn(req,res));
+    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
     html = template(header,main,screen,"<script src='/js/script_info.js'></script>");
     res.writeHead(200);
     res.end(html);
@@ -364,15 +364,16 @@ router.get("/info/dlt",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     header = parts_header(auth.statusUI(req,res));
     main = page_info("dlt",req.session.code);
-    screen = parts_screen(auth.statusScreenBtn(req,res));
+    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
     html = template(header,main,screen,"<script src='/js/script_info.js'></script>");
     res.writeHead(200);
     res.end(html);
 })
 router.post("/info/dlt",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
-    if(req.session.code != req.body.id){res.redirect('/');return;}
-    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `'${req.body.id}';`
+    const user_code = codec.decode_num(req.body.id);
+    if(req.session.code != user_code){res.redirect('/');return;}
+    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `'${user_code}';`
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] !== undefined){
@@ -380,11 +381,11 @@ router.post("/info/dlt",function(req,res){
                 res.send(false);
                 return;
             }                                             // correct
-            sql = "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`'${req.body.id}';
-                   DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`'${req.body.id}';
-                   DELETE FROM `+"`comment` WHERE `mcode` = "+`'${req.body.id}';
-                   DELETE FROM `+"`board` WHERE `mcode` = "+`'${req.body.id}';
-                   DELETE FROM `+"`members` WHERE `mcode` = "+`'${req.body.id}';
+            sql = "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`'${user_code}';
+                   DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`'${user_code}';
+                   DELETE FROM `+"`comment` WHERE `mcode` = "+`'${user_code}';
+                   DELETE FROM `+"`board` WHERE `mcode` = "+`'${user_code}';
+                   DELETE FROM `+"`members` WHERE `mcode` = "+`'${user_code}';
                    DELETE FROM `+"`msg` using `message` AS msg LEFT JOIN `members` AS mem1 ON mem1.mcode = msg.recv_code LEFT JOIN `members` AS mem2 ON mem2.mcode = msg.sent_code WHERE mem1.mcode IS NULL and mem2.mcode IS NULL;"
             db.query(sql, function (error, results, fields) {
                 if(error)throw error;

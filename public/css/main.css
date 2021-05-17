@@ -30,6 +30,9 @@ div{
     justify-content: space-between;
     align-items: center;
 }
+.flex_item_1{
+    flex-grow:1;
+}
 .center{
     text-align: center;
 }
@@ -54,6 +57,9 @@ div{
 .margin_tb{
     margin:7rem 0rem;
 }
+.margin_tb_04{
+    margin:-0.4rem 0rem;
+}
 .margin_tb_1{
     margin:1rem 0;
 }
@@ -68,6 +74,9 @@ div{
 }
 .margin_top{
     margin-top:0.4rem;
+}
+.margin_top_1{
+    margin-top:1rem;
 }
 .margin_top_5{
     margin-top:5rem;

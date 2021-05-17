@@ -13,6 +13,7 @@ const indexRouter = require("./routes/index.js");
 const accountRouter = require("./routes/account.js");
 const boardRouter = require("./routes/board.js");
 const searchRouter = require("./routes/search.js");
+const adminRouter = require("./routes/admin.js");
 
 // socket -> chating
 const { Server } = require('socket.io');
@@ -43,6 +44,7 @@ app.use("/", indexRouter);
 app.use("/account", accountRouter);
 app.use("/board",boardRouter);
 app.use("/search",searchRouter);
+app.use("/admin",adminRouter);
 app.get('*', (req, res) => {
     res.redirect('/')
 })

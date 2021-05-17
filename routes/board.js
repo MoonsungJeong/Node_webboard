@@ -32,12 +32,12 @@ router.get("/total/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_board("total",page,"",results);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
     });
-})
+});
 router.get("/free/:pageId",function(req,res){
     page = req.params.pageId;
     sql = "SELECT * FROM `board` WHERE `bcode` = 1 ORDER BY `pcode` DESC;";
@@ -45,12 +45,12 @@ router.get("/free/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_board("free",page,"",results);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
     });
-})
+});
 router.get("/info/:pageId",function(req,res){
     page = req.params.pageId;
     sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";
@@ -58,19 +58,19 @@ router.get("/info/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_board("info",page,"",results);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
     });
-})
+});
 router.get("/comment/:postId/:pageId", function(req,res){
     sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
     db.query(sql, function (error,results,fields){
         if (error)throw error;
         res.send(page_comment(req,res,results,req.params.pageId));
      })
-})
+});
 router.get("/:boardId/:pageId/:postId",function(req,res){
     page = req.params.pageId;
     sql = "UPDATE `board` SET `bcount` = `bcount` + 1 WHERE `pcode` = "+`'${req.params.postId}';`+
@@ -88,7 +88,7 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
                 if (error)throw error;    
                 header = parts_header(auth.statusUI(req,res));
                 main += page_board(req.params.boardId, page, req.params.postId, results);    // attach board bottom
-                screen = parts_screen(auth.statusScreenBtn(req,res));
+                screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
                 html = template(header,main,screen,
                     "<script src='/js/script_post.js'></script><script src='/js/script_message.js'></script><script src='/js/script_userinfo.js'></script>");
                 res.writeHead(200);
@@ -96,7 +96,7 @@ router.get("/:boardId/:pageId/:postId",function(req,res){
             })
         })
     })
-})
+});
 router.post("/comment/new",function(req,res){
     const ip = req.connection.remoteAddress;
     const date = time.currentTime();
@@ -115,7 +115,7 @@ router.post("/comment/new",function(req,res){
             })
         })
     })
-})
+});
 router.post("/comment/:ccodeId",function(req,res){
     const ip = req.connection.remoteAddress;
     const date = time.currentTime();
@@ -137,7 +137,7 @@ router.post("/comment/:ccodeId",function(req,res){
             })
         })         
     })
-})
+});
 router.delete("/comment/:ccodeId",function(req,res){
     let postId;
     if(!auth.isUser(req,res)){
@@ -162,15 +162,15 @@ router.delete("/comment/:ccodeId",function(req,res){
             }) 
         })
     })
-})
+});
 router.get("/new",function(req,res){
     header = parts_header(auth.statusUI(req,res));
     main = page_write(auth.statusWrite(req,res));
-    screen = parts_screen(auth.statusScreenBtn(req,res));
+    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
     html = template(header,main,screen,"<script src='/js/script_write.js'></script>");
     res.writeHead(200);
     res.end(html);
-})
+});
 router.post("/new",function(req,res){
     const info = req.body;
     let mcode;
@@ -198,7 +198,7 @@ router.post("/new",function(req,res){
             res.redirect('/board/total/1');
         });
     }
-})
+});
 router.post("/review/:postId",function(req,res){
     if(auth.isUser(req,res)){
         sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
@@ -237,7 +237,7 @@ router.get("/review/:postId",function(req,res){
         db.query(sql, function (error, results, fields){
             header = parts_header(auth.statusUI(req,res));
             main = page_update(results[0].pcode, results[0].btitle, results[0].bcontent, results[0].bcode);
-            screen = parts_screen(auth.statusScreenBtn(req,res));
+            screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
             html = template(header,main,screen,"<script src='/js/script_update.js'></script>");
             res.writeHead(200);
             res.end(html);
@@ -295,7 +295,7 @@ router.delete("/list/:postId",function(req,res){
             res.send("password");
         }
     }
-})
+});
 router.get("/cancel",function(req,res){
     delete req.session.post;
     req.session.save();

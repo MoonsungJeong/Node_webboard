@@ -58,6 +58,11 @@ CREATE TABLE IF NOT EXISTS `message` (
 	PRIMARY KEY (`ncode`)
 );
 
+INSERT INTO `members` (`mcode`, `uid`, `upwd`, `uname`, `unickname`, `email`, `udate`, `uip`, `birthdate`)
+ VALUES (
+	'95981', 'admin', '$2b$05$m9WAnOewDgfgTIbCAgGISuHRzHkfgDejhht7gwJ4HDUaypPNk9IX.', 'administrator', 
+	'Manager', 'admin@mail.com', '2021-05-12 12:26:41', '192.168.1.223', '2021-05-12'
+	);
 
 
 

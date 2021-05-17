@@ -16,7 +16,8 @@ msg_x_btn.addEventListener("click",function(){
     msg_content.id.disabled=false;
     msg_content.id.value="";
     msg_content.content.value="";
-    msg_box.style.display = "none";        
+    msg_box.style.display = "none";   
+    msg_box.style.zIndex = "-1";     
     
 })
 msg_send_btn.addEventListener("click",function(){
@@ -63,6 +64,7 @@ function _MSG_USER_CODE(code){
             if(oReq.responseText === "false"){ alert("login first!"); return;}
             let res = JSON.parse(oReq.responseText);
             msg_box.style.display = "block";
+            msg_box.style.zIndex = "5";
             msg_content.content.focus()
             msg_content.id.value=res[0];
             msg_content.id.readOnly=true;

@@ -1,4 +1,8 @@
-module.exports = function(authStatusScreenBtn='<button><a href="/account/login">Login</a></button>'){
+module.exports = function(
+    authStatusScreenBtn='<button><a href="/account/login">Login</a></button>',
+    authStatusAdminBtn='',
+    authStatusAdminPanel=''
+){
     return `
     <aside class="side_menu">
         <div class="side_menu_Screen">
@@ -9,7 +13,8 @@ module.exports = function(authStatusScreenBtn='<button><a href="/account/login">
                 <li class="sm_list"><a href="/board/free" class="font_white">Free Board</a></li>
                 <li class="sm_list"><a href="/board/info" class="font_white">Info Board</a></li>
             </ul>
-            <div class="sm_btn_box">
+            <div class="flex_col margin_tb_1">
+                ${authStatusAdminBtn}
                 ${authStatusScreenBtn}
             </div>
         </div>
@@ -30,5 +35,6 @@ module.exports = function(authStatusScreenBtn='<button><a href="/account/login">
             </ul>
         </div>
     </aside>
+    ${authStatusAdminPanel}
     `
 }

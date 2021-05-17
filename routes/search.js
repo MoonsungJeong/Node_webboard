@@ -28,7 +28,7 @@ router.get("/:option/:keyword/:pageId",function(req,res){
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
         main = page_search(info.option,info.keyword,info.pageId,"",results);
-        screen = parts_screen(auth.statusScreenBtn(req,res));
+        screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
         html = template(header,main,screen,"");
         res.writeHead(200);
         res.end(html);
@@ -51,7 +51,7 @@ router.get("/:option/:keyword/:pageId/:postId",function(req,res){       // /:boa
                 if (error)throw error;
                 header = parts_header(auth.statusUI(req,res));
                 main += main = page_search(info.option,info.keyword,info.pageId,info.postId,results);
-                screen = parts_screen(auth.statusScreenBtn(req,res));
+                screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
                 html = template(header,main,screen,
                     "<script src='/js/script_post.js'></script><script src='/js/script_message.js'></script><script src='/js/script_userinfo.js'></script>");
                 res.writeHead(200);

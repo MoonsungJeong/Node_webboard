@@ -55,7 +55,7 @@ function _AJAX_USER_INFO(code){
     }
 }
 function _USER_MSG_BTN(){
-    _MSG_USER_CODE(user_msg_btn.value);
+    _MSG_USER_CODE(user_msg_btn.value); // Function is in "script_message.js"
 }
 user_x_btn.addEventListener("click",function(){
     user_msg_btn.removeEventListener("click",_USER_MSG_BTN,false);
