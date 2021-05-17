@@ -1,6 +1,7 @@
 const msg_box = require("../parts/msgbox.js");
 const codec = require("../lib/codec");
 const time = require("../lib/time");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(data,Status,pageNum){
     let select,button,person;
@@ -21,8 +22,8 @@ module.exports = function(data,Status,pageNum){
         list += `
         <tr class="line-bottom">
             <td class="padding_side"> <input type="checkbox" name="delete_list" value="${data[start].ncode}"/></td>
-            <td class="font_gray">${data[start].unickname}</td>
-            <td><a class="pointer" onclick="_MSG_USER_CODE(${codec.code_num(data[start].mcode)})">${data[start].ncontent}</a></td>
+            <td class="font_gray">${sanitizeHtml(data[start].unickname)}</td>
+            <td><a class="pointer" onclick="_MSG_USER_CODE(${codec.code_num(data[start].mcode)})">${sanitizeHtml(data[start].ncontent)}</a></td>
             <td class="font_gray">${time.formatDate_2(data[start].ndate)}</td>
         </tr>
         `

@@ -1,4 +1,5 @@
 const time = require("../lib/time");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(data, pageNum){
     // ---------------------list--------------------------
@@ -14,9 +15,9 @@ module.exports = function(data, pageNum){
         <li class="post_item">
             <a href="/board/total/1/${data[start].pcode}">
                 <div>
-                    <div>${data[start].comment}</div>
+                    <div>${sanitizeHtml(data[start].comment)}</div>
                     <div class="font_gray f_size_1">
-                        <span>${time.formatDate(data[start].cdate)}</span>
+                        <span>${time.formatDate_4(data[start].cdate)}</span>
                     </div>
                 </div>
             </a>

@@ -1,4 +1,6 @@
 const time = require("../lib/time");
+const sanitizeHtml = require("sanitize-html");
+
 module.exports = function(data,data_2,data_3,data_4,user_info){
     let post = '';
     let comment = '';
@@ -9,16 +11,16 @@ module.exports = function(data,data_2,data_3,data_4,user_info){
     let Days_Ago = Math.floor(time.timeDifference(user_info[0].udate));
     
     data.forEach(function(item,index){
-        post+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${item.btitle}</a></div></li>`;
+        post+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${sanitizeHtml(item.btitle)}</a></div></li>`;
     })
     data_2.forEach(function(item,index){
-        comment+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${item.comment}</a></div></li>`;
+        comment+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${sanitizeHtml(item.comment)}</a></div></li>`;
     })
     data_3.forEach(function(item,index){
-        comment_post+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${item.comment}</a></div></li>`;
+        comment_post+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${sanitizeHtml(item.comment)}</a></div></li>`;
     })
     data_4.forEach(function(item,index){
-        comment_comm+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${item.comment}</a></div></li>`;
+        comment_comm+=`<li><div>ㆍ<a href="/board/total/1/${item.pcode}">${sanitizeHtml(item.comment)}</a></div></li>`;
     })
     return `
     <section>

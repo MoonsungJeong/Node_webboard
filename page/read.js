@@ -3,6 +3,7 @@ const time = require('../lib/time.js');
 const codec = require("../lib/codec");
 const userbox = require("../parts/userbox");
 const msgbox = require("../parts/msgbox");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(data, comment,
     authStatusReadBtn = '<button><a href="/board/total/1">list</a></button>',
@@ -13,9 +14,9 @@ module.exports = function(data, comment,
         ${ad_1}
         <section class="margin_side_05">
             <div class="flex_col_2">
-                <h1 class="line-bottom-dot"> ${data.btitle}</h1>
+                <h1 class="line-bottom-dot"> ${sanitizeHtml(data.btitle)}</h1>
                 <div>
-                    <span><a class="pointer" onclick="_AJAX_USER_INFO(${codec.code_num(data.mcode)})">${data.author}</a> | </span>
+                    <span><a class="pointer" onclick="_AJAX_USER_INFO(${codec.code_num(data.mcode)})">${sanitizeHtml(data.author)}</a> | </span>
                     <span>${time.formatDate(data.bdate)} | </span>
                     <span>view ${data.bcount} | </span>
                     <span>like ${data.blikes}</span>
@@ -23,7 +24,7 @@ module.exports = function(data, comment,
             </div>
             <div>
                 <div>
-                    ${data.bcontent}
+                    ${sanitizeHtml(data.bcontent)}
                 </div>
             </div>
             <div>

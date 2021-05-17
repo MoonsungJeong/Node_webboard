@@ -1,6 +1,7 @@
 const time = require('../lib/time.js');
 const convert = require('../lib/convert.js');
 const codec = require("../lib/codec");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(req,res,data,page){
     let list ='';
@@ -34,7 +35,7 @@ module.exports = function(req,res,data,page){
                         <span class="f_size_1">${convert.IP(item.cip)}</span>
                     </div>
                     <div class="memo ${authColor}">
-                        ${item.comment}
+                        ${sanitizeHtml(item.comment)}
                     </div>                   
                     <div class="comment_date">
                         <span class="font_gray f_size_1">${time.commentDate(item.cdate)}</span>
@@ -76,7 +77,7 @@ module.exports = function(req,res,data,page){
                         <button><a href="/board/comment/${item.ccode}" onclick="return _DELETE_COMMENT(${item.ccode})">delete</a></button>
                     </div>
                     <div class="comment_content ${authColor}">
-                        ${item.comment}
+                        ${sanitizeHtml(item.comment)}
                     </div>
                     <div>
                         <a class="pointer f_size_1 font_gray" onclick="comOpen('${item.ccode}')">

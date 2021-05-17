@@ -1,4 +1,5 @@
 const time = require("../lib/time");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(data, pageNum){
     // ---------------------list--------------------------
@@ -14,7 +15,7 @@ module.exports = function(data, pageNum){
         <li class="post_item">
             <a href="/board/total/1/${data[start].pcode}">
                 <div>
-                    <div class="">${data[start].btitle}</div>
+                    <div class="">${sanitizeHtml(data[start].btitle)}</div>
                     <div class="font_gray f_size_1">
                         <span>${time.formatDate(data[start].bdate)} | </span>
                         <span>view ${data[start].bcount}</span>

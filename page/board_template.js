@@ -1,5 +1,6 @@
 const ad_1 = require('../parts/ad_1.js');
 const time = require('../lib/time.js');
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(board,page,post,results){
     let info;
@@ -17,9 +18,9 @@ module.exports = function(board,page,post,results){
             <li class="post_item space_7">
                 <a href="/board/${board}/${page}/${info.pcode}">
                     <div>
-                        <div>${info.btitle}</div>
+                        <div>${sanitizeHtml(info.btitle)}</div>
                         <div class="font_gray f_size_1">
-                            <span>${info.author} | </span>
+                            <span>${sanitizeHtml(info.author)} | </span>
                             <span>${time.formatDate(info.bdate)} | </span>
                             <span>view ${info.bcount} | </span>
                             <span class="font_skyblue">likes ${info.blikes}</span>
@@ -34,9 +35,9 @@ module.exports = function(board,page,post,results){
         <li class="post_item">
             <a href="/board/${board}/${page}/${info.pcode}">
                 <div>
-                    <div>${info.btitle}</div>
+                    <div>${sanitizeHtml(info.btitle)}</div>
                     <div class="font_gray f_size_1">
-                        <span>${info.author} | </span>
+                        <span>${sanitizeHtml(info.author)} | </span>
                         <span>${time.formatDate(info.bdate)} | </span>
                         <span>view ${info.bcount} | </span>
                         <span class="font_skyblue">likes ${info.blikes}</span>

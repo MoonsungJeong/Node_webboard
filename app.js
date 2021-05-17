@@ -47,7 +47,7 @@ app.use("/search",searchRouter);
 app.use("/admin",adminRouter);
 app.get('*', (req, res) => {
     res.redirect('/')
-})
+}) 
 
 server.listen(init.connect.port, init.connect.hostname, function(){
     console.log("Server running at 3000");

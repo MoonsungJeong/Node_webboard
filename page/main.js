@@ -1,4 +1,5 @@
 const ad_1 = require('../parts/ad_1.js');
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(res_1,res_2,
     authStatusChatId = '<input id="chat_id" class="size_20" placeholder="ID" type="text" disabled readonly/>'
@@ -6,10 +7,10 @@ module.exports = function(res_1,res_2,
     let list_1 = '';
     let list_2 = '';
     res_1.forEach(function(item,index){
-       list_1 += `<li class="line-bottom-dot"><div><a href="/board/free/1/${item.pcode}">${item.btitle}</a></div></li>`;
+       list_1 += `<li class="line-bottom-dot"><div><a href="/board/free/1/${item.pcode}">${sanitizeHtml(item.btitle)}</a></div></li>`;
     })
     res_2.forEach(function(item,index){
-        list_2 += `<li class="line-bottom-dot"><div><a href="/board/info/1/${item.pcode}">${item.btitle}</a></div></li>`;
+        list_2 += `<li class="line-bottom-dot"><div><a href="/board/info/1/${item.pcode}">${sanitizeHtml(item.btitle)}</a></div></li>`;
      })
     return `
     <main>
