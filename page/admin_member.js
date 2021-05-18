@@ -1,6 +1,7 @@
 const time = require('../lib/time.js');
 const codec = require("../lib/codec");
 const msgbox = require("../parts/msgbox");
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(results){
     let info;
@@ -12,7 +13,7 @@ module.exports = function(results){
         <li class="post_item">
             <a href="#" onclick="_ADMIN_MEMBER_PANEL(${codec.code_num(info.mcode)})">
                 <div>
-                    <div>${info.unickname}(${info.uid})</div>
+                    <div>${sanitizeHtml(info.unickname)}(${sanitizeHtml(info.uid)})</div>
                     <div class="font_gray f_size_1">
                         <span>Member | </span>
                         <span>RegDate ${time.formatDate_2(info.udate)}</span>

@@ -1,4 +1,5 @@
 const time = require('../lib/time.js');
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(results){
     let info;
@@ -10,7 +11,7 @@ module.exports = function(results){
         <li class="post_item flex">
             <a href="/board/total/1/${info.pcode}" class="flex_item_1">
                 <div>
-                    <div class="">${info.btitle}</div>
+                    <div>${sanitizeHtml(info.btitle)}</div>
                     <div class="font_gray f_size_1">
                         <span>${time.formatDate_1(info.bdate)} | </span>
                         <span>view ${info.bcount}</span>

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const auth = require("../lib/auth");
-const hash = require("../lib/hash");
 const database = require("../lib/mysql");
 const time = require("../lib/time");
 const codec = require("../lib/codec");
@@ -24,12 +23,10 @@ let main;
 let screen;
 let html;
 let sql;
-let sql_2;
-let page;
 
 router.get("/member",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
-    sql = "SELECT * FROM `members` WHERE `uid` != 'admin' ORDER BY `udate` DESC;"
+    sql = "SELECT * FROM `members` WHERE `uid` != 'admin' ORDER BY `udate` DESC;";
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
@@ -43,7 +40,7 @@ router.get("/member",function(req,res){
 router.get("/member/:userId",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
     let user_code = codec.decode_num(req.params.userId);
-    sql = "SELECT `mcode` AS `code`, `unickname` AS nick, `uid` AS id, `uname` AS name, `udate` AS date, `email` AS email, `birthdate` AS birth from `members` WHERE `mcode` = "+`${user_code}`;
+    sql = "SELECT `mcode` AS `code`, `unickname` AS nick, `uid` AS id, `uname` AS name, `udate` AS date, `email` AS email, `birthdate` AS birth from `members` WHERE `mcode` = "+`${db.escape(user_code)};`;
     db.query(sql, function(error, results,fields) {
         if (error)throw error;
         results[0].code = codec.code_num(results[0].code);
@@ -56,12 +53,12 @@ router.get("/member/:userId",function(req,res){
 router.get("/member/dlt/:userId",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
     let user_code = codec.decode_num(req.params.userId);
-    sql =  "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`'${user_code}';
-            DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`'${user_code}';
-            DELETE FROM `+"`comment` WHERE `mcode` = "+`'${user_code}';
-            DELETE FROM `+"`board` WHERE `mcode` = "+`'${user_code}';
-            DELETE FROM `+"`members` WHERE `mcode` = "+`'${user_code}';
-            DELETE FROM `+"`msg` using `message` AS msg LEFT JOIN `members` AS mem1 ON mem1.mcode = msg.recv_code LEFT JOIN `members` AS mem2 ON mem2.mcode = msg.sent_code WHERE mem1.mcode IS NULL and mem2.mcode IS NULL;"
+    sql =  "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`${db.escape(user_code)};
+            DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`${db.escape(user_code)};
+            DELETE FROM `+"`comment` WHERE `mcode` = "+`${db.escape(user_code)};
+            DELETE FROM `+"`board` WHERE `mcode` = "+`${db.escape(user_code)};
+            DELETE FROM `+"`members` WHERE `mcode` = "+`${db.escape(user_code)};
+            DELETE FROM `+"`msg` using `message` AS msg LEFT JOIN `members` AS mem1 ON mem1.mcode = msg.recv_code LEFT JOIN `members` AS mem2 ON mem2.mcode = msg.sent_code WHERE mem1.mcode IS NULL and mem2.mcode IS NULL;";
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         res.send(true);
@@ -70,7 +67,7 @@ router.get("/member/dlt/:userId",function(req,res){
 router.get("/member/post/:userId",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
     let user_code = codec.decode_num(req.params.userId);
-    sql = "SELECT `pcode`, `btitle`, `bdate`, `bcount` from `board` WHERE mcode = "+`${user_code}`+" ORDER BY `bdate` desc";
+    sql = "SELECT `pcode`, `btitle`, `bdate`, `bcount` from `board` WHERE mcode = "+`${db.escape(user_code)}`+" ORDER BY `bdate` desc;";
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         main = page_member_post(results);
@@ -80,7 +77,7 @@ router.get("/member/post/:userId",function(req,res){
 router.get("/member/comment/:userId",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
     let user_code = codec.decode_num(req.params.userId);
-    sql = "SELECT `c`.`pcode`, `c`.`comment`, `c`.`cdate`, `p`.`btitle` from `comment` AS c INNER JOIN `board` AS p ON c.pcode = p.pcode WHERE c.mcode = "+`${user_code}`+" and cdlt = 0 ORDER BY `cdate` desc";
+    sql = "SELECT `c`.`pcode`, `c`.`comment`, `c`.`cdate`, `p`.`btitle` from `comment` AS c INNER JOIN `board` AS p ON c.pcode = p.pcode WHERE c.mcode = "+`${db.escape(user_code)}`+" and cdlt = 0 ORDER BY `cdate` desc;";
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         main = page_member_comment(results);
@@ -89,7 +86,7 @@ router.get("/member/comment/:userId",function(req,res){
 });
 router.get("/board",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
-    sql = "SELECT `pcode`,`btitle`,`author`,`bdate`,`bcount` FROM `board` ORDER BY `bdate` DESC;"
+    sql = "SELECT `pcode`,`btitle`,`author`,`bdate`,`bcount` FROM `board` ORDER BY `bdate` DESC;";
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         header = parts_header(auth.statusUI(req,res));

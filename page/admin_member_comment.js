@@ -1,4 +1,5 @@
 const time = require('../lib/time.js');
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(results){
     let info;
@@ -10,11 +11,11 @@ module.exports = function(results){
         <li class="post_item">
             <a href="/board/total/1/${info.pcode}">
                 <div>
-                    <div>${info.comment}</div>
+                    <div>${sanitizeHtml(info.comment)}</div>
                     <div class="font_gray f_size_1 margin_tb_04">
                         <span>${time.formatDate_4(info.cdate)}</span>
                     </div>
-                    <div class="f_size_1">${info.btitle}</div>
+                    <div class="f_size_1">${sanitizeHtml(info.btitle)}</div>
                 </div>
             </a>
         </li>     
