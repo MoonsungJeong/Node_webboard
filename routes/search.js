@@ -21,9 +21,9 @@ let sql;
 
 router.get("/:option/:keyword/:pageId",function(req,res){
     const info = req.params; 
-    if(info.option === "title") sql = "SELECT * FROM `board` WHERE `btitle` LIKE "+`'%${info.keyword}%'`+" ORDER BY `pcode` DESC;";
-    if(info.option === "content") sql = "SELECT * FROM `board` WHERE `bcontent` LIKE "+`'%${info.keyword}%'`+" ORDER BY `pcode` DESC;";
-    if(info.option === "author") sql = "SELECT * FROM `board` WHERE `author` LIKE "+`'%${info.keyword}%'`+" ORDER BY `pcode` DESC;";
+    if(info.option === "title") sql = "SELECT * FROM `board` WHERE `btitle` LIKE "+`${db.escape('%'+info.keyword+'%')}`+" ORDER BY `pcode` DESC;";
+    if(info.option === "content") sql = "SELECT * FROM `board` WHERE `bcontent` LIKE "+`${db.escape('%'+info.keyword+'%')}`+" ORDER BY `pcode` DESC;";
+    if(info.option === "author") sql = "SELECT * FROM `board` WHERE `author` LIKE "+`${db.escape('%'+info.keyword+'%')}`+" ORDER BY `pcode` DESC;";
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         header = parts_header(auth.statusUI(req,res));
@@ -36,17 +36,17 @@ router.get("/:option/:keyword/:pageId",function(req,res){
 })
 router.get("/:option/:keyword/:pageId/:postId",function(req,res){       // /:boardId/:pageId/:postId
     const info = req.params;
-    sql = "UPDATE `board` SET `bcount` = `bcount` + 1 WHERE `pcode` = "+`'${info.postId}';`+
-            "SELECT * FROM `board` WHERE `pcode` ="+`'${info.postId}';`;         // post query
+    sql = "UPDATE `board` SET `bcount` = `bcount` + 1 WHERE `pcode` = "+`${db.escape(info.postId)};`+
+            "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(info.postId)};`;         // post query
     db.query(sql, function (error, results, fields) {      
         if (error)throw error;
-        sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${info.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+        sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`${db.escape(info.postId)}`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
         db.query(sql_2, function (error,results_2,fields){
             if (error)throw error;
             main = page_read(results[1][0], page_comment(req,res,results_2,""), auth.statusReadBtn(req,res,results[1][0]), auth.statusComment(req,res,results[1][0]));  // read post
-            if(info.option === "title") sql = "SELECT * FROM `board` WHERE `btitle` LIKE "+`'%${info.keyword}%'`+" ORDER BY `pcode` DESC;";
-            if(info.option === "content") sql = "SELECT * FROM `board` WHERE `bcontent` LIKE "+`'%${info.keyword}%'`+" ORDER BY `pcode` DESC;";
-            if(info.option === "author") sql = "SELECT * FROM `board` WHERE `author` LIKE "+`'%${info.keyword}%'`+" ORDER BY `pcode` DESC;";
+            if(info.option === "title") sql = "SELECT * FROM `board` WHERE `btitle` LIKE "+`${db.escape('%'+info.keyword+'%')}`+" ORDER BY `pcode` DESC;";
+            if(info.option === "content") sql = "SELECT * FROM `board` WHERE `bcontent` LIKE "+`${db.escape('%'+info.keyword+'%')}`+" ORDER BY `pcode` DESC;";
+            if(info.option === "author") sql = "SELECT * FROM `board` WHERE `author` LIKE "+`${db.escape('%'+info.keyword+'%')}`+" ORDER BY `pcode` DESC;";
             db.query(sql, function (error, results, fields) {
                 if (error)throw error;
                 header = parts_header(auth.statusUI(req,res));

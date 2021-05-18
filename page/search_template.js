@@ -1,5 +1,6 @@
 const ad_1 = require('../parts/ad_1.js');
 const time = require('../lib/time.js');
+const sanitizeHtml = require("sanitize-html");
 
 module.exports = function(option,keyword,page,post,results){// option, keyword, page, post, results
     let data;
@@ -17,9 +18,9 @@ module.exports = function(option,keyword,page,post,results){// option, keyword, 
             <li class="post_item space_7">
                 <a href="/search/${option}/${keyword}/${page}/${data.pcode}">
                     <div>
-                        <div>${data.btitle}</div>
+                        <div>${sanitizeHtml(data.btitle)}</div>
                         <div class="font_gray f_size_1">
-                            <span>${data.author} | </span>
+                            <span>${sanitizeHtml(data.author)} | </span>
                             <span>${time.formatDate(data.bdate)} | </span>
                             <span>view ${data.bcount} | </span>
                             <span class="font_skyblue">likes ${data.blikes}</span>
@@ -34,9 +35,9 @@ module.exports = function(option,keyword,page,post,results){// option, keyword, 
         <li class="post_item">
             <a href="/search/${option}/${keyword}/${page}/${data.pcode}">
                 <div>
-                    <div>${data.btitle}</div>
+                    <div>${sanitizeHtml(data.btitle)}</div>
                     <div class="font_gray f_size_1">
-                        <span>${data.author} | </span>
+                        <span>${sanitizeHtml(data.author)} | </span>
                         <span>${time.formatDate(data.bdate)} | </span>
                         <span>view ${data.bcount} | </span>
                         <span class="font_skyblue">likes ${data.blikes}</span>
