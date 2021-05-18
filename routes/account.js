@@ -52,11 +52,11 @@ router.get("/sign-up",function(req,res){
 });
 router.post("/login",function(req,res){
     const info = req.body;
-    sql = "SELECT * FROM `members` WHERE `uid` =" + ` '${info.id}';`
+    sql = "SELECT * FROM `members` WHERE `uid` = " + `${db.escape(info.id)};`;
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] !== undefined){
-            sql = "SELECT * FROM `members` WHERE `uid` =" + ` '${info.id}';`
+            sql = "SELECT * FROM `members` WHERE `uid` = " + `${db.escape(info.id)};`;
             db.query(sql, function (error, results, fields) {
                 if(error)throw error;
                 if(!hash.check(info.password,results[0]['upwd'])){ // incorrect
@@ -84,14 +84,14 @@ router.post("/sign-up",function(req,res){
     let date = time.currentTime();
     
     sql = "INSERT INTO `members` (`mcode`, `uid`, `upwd`, `uname`, `unickname`, `email`, `udate`, `uip`, `birthdate`)"
-    +` VALUES ('${code}', '${info.id}', '${hashedPW}', '${info.name}', '${info.nickname}', '${info.email}', '${date}', '${ip}', '${info.birth}');`;
+    +` VALUES (${db.escape(code)}, ${db.escape(info.id)}, ${db.escape(hashedPW)}, ${db.escape(info.name)}, ${db.escape(info.nickname)}, ${db.escape(info.email)}, ${db.escape(date)}, ${db.escape(ip)}, ${db.escape(info.birth)});`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         res.send(true);
     });
 });
 router.post("/form-check",function(req,res){
-    sql = "SELECT COUNT(*) FROM `members` WHERE `"+`${req.body.column}`+"` = '"+`${req.body.value}`+"'"; 
+    sql = "SELECT COUNT(*) FROM `members` WHERE "+`${db.escape(req.body.column)}`+" = "+`${db.escape(req.body.value)};`; 
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0]['COUNT(*)'])
@@ -109,7 +109,7 @@ router.get("/lost",function(req,res){
     res.end(html);
 })
 router.post("/lost/id",function(req,res){
-    sql = "SELECT * FROM `members` WHERE `uname` =" + ` '${req.body.name}'` + " AND `email` =" + ` '${req.body.email}';`
+    sql = "SELECT * FROM `members` WHERE `uname` = " + `${db.escape(req.body.name)}` + " AND `email` = " + `${db.escape(req.body.email)};`
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0] != undefined){
@@ -120,13 +120,13 @@ router.post("/lost/id",function(req,res){
     });
 })
 router.post("/lost/pw",function(req,res){
-    sql = "SELECT * FROM `members` WHERE `uname` =" + ` '${req.body.name}'` + " AND `uid` =" + ` '${req.body.id}';`
+    sql = "SELECT * FROM `members` WHERE `uname` = " + `${db.escape(req.body.name)}` + " AND `uid` = " + `${db.escape(req.body.id)};`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0] != undefined){
             const key = hash.generate(`${Math.random()}`).replace('/','');
             const ttl = time.currentTime();
-            sql = "UPDATE `members` SET `uauth` = " +`'{"key":"${key}", "ttl":"${ttl}"}'`+ "WHERE `mcode` = "+`'${results[0].mcode}';`;
+            sql = "UPDATE `members` SET `uauth` = " +`'{"key":"${key}", "ttl":"${ttl}"}'`+ " WHERE `mcode` = "+`${db.escape(results[0].mcode)};`;
             db.query(sql, function(error, results_2, fields){
                 const link = init.connect.address+'/account/lost/'+key;
                 mailer(results[0].email, 'Kangaroo password reset', `<p>Hi! This is Admin of Kangaroo website!</p><br><p>This is your password reset link: <a href="${link}">${link}</a></p><br><p>This link last for 24hours</p>`);
@@ -138,14 +138,14 @@ router.post("/lost/pw",function(req,res){
     })
 })
 router.get("/lost/:keyId",function(req,res){
-    sql = "SELECT * FROM `members` WHERE "+ `json_extract(uauth, '$."key"') = '${req.params.keyId}'`; // key check
+    sql = "SELECT * FROM `members` WHERE "+ `json_extract(uauth, '$."key"') = ${db.escape(req.params.keyId)}`; // key check
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0] != undefined){
             const ttl = JSON.parse(results[0].uauth)['ttl'];
             if(time.timeDifference(ttl) <= 1){      // ttl check 
                     header = parts_header(auth.statusUI(req,res));
-                    main = page_reset(results[0].uid,results[0].mcode,`${req.params.keyId}`);
+                    main = page_reset(results[0].uid,codec.code_num(results[0].mcode),`${req.params.keyId}`);
                     screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
                     html = template(header,main,screen,"<script src='/js/script_reset.js'></script>");
                     res.writeHead(200);
@@ -170,14 +170,15 @@ router.get("/lost/:keyId",function(req,res){
 })
 router.post("/lost",function(req,res){
     const hashedPW = hash.generate(req.body.password);
-    sql = "SELECT * FROM `members` WHERE `mcode` = "+`'${req.body.code}'`+" AND "+`json_extract(uauth, '$."key"') = '${req.body.key}'`;
+    const user_code = codec.decode_num(req.body.code);
+    sql = "SELECT * FROM `members` WHERE `mcode` = "+`${db.escape(user_code)}`+" AND "+`json_extract(uauth, '$."key"') = ${db.escape(req.body.key)}`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0] != undefined){
             const ttl = JSON.parse(results[0].uauth)['ttl'];
             if(time.timeDifference(ttl) <= 1){      // ttl check 
                 sql = "UPDATE `members` SET `upwd` = "+`'${hashedPW}',`+ " `uauth` = "+`NULL`+
-                    " WHERE `mcode` = "+`'${req.body.code}'`+" AND "+`json_extract(uauth, '$."key"') = '${req.body.key}'`;
+                    " WHERE `mcode` = "+`${db.escape(user_code)}`+" AND "+`json_extract(uauth, '$."key"') = ${db.escape(req.body.key)}`;
                 db.query(sql,function(error,results_2,fields){
                     if (error)throw error;
                     req.session.destroy(function(err){
@@ -264,14 +265,14 @@ router.get("/info/message/:Status/:pageNum",function(req,res){
 router.post("/info/message",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     let date = time.currentTime();
-    if(req.body.hidden_id === ""){sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`'${req.body.id}'`;}
-    if(req.body.hidden_id !== ""){sql = "SELECT `mcode` from  `members` WHERE `mcode` = "+`'${codec.decode_num(req.body.hidden_id)}'`;}
+    if(req.body.hidden_id === ""){sql = "SELECT `mcode` from  `members` WHERE `uid` = "+`${db.escape(req.body.id)}`;}
+    if(req.body.hidden_id !== ""){sql = "SELECT `mcode` from  `members` WHERE `mcode` = "+`${db.escape(codec.decode_num(req.body.hidden_id))}`;}
     
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] !== undefined){
             sql = "INSERT INTO `message` (`recv_code`, `sent_code`, `ncontent`, `ndate`)"
-                         +` VALUES ('${results[0].mcode}','${req.session.code}','${req.body.content}', '${date}');`;
+                         +` VALUES ('${results[0].mcode}','${req.session.code}',${db.escape(req.body.content)}, '${date}');`;
             db.query(sql, function (error, results, fields) {
                 if(error)throw error;
                 res.send(true);
@@ -287,7 +288,7 @@ router.delete("/info/message/delete",function(req,res){
     let item = Object.values(req.body).map(x => Number(x));
     sql="";
     for(i=0; i< item.length; i++){
-        sql += ("UPDATE `message` SET `recv_del` = '1' WHERE `ncode` = "+`${item[i]};`);
+        sql += ("UPDATE `message` SET `recv_del` = '1' WHERE `ncode` = "+`${db.escape(item[i])};`);
     } 
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
@@ -297,7 +298,7 @@ router.delete("/info/message/delete",function(req,res){
 router.post("/info/message/user",function(req,res){
     if(!auth.isUser(req,res)){res.send(false);return;}
     let user_code = codec.decode_num(req.body.code);
-    sql = "SELECT `unickname` from  `members` WHERE `mcode` = "+`'${user_code}'`;
+    sql = "SELECT `unickname` from  `members` WHERE `mcode` = "+`${db.escape(user_code)}`;
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] === undefined || results[0].unickname ==='guest'){res.send({0:`Deleted User`, 1:``}); return;}
@@ -317,9 +318,10 @@ router.get("/info/info",function(req,res){
     })
 })
 router.post("/info/info",function(req,res){
-    if(!auth.isUser(req,res)){res.redirect('/');return;}
-    if(req.session.code != req.body.id){res.redirect('/');return;}
-    sql = "UPDATE `members` SET `uname` = "+`'${req.body.name}'`+", `unickname` = "+`'${req.body.nickname}'`+", `birthdate` = "+`'${req.body.birth}'`+", `email` = "+`'${req.body.email}'`+" WHERE `mcode` = "+`'${req.body.id}'`;
+    if(!auth.isUser(req,res)){res.redirect('/');return;};
+    const user_code = codec.decode_num(req.body.id);
+    if(req.session.code != user_code){res.redirect('/');return;};
+    sql = "UPDATE `members` SET `uname` = "+`${db.escape(req.body.name)}`+", `unickname` = "+`${db.escape(req.body.nickname)}`+", `birthdate` = "+`${db.escape(req.body.birth)}`+", `email` = "+`${db.escape(req.body.email)}`+" WHERE `mcode` = "+`${db.escape(user_code)};`;
     db.query(sql, function (error, results, fields) {
         req.session.nickname=req.body.nickname;
         req.session.save(function(){
@@ -339,8 +341,9 @@ router.get("/info/pw",function(req,res){
 router.post("/info/pw",function(req,res){
     let hashedPW;
     if(!auth.isUser(req,res)){res.redirect('/');return;}
-    if(req.session.code != req.body.id){res.redirect('/');return;}
-    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `'${req.body.id}';`
+    const user_code = codec.decode_num(req.body.id);
+    if(req.session.code != user_code){res.redirect('/');return;}
+    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `${db.escape(user_code)};`
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] !== undefined){
@@ -349,7 +352,7 @@ router.post("/info/pw",function(req,res){
                 return;
             }                                             // correct
             hashedPW = hash.generate(req.body.new_pw);
-            sql = "UPDATE `members` SET `upwd` = "+`'${hashedPW}'`+" WHERE `mcode` = "+`'${req.body.id}'`;
+            sql = "UPDATE `members` SET `upwd` = "+`'${hashedPW}'`+" WHERE `mcode` = "+`${db.escape(user_code)}`;
             db.query(sql, function (error, results, fields) {
                 if(error)throw error;
                 res.send(true);
@@ -373,7 +376,7 @@ router.post("/info/dlt",function(req,res){
     if(!auth.isUser(req,res)){res.redirect('/');return;}
     const user_code = codec.decode_num(req.body.id);
     if(req.session.code != user_code){res.redirect('/');return;}
-    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `'${user_code}';`
+    sql = "SELECT `upwd` FROM `members` WHERE `mcode` = " + `${db.escape(user_code)};`
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         if(results[0] !== undefined){
@@ -381,12 +384,12 @@ router.post("/info/dlt",function(req,res){
                 res.send(false);
                 return;
             }                                             // correct
-            sql = "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`'${user_code}';
-                   DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`'${user_code}';
-                   DELETE FROM `+"`comment` WHERE `mcode` = "+`'${user_code}';
-                   DELETE FROM `+"`board` WHERE `mcode` = "+`'${user_code}';
-                   DELETE FROM `+"`members` WHERE `mcode` = "+`'${user_code}';
-                   DELETE FROM `+"`msg` using `message` AS msg LEFT JOIN `members` AS mem1 ON mem1.mcode = msg.recv_code LEFT JOIN `members` AS mem2 ON mem2.mcode = msg.sent_code WHERE mem1.mcode IS NULL and mem2.mcode IS NULL;"
+            sql = "DELETE FROM `comment` using `comment` INNER JOIN `board` ON comment.pcode = board.pcode WHERE board.mcode = "+`${db.escape(user_code)};
+                   DELETE FROM `+"`c1` using `comment` AS c1 INNER JOIN `comment` AS c2 ON c1.groupnum = c2.ccode WHERE c2.mcode = "+`${db.escape(user_code)};
+                   DELETE FROM `+"`comment` WHERE `mcode` = "+`${db.escape(user_code)};
+                   DELETE FROM `+"`board` WHERE `mcode` = "+`${db.escape(user_code)};
+                   DELETE FROM `+"`members` WHERE `mcode` = "+`${db.escape(user_code)};
+                   DELETE FROM `+"`msg` using `message` AS msg LEFT JOIN `members` AS mem1 ON mem1.mcode = msg.recv_code LEFT JOIN `members` AS mem2 ON mem2.mcode = msg.sent_code WHERE mem1.mcode IS NULL and mem2.mcode IS NULL;";
             db.query(sql, function (error, results, fields) {
                 if(error)throw error;
                 req.session.destroy(function(err){
@@ -400,9 +403,9 @@ router.post("/info/dlt",function(req,res){
 })    
 router.post("/user/info",function(req,res){
     let user_code = codec.decode_num(req.body.code);
-    sql = "SELECT `mcode` AS `code`, `unickname` AS `nick`, `udate` AS `date` FROM `members` WHERE `mcode` = "+`'${user_code}';`+
-          "SELECT `pcode` AS `code`, `btitle` AS `title` FROM `board` WHERE `mcode` = "+`'${user_code}'`+" ORDER BY `bdate` desc limit 3;"+
-          "SELECT `pcode` AS `code`, `comment` FROM `comment` WHERE `mcode` = "+`'${user_code}'`+" ORDER BY `cdate` desc limit 3;";
+    sql = "SELECT `mcode` AS `code`, `unickname` AS `nick`, `udate` AS `date` FROM `members` WHERE `mcode` = "+`${db.escape(user_code)};`+
+          "SELECT `pcode` AS `code`, `btitle` AS `title` FROM `board` WHERE `mcode` = "+`${db.escape(user_code)}`+" ORDER BY `bdate` desc limit 3;"+
+          "SELECT `pcode` AS `code`, `comment` FROM `comment` WHERE `mcode` = "+`${db.escape(user_code)}`+" ORDER BY `cdate` desc limit 3;";
     db.query(sql, function (error, results, fields) {
         if(error)throw error;
         results[0][0].code = codec.code_num(results[0][0].code);

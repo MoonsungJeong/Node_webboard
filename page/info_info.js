@@ -1,4 +1,5 @@
 const time = require("../lib/time");
+const codec = require("../lib/codec");
 
 module.exports = function(data){
     return `
@@ -23,7 +24,7 @@ module.exports = function(data){
                         <td><input type="text" name="email" value="${data[0].email}"></td>
                     </tr>
                 </table>
-                <input type="hidden" name="id" value="${data[0].mcode}">
+                <input type="hidden" name="id" value="${codec.code_num(data[0].mcode)}">
                 <button type="submit">change</button>
             </form>
         </div>

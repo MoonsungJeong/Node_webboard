@@ -9,7 +9,7 @@ const msg_dlt_btn = document.querySelector("#msg_dlt_btn");
 const msg_list = document.querySelector("#msg_list");
 
 if(msg_btn){
-    msg_btn.addEventListener("click",function(){msg_box.style.display = "block"; msg_content.id.focus()})
+    msg_btn.addEventListener("click",function(){msg_box.style.display = "block"; msg_box.style.zIndex = "5"; msg_content.id.focus()})
 }
 msg_x_btn.addEventListener("click",function(){
     msg_content.id.readOnly=false;
@@ -21,6 +21,7 @@ msg_x_btn.addEventListener("click",function(){
     
 })
 msg_send_btn.addEventListener("click",function(){
+    if(msg_content.content.value === ""){return;}
     _AJAX_MSG_SEND(msg_content.id.value,msg_content.content.value,msg_content.hidden_id.value);
 })
 if(msg_dlt_btn){

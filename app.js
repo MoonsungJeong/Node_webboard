@@ -15,6 +15,8 @@ const boardRouter = require("./routes/board.js");
 const searchRouter = require("./routes/search.js");
 const adminRouter = require("./routes/admin.js");
 
+const helmet = require("helmet");
+
 // socket -> chating
 const { Server } = require('socket.io');
 const io = new Server(server);
@@ -48,6 +50,7 @@ app.use("/admin",adminRouter);
 app.get('*', (req, res) => {
     res.redirect('/')
 }) 
+app.use(helmet());
 
 server.listen(init.connect.port, init.connect.hostname, function(){
     console.log("Server running at 3000");
