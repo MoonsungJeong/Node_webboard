@@ -65,50 +65,54 @@ router.get("/info/:pageId",function(req,res){
     });
 });
 router.get("/comment/:postId/:pageId", function(req,res){
-    sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+    sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`${db.escape(req.params.postId)}`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
     db.query(sql, function (error,results,fields){
         if (error)throw error;
         res.send(page_comment(req,res,results,req.params.pageId));
      })
 });
 router.get("/:boardId/:pageId/:postId",function(req,res){
+    if(!Number.isInteger(parseInt(req.params.postId))){res.redirect("/");return;}
     page = req.params.pageId;
-    sql = "UPDATE `board` SET `bcount` = `bcount` + 1 WHERE `pcode` = "+`'${req.params.postId}';`+
-            "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}';`;         // post query
-    db.query(sql, function (error, results, fields) {      
+    sql = "UPDATE `board` SET `bcount` = `bcount` + 1 WHERE `pcode` = "+`${db.escape(req.params.postId)};`;
+    db.query(sql, function (error, results, fields) {
         if (error)throw error;
-        sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.params.postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
-        db.query(sql_2, function (error,results_2,fields){
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)};`;         // post query
+        db.query(sql, function (error, results, fields) {
             if (error)throw error;
-            main = page_read(results[1][0], page_comment(req,res,results_2,""), auth.statusReadBtn(req,res,results[1][0]), auth.statusComment(req,res,results[1][0]));  // read post
-            if(req.params.boardId === 'total')sql = "SELECT * FROM `board` ORDER BY `pcode` DESC;";
-            if(req.params.boardId === 'free')sql = "SELECT * FROM `board` WHERE `bcode` = 1 ORDER BY `pcode` DESC;";
-            if(req.params.boardId === 'info')sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";    
-            db.query(sql, function (error, results, fields) {
-                if (error)throw error;    
-                header = parts_header(auth.statusUI(req,res));
-                main += page_board(req.params.boardId, page, req.params.postId, results);    // attach board bottom
-                screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
-                html = template(header,main,screen,
-                    "<script src='/js/script_post.js'></script><script src='/js/script_message.js'></script><script src='/js/script_userinfo.js'></script>");
-                res.writeHead(200);
-                res.end(html);
-            })
-        })
-    })
+            sql_2 = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`${db.escape(req.params.postId)}`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            db.query(sql_2, function (error,results_2,fields){
+                if (error)throw error;
+                main = page_read(results[0], page_comment(req,res,results_2,""), auth.statusReadBtn(req,res,results[0]), auth.statusComment(req,res,results[0]));  // read post
+                if(req.params.boardId === 'total')sql = "SELECT * FROM `board` ORDER BY `pcode` DESC;";
+                if(req.params.boardId === 'free')sql = "SELECT * FROM `board` WHERE `bcode` = 1 ORDER BY `pcode` DESC;";
+                if(req.params.boardId === 'info')sql = "SELECT * FROM `board` WHERE `bcode` = 2 ORDER BY `pcode` DESC;";
+                db.query(sql, function (error, results, fields) {
+                    if (error)throw error;
+                    header = parts_header(auth.statusUI(req,res));
+                    main += page_board(req.params.boardId, page, req.params.postId, results);    // attach board bottom
+                    screen = parts_screen(auth.statusScreenBtn(req,res),auth.statusAdminBtn(req,res),auth.statusAdminPanel(req,res));
+                    html = template(header,main,screen,
+                        "<script src='/js/script_post.js'></script><script src='/js/script_message.js'></script><script src='/js/script_userinfo.js'></script>");
+                    res.writeHead(200);
+                    res.end(html);
+                });
+            });
+        });
+    });
 });
 router.post("/comment/new",function(req,res){
     const ip = req.connection.remoteAddress;
     const date = time.currentTime();
     sql =   "INSERT INTO `comment` (`pcode`, `mcode`, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`)" 
-            +` VALUES ('${req.body.post}','${req.session.code}','${req.body.content}','${req.body.class}', 0, -1, '${date}', '${ip}');
+            +` VALUES (${db.escape(req.body.post)},${req.session.code},${db.escape(req.body.content)},${db.escape(req.body.class)}, 0, -1, ${db.escape(date)}, ${db.escape(ip)});
             SELECT LAST_INSERT_ID();`;
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
-        sql = "UPDATE `comment` SET `groupnum` = "+ `'${results[1][0]['LAST_INSERT_ID()']}' WHERE `+"`ccode` = "+`${results[1][0]['LAST_INSERT_ID()']}`;
+        sql = "UPDATE `comment` SET `groupnum` = "+ `${results[1][0]['LAST_INSERT_ID()']} WHERE `+"`ccode` = "+`${results[1][0]['LAST_INSERT_ID()']}`;
         db.query(sql, function (error, results, fields) {
             if (error)throw error;
-            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`${db.escape(req.body.post)}`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
                 res.send(page_comment(req,res,results,""));
@@ -123,14 +127,14 @@ router.post("/comment/:ccodeId",function(req,res){
         res.send("no");
         return;
     }
-    sql = "SELECT `corder` FROM `comment` WHERE `groupnum` =" + `${req.params.ccodeId}` + " ORDER BY `corder` DESC LIMIT 1";
+    sql = "SELECT `corder` FROM `comment` WHERE `groupnum` =" + `${db.escape(req.params.ccodeId)}` + " ORDER BY `corder` DESC LIMIT 1";
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         sql =   "INSERT INTO `comment` (`pcode`, `mcode`, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`)" 
-            +` VALUES ('${req.body.post}','${req.session.code}','${req.body.content}','${req.body.class}', '${results[0].corder+1}', '${req.params.ccodeId}', '${date}', '${ip}');`;
+            +` VALUES (${db.escape(req.body.post)},${req.session.code},${db.escape(req.body.content)},${db.escape(req.body.class)}, ${db.escape(results[0].corder+1)}, ${db.escape(req.params.ccodeId)}, ${db.escape(date)}, ${db.escape(ip)});`;
         db.query(sql, function (error, results, fields) {
             if (error)throw error;
-            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${req.body.post}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`${db.escape(req.body.post)}`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
                 res.send(page_comment(req,res,results,""));
@@ -144,7 +148,7 @@ router.delete("/comment/:ccodeId",function(req,res){
         res.send("no");
         return;
     }
-    sql = "SELECT * from `comment` WHERE `ccode` = "+`${req.params.ccodeId}`;
+    sql = "SELECT * from `comment` WHERE `ccode` = "+`${db.escape(req.params.ccodeId)};`;
     db.query(sql, function(error, results, fields){
         if(error)throw error;
         postId = results[0]['pcode'];
@@ -152,10 +156,10 @@ router.delete("/comment/:ccodeId",function(req,res){
             res.send("no");
             return;
         }
-        sql = "UPDATE `comment` SET `cdlt` = '1' WHERE `ccode` = "+`${req.params.ccodeId}`;
+        sql = "UPDATE `comment` SET `cdlt` = '1' WHERE `ccode` = "+`${db.escape(req.params.ccodeId)};`;
         db.query(sql, function(error, results,fields){
             if(error)throw error;
-            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`'${postId}'`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
+            sql = "SELECT `ccode`, comment.pcode, comment.mcode, `comment`, `cclass`, `corder`, `groupnum`, `cdate`, `cip`, `cdlt`, `unickname`, board.mcode AS p_mcode from `comment` LEFT JOIN `members` ON comment.mcode = members.mcode LEFT JOIN `board` ON comment.pcode = board.pcode WHERE comment.pcode ="+`${db.escape(postId)}`+" ORDER BY `groupnum` DESC, `corder` DESC"; // comment query
             db.query(sql, function (error,results,fields){
                 if (error)throw error;
                 res.send(page_comment(req,res,results,""));
@@ -177,14 +181,13 @@ router.post("/new",function(req,res){
     const ip = req.connection.remoteAddress;
     const hashedPW = hash.generate(info.password);
     const date = time.currentTime();
-    
     if(auth.isUser(req,res)){
-        sql = "SELECT mcode FROM `members` WHERE `unickname` =" + `'${req.session.nickname}';`
+        sql = "SELECT mcode FROM `members` WHERE `mcode` =" + `${req.session.code};`;
         db.query(sql, function (error, results, fields) {
             if (error)throw error;
             mcode = results[0].mcode;
             sql = "INSERT INTO `board` (`bcode`, `mcode`, `btitle`, `bcontent`, `bdate`, `bip`, `author`, `ppwd`)"
-                         +` VALUES ('${info.board}','${mcode}','${info.title}','${info.content}','${date}', '${ip}', '${req.session.nickname}', NULL);`;
+                         +` VALUES (${db.escape(info.board)},${db.escape(mcode)},${db.escape(info.title)},${db.escape(info.content)},${db.escape(date)}, ${db.escape(ip)}, '${req.session.nickname}', NULL);`;
             db.query(sql, function (error, results, fields) {
                 if (error)throw error;
                 res.redirect('/board/total/1');
@@ -192,7 +195,7 @@ router.post("/new",function(req,res){
         });    
     }else{
         sql = "INSERT INTO `board` (`bcode`, `mcode`, `btitle`, `bcontent`, `bdate`, `bip`, `author`, `ppwd`)"
-                         +` VALUES ('${info.board}','0','${info.title}','${info.content}','${date}', '${ip}', '${info.author}', '${hashedPW}');`;
+                         +` VALUES (${db.escape(info.board)},'0',${db.escape(info.title)},${db.escape(info.content)},${db.escape(date)}, ${db.escape(ip)}, ${db.escape(info.author)}, ${db.escape(hashedPW)});`;
         db.query(sql, function (error, results, fields) {
             if (error)throw error;
             res.redirect('/board/total/1');
@@ -201,7 +204,7 @@ router.post("/new",function(req,res){
 });
 router.post("/review/:postId",function(req,res){
     if(auth.isUser(req,res)){
-        sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
         db.query(sql, function (error, results, fields){
             if(results[0].mcode === req.session.code){
                 req.session.post = hash.generate(req.params.postId);
@@ -212,7 +215,7 @@ router.post("/review/:postId",function(req,res){
         })
     }else{
         if(req.body.pw != null){
-            sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+            sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
             db.query(sql, function (error, results, fields){
                 if(hash.check(req.body.pw,results[0].ppwd)){
                     req.session.post = hash.generate(req.params.postId);
@@ -227,13 +230,12 @@ router.post("/review/:postId",function(req,res){
     }
 });
 router.get("/review/:postId",function(req,res){
-    if(req.session.post == null){
-        console.log("unexpected access");
+    if(req.session.post == null){   // unexpected access
         res.redirect("/");
         return;
     } 
     if(hash.check(req.params.postId,req.session.post)){
-        sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
         db.query(sql, function (error, results, fields){
             header = parts_header(auth.statusUI(req,res));
             main = page_update(results[0].pcode, results[0].btitle, results[0].bcontent, results[0].bcode);
@@ -242,21 +244,19 @@ router.get("/review/:postId",function(req,res){
             res.writeHead(200);
             res.end(html);
         });
-    }else{
-        console.log("wrong user access");
+    }else{  // wrong user access
         delete req.session.post;
         req.session.save();
         res.redirect("/");
     }
 });
 router.put("/review/:postId",function(req,res){
-    if(req.session.post == null){
-        console.log("unexpected access");
+    if(req.session.post == null){   // unexpected access
         res.redirect("/");
         return;
     }
     if(hash.check(req.params.postId,req.session.post)){
-        sql = "UPDATE `board` SET `bcode` = "+`'${req.body.board}',`+" `btitle` = "+`'${req.body.title}',`+" `bcontent` = "+`'${req.body.content}' `+"WHERE `board`.`pcode` = "+`${req.params.postId};`;
+        sql = "UPDATE `board` SET `bcode` = "+`${db.escape(req.body.board)},`+" `btitle` = "+`${db.escape(req.body.title)},`+" `bcontent` = "+`${db.escape(req.body.content)} `+"WHERE `board`.`pcode` = "+`${db.escape(req.params.postId)};`;
         db.query(sql, function (error, results, fields){
             if (error)throw error;
             delete req.session.post;
@@ -267,10 +267,10 @@ router.put("/review/:postId",function(req,res){
 });
 router.delete("/list/:postId",function(req,res){
     if(auth.isUser(req,res)){
-        sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+        sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
         db.query(sql, function (error, results, fields){
             if(results[0].mcode === req.session.code){
-                sql = "DELETE FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+                sql = "DELETE FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
                 db.query(sql, function (error, results, fields){
                     res.send("ok");
                 })
@@ -280,10 +280,10 @@ router.delete("/list/:postId",function(req,res){
         })
     }else{
         if(req.body.pw != null){
-            sql = "SELECT * FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+            sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)};`;
             db.query(sql, function (error, results, fields){
                 if(hash.check(req.body.pw,results[0].ppwd)){
-                    sql = "DELETE FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+                    sql = "DELETE FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)};`;
                     db.query(sql, function (error, results, fields){
                         res.send("ok");
                     })

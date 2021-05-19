@@ -56,7 +56,7 @@ function _AJAX_DELETE_SEND(postId){
             }
             if(oReq.responseText === "ok"){
                 alert("Delete success!!");
-                location.href=document.referrer;
+                location.href=`/board/total/1`;
             }
             if(oReq.responseText === "no"){
                 alert("Not your post!");
