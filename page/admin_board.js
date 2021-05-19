@@ -13,6 +13,7 @@ module.exports = function(results){
                 <div>
                     <div>${sanitizeHtml(info.btitle)}</div>
                     <div class="font_gray f_size_1">
+                        <span>${sanitizeHtml(info.author)} | </span>
                         <span>${time.formatDate_1(info.bdate)} | </span>
                         <span>view ${info.bcount}</span>
                     </div>

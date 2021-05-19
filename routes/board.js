@@ -270,7 +270,8 @@ router.delete("/list/:postId",function(req,res){
         sql = "SELECT * FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
         db.query(sql, function (error, results, fields){
             if(results[0].mcode === req.session.code){
-                sql = "DELETE FROM `board` WHERE `pcode` ="+`${db.escape(req.params.postId)}`;
+                sql =   "DELETE FROM `comment` WHERE `pcode` = "+`${db.escape(req.params.postId)};
+                         DELETE FROM `+"`board` WHERE `pcode` = "+`${db.escape(req.params.postId)};`;
                 db.query(sql, function (error, results, fields){
                     res.send("ok");
                 })

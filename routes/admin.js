@@ -99,7 +99,8 @@ router.get("/board",function(req,res){
 });
 router.get("/board/dlt/:postId",function(req,res){
     if(!auth.isUser(req,res) || (req.session.code !== init.admin.code)){res.redirect('/');return;}
-    sql = "DELETE FROM `board` WHERE `pcode` ="+`'${req.params.postId}'`;
+    sql =   "DELETE FROM `comment` WHERE `pcode` = "+`${db.escape(req.params.postId)};
+             DELETE FROM `+"`board` WHERE `pcode` = "+`${db.escape(req.params.postId)};`;
     db.query(sql, function (error, results, fields) {
         res.send(true);
     })            
