@@ -91,7 +91,7 @@ router.post("/sign-up",function(req,res){
     });
 });
 router.post("/form-check",function(req,res){
-    sql = "SELECT COUNT(*) FROM `members` WHERE "+`${db.escape(req.body.column)}`+" = "+`${db.escape(req.body.value)};`; 
+    sql = "SELECT COUNT(*) FROM `members` WHERE `"+`${req.body.column}`+"` = "+`${db.escape(req.body.value)};`; 
     db.query(sql, function (error, results, fields) {
         if (error)throw error;
         if(results[0]['COUNT(*)'])

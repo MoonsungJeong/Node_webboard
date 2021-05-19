@@ -1,4 +1,5 @@
 const form = document.getElementById("info_form");
+const nick_check = form.nickname;
 const form_2 = document.getElementById("pw_form");
 const form_3 = document.getElementById("dlt_form");
 
@@ -7,6 +8,7 @@ function _PRE_CHECK_INFO(e){
     const nickname = form.nickname.value;
     const birth = form.birth.value;
     const email = form.email.value;
+    const nickname_validation = form.nickname.nextSibling.innerText;
 
     if(name == null || name == ""){
         alert("Please write your Name");
@@ -31,6 +33,11 @@ function _PRE_CHECK_INFO(e){
     if(!confirm("Are you sure?")){
         return false;
     }
+    if(nickname_validation != ""){
+        alert("Please write other Nickname");
+        form.nickname.focus();
+        return false;
+    }
     _AJAX_INFO_SEND(form);
     return false;
 }
@@ -50,6 +57,31 @@ function _AJAX_INFO_SEND(form){
             if(oReq.responseText === "true"){
                 alert("Info Change Success!!");
                 location.href="/account/info/info";
+            }
+        }
+    }
+}
+nick_check.addEventListener("focusout",function(event){
+    _AJAX_FORM_CHECK(event.target.value, "unickname",this);
+});
+// _AJAX_FORM_CHECK from script_signup.js
+function _AJAX_FORM_CHECK(value, column, node){
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST",`${init.hostname}/account/form-check/`);  // Ajax connect
+    oReq.setRequestHeader('Content-Type', 'application/json');  // Ajax request header
+    oReq.send(JSON.stringify({                                  // Ajax send with JSON
+        'value' : `${value}`,
+        'column': `${column}`
+    }));
+    oReq.onreadystatechange = function(){                   // Ajax result from Server
+        if(oReq.readyState === 4 && oReq.status === 200){
+            if(oReq.responseText === "true"){
+                node.style.border="2px solid red";
+                node.nextSibling.innerText="Choose Other!";
+                node.nextSibling.style.color="red";
+            }else{
+                node.style.border="";
+                node.nextSibling.innerText="";
             }
         }
     }

@@ -13,7 +13,7 @@ module.exports = function(data){
                     </tr>
                     <tr>
                         <td>Nick</td>
-                        <td><input type="text" name="nickname" value="${data[0].unickname}"></td>
+                        <td><input type="text" name="nickname" value="${data[0].unickname}"><span><span></td>
                     </tr>
                     <tr>
                         <td>Birth</td>
