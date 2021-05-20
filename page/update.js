@@ -7,7 +7,7 @@ module.exports = function(code, title, content, category){
         <section>
             <form class="center" action="/board/review/${code}" id="update_form" method="get" onsubmit="return _PRE_CHECK_UPDATE()" onload="test()">
                 <div>
-                    <div>Update!!!!</div>
+                    <div>Update</div>
                     <div><input type="hidden" name="code" value="${code}"></div>
                     <div><input type="hidden" name="author" value="NULL"></div>
                     <div><input type="hidden" name="password" value="NULL"></div>

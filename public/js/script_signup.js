@@ -19,8 +19,18 @@ function _PRE_CHECK_SIGNUP(e){
         form.id.focus();
         return false;
     }
+    if(id.length > 20){
+        alert("ID is too long ( ID < 20 )");
+        form.id.focus();
+        return false;
+    }
     if(password == null || password == ""){
         alert("Please write your password");
+        form.password.focus();
+        return false;
+    }
+    if(password.length > 20){
+        alert("Password is too long ( Password < 20 )");
         form.password.focus();
         return false;
     }
@@ -34,6 +44,11 @@ function _PRE_CHECK_SIGNUP(e){
         form.name.focus();
         return false;
     }
+    if(name.length > 30){
+        alert("Name is too long ( Name < 30 )");
+        form.name.focus();
+        return false;
+    }
     if(birth == null || birth == ""){
         alert("Please write your Birth");
         form.birth.focus();
@@ -44,8 +59,18 @@ function _PRE_CHECK_SIGNUP(e){
         form.nickname.focus();
         return false;
     }
+    if(nickname.length > 30){
+        alert("Nickname is too long ( Nickname < 30 )");
+        form.nickname.focus();
+        return false;
+    }
     if(email == null || email == ""){
         alert("Please write your Email");
+        form.email.focus();
+        return false;
+    }
+    if(email.length > 30){
+        alert("Email is too long ( Email < 30 )");
         form.email.focus();
         return false;
     }

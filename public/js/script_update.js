@@ -22,6 +22,11 @@ function _PRE_CHECK_UPDATE(e){
         form.title.focus();
         return false;
     }
+    if(title.length > 100){
+        alert("title is too long ( title < 100 )");
+        form.title.focus();
+        return false;
+    }
     if(content == null || content == ""){
         alert("Please write content");
         form.content.focus();

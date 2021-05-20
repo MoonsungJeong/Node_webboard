@@ -92,6 +92,11 @@ function _COMMENT_CHECK(form){
     if(form.content.value == null || form.content.value == ""){
         return false;
     }
+    if(form.content.value.length > 100){
+        alert("comment is too long ( comment < 100 )");
+        form.content.focus();
+        return false;
+    }
     var oReq = new XMLHttpRequest();
     if(form.class.value == '0'){      // first comment
         oReq.open("POST",`${init.hostname}/board/comment/new`);  // Ajax connect

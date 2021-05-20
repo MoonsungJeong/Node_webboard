@@ -1,5 +1,5 @@
 const form = document.getElementById("info_form");
-const nick_check = form.nickname;
+if(form){const nick_check = form.nickname;}
 const form_2 = document.getElementById("pw_form");
 const form_3 = document.getElementById("dlt_form");
 
@@ -15,8 +15,18 @@ function _PRE_CHECK_INFO(e){
         form.name.focus();
         return false;
     }
+    if(name.length > 30){
+        alert("Name is too long ( Name < 30 )");
+        form.name.focus();
+        return false;
+    }
     if(nickname == null || nickname == ""){
         alert("Please write your Nickname");
+        form.nickname.focus();
+        return false;
+    }
+    if(nickname.length > 30){
+        alert("Nickname is too long ( Nickname < 30 )");
         form.nickname.focus();
         return false;
     }
@@ -30,6 +40,11 @@ function _PRE_CHECK_INFO(e){
         form.email.focus();
         return false;
     }  
+    if(email.length > 30){
+        alert("Email is too long ( Email < 30 )");
+        form.email.focus();
+        return false;
+    } 
     if(!confirm("Are you sure?")){
         return false;
     }
@@ -61,9 +76,11 @@ function _AJAX_INFO_SEND(form){
         }
     }
 }
-nick_check.addEventListener("focusout",function(event){
-    _AJAX_FORM_CHECK(event.target.value, "unickname",this);
-});
+if(form){
+    nick_check.addEventListener("focusout",function(event){
+        _AJAX_FORM_CHECK(event.target.value, "unickname",this);
+    });
+}
 // _AJAX_FORM_CHECK from script_signup.js
 function _AJAX_FORM_CHECK(value, column, node){
     var oReq = new XMLHttpRequest();
@@ -97,6 +114,11 @@ function _PRE_CHECK_PW(e){
     }
     if(new_pw == null || new_pw == ""){
         alert("Please write your New Password");
+        form_2.new_pw.focus();
+        return false;
+    }
+    if(new_pw.length > 20){
+        alert("New Password is too long ( New Password < 20 )");
         form_2.new_pw.focus();
         return false;
     }

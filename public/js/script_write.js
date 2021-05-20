@@ -12,13 +12,28 @@ function _PRE_CHECK_WRITE(e){
         form.author.focus();
         return false;
     }
+    if(author.length > 30){
+        alert("author is too long ( author < 30 )");
+        form.author.focus();
+        return false;
+    }
     if(password == null || password == ""){
         alert("Please write password");
         form.password.focus();
         return false;
     }
+    if(password.length > 20){
+        alert("Password is too long ( Password < 20 )");
+        form.password.focus();
+        return false;
+    }
     if(title == null || title == ""){
         alert("Please write title");
+        form.title.focus();
+        return false;
+    }
+    if(title.length > 100){
+        alert("title is too long ( title < 100 )");
         form.title.focus();
         return false;
     }
