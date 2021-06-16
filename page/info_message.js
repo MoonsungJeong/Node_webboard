@@ -60,7 +60,7 @@ module.exports = function(data,Status,pageNum){
     <section>
         <div class="board flex_between test">
             <h2>
-                <span class="font_gray">7 message (1/1 page)</span>
+                <span class="font_gray">${data.length} post (${pageNum}/${totalPage} page)</span>
             </h2>
             <select onchange="_MSG_STATUS_CHANGE(this.value)" class="padding_right">
                 ${select}
