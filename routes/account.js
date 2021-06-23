@@ -400,7 +400,7 @@ router.post("/info/dlt",function(req,res){
         }
         res.send(false);
     })
-})    
+})
 router.post("/user/info",function(req,res){
     let user_code = codec.decode_num(req.body.code);
     sql = "SELECT `mcode` AS `code`, `unickname` AS `nick`, `udate` AS `date` FROM `members` WHERE `mcode` = "+`${db.escape(user_code)};`+

@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `board` (
 	`bip` VARCHAR(15),
 	`bcount` Numeric(5,0) NOT NULL DEFAULT '0',
 	`blikes` Numeric(4,0) NOT NULL DEFAULT '0',
-	`ppwd` VARCHAR(20) DEFAULT NULL,
+	`ppwd` VARCHAR(60) DEFAULT NULL,
 	`author` VARCHAR(30) DEFAULT NULL,
 	PRIMARY KEY (`pcode`),
 	FOREIGN KEY (`mcode`) REFERENCES members (`mcode`)
