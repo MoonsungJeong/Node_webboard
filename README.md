@@ -68,7 +68,6 @@ Chat
 |       |- Search Function ( Filter: Title, Content, Author) |
 |5. Chat   |- Main Page. Chat Function (User only) |
 
-
 #### 4. Technology
 HTML, CSS, JavaScript, NodeJS, Mysql
 
@@ -120,7 +119,7 @@ NPM: Express, Session-file-store, body-parser, helmet, sock-io, bcrypt, nodemail
     - Comment
     - Message
 
-* Front pages
+* Front page (No photos)
 * Server Function 
 
 AC : account, AD : admin, B : board, S : search
@@ -181,3 +180,96 @@ AC : account, AD : admin, B : board, S : search
     AD /board/dlt/:postId [get] :
 
     chat : socket io     
+
+* Database Tables
+
+|Members|   |   |   |   |
+|-- |------------|--------------|---------------|-----|    
+|Key|Logical_Name|Physical_Name |Datatype       |NULL?|
+| P |Member_code |mcode         |Number(5,0)    |N.N  |
+|   |Account     |uid           |Varchar(20)    |N.N  |
+|   |Password    |upwd          |Varchar(60)    |N.N  |
+|   |Name        |uname         |Varchar(30)    |N.N  |
+|   |NickName    |unickname     |Varchar(30)    |N.N  |
+|   |Email       |email         |Varchar(30)    |N.N  |
+|   |SignupDate  |udate         |Datetime       |N.N  |
+|   |SignupIp    |uip           |Varchar(15)    |NULL |
+|   |BirthDate   |birthdate     |Datetime       |NULL |
+|   |AuthJson    |uauth         |Json           |NULL |
+
+|Board|   |   |   |   |
+|-- |------------|--------------|---------------|-----|    
+|Key|Logical_Name|Physical_Name |Datatype       |NULL?|
+| P |Post_code   |pcode         |Int(10)        |N.N, Auto Incresement|
+|   |Board_code  |bcode         |Number(5,0)    |N.N  |
+| F |Member_code |mcode         |Number(5,0)    |N.N  |
+|   |Title       |btitle        |Varchar(100)   |N.N  |
+|   |Content     |bcontent      |Text           |N.N  |
+|   |BoardDate   |bdate         |Datetime       |N.N  |
+|   |BoardIp     |bip           |Varchar(15)    |NULL |
+|   |Count       |bcount        |Number(5,0)    |N.N,  Default 0|
+|   |Likes       |blikes        |Number(4,0)    |N.N,  Default 0|
+|   |Post_pwd    |ppwd          |Varchar(60)    |NULL, Default NULL|
+|   |Author      |author        |Varchar(30)    |NULL, Default NULL|
+
+|Comment|   |   |   |   |
+|-- |------------|--------------|---------------|-----|    
+|Key|Logical_Name|Physical_Name |Datatype       |NULL?|
+| P |IndexComment|ccode         |Int(10)        |N.N, Auto Incresement|
+| F |Post_code   |pcode         |Int(10)        |N.N  |
+| F |Member_code |mcode         |Number(5,0)    |N.N  |
+|   |Comment     |comment       |varchar(100)   |N.N  |
+|   |Class (parent,child)|cclass|Number(1,0)    |N.N  |
+|   |Order (sequence in a group)|corder|Number(4,0)|N.N|
+|   |GroupNum (IndexComment, parent's index for child)|groupnum|Number(4,0)|N.N|
+|   |Date        |cdate         |datetime       |N.N|
+|   |Ip          |cip           |varchar(15)    |NULL|
+|   |Delete      |cdlt          |Boolean        |N.N, Default 0|
+
+|Comment|   |   |   |   |
+|-- |------------|--------------|---------------|-----|    
+|Key|Logical_Name|Physical_Name |Datatype       |NULL?|
+| P |Note_code   |ncode         |Int(10)        |N.N, Auto Incresement|
+|   |Recv_code   |recv_code     |Number(5,0)    |N.N  |
+|   |Sent_code   |sent_code     |Number(5,0)    |N.N  |
+|   |Note        |ncomment      |TEXT           |N.N  |
+|   |Date_sent   |ndate         |datetime       |N.N  |
+|   |Recv_del    |recv_del      |boolean        |N.N, Default 0|
+
+#### 6. Development Process
+##### ①. NodeJS server setting + PM2
+-> make index.html, image, css and send to client
+
+-> connect to DB (mysql)
+##### ②. Front page Desgin
+-> make HTML Tags and add 'id', 'class'
+
+-> make css and apply
+
+##### ③. DB table sql
+-> make sql to set up DB
+
+##### ④. Server Function Implement
+-sign up
+
+-form check
+
+-log in/out
+
+-CRUD (post, comment)
+
+-search
+
+-lost
+
+-info
+
+-message
+
+-user-info
+
+-chat
+
+-admin
+
+-security setup
