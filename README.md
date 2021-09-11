@@ -125,59 +125,61 @@ NPM: Express, Session-file-store, body-parser, helmet, sock-io, bcrypt, nodemail
 AC : account, AD : admin, B : board, S : search
 
        / [get]          : read "main" front page
-    AC /sign-up [get]   : 
-    AC /sign-up [post]  :
-    AC /form-check[post]:
-    AC /login [get]     :
-    AC /login [post]    :
-    AC /logout [get]    :
-    AC /lost [get]      :
-    AC /lost/id [post]  :
-    AC /lost/pw [post]  :
-    AC /lost/:keyid[get]:
-    AC /lost [post]     :
+    AC /sign-up [get]   : read "sign up" page
+    AC /sign-up [post]  : create new member and redirect to "login" page
+    AC /form-check[post]: check columns (ID, Nick) of "sign up" page
+    AC /login [get]     : read "login" page
+    AC /login [post]    : "login" proccess. If(true), redirect to "main" page
+    AC /logout [get]    : expire login session
+    AC /lost [get]      : read "lost" page
+    AC /lost/id [post]  : lost-id process
+    AC /lost/pw [post]  : lost-pw process
+    AC /lost/:keyid[get]: keyId check. If(true), read pw-reset page 
+    AC /lost [post]     : key check. If(true), update pw-reset redirect to "main" page
 
-    B /total/:pageId [get]  :
-    B /free/:pageId [get]   :
-    B /info/:pageId [get]   :
-    B /comment/postId/:pageId [get]:
-    B /:boardId/:pageId/:postId [get]:
-    B /comment/new [post]   :
-    B /comment/:ccodeId [post]:
-    B /comment/:ccodeId [delete]:
-    B /new [get]            :
-    B /new [post]           :
-    B /review/:postId [post]:
-    B /review/:postId [get] :
-    B /review/:postId [put] :
-    B /list/:postId [delete]:
-    B /cancel [get]         :
+    B /total/:pageId [get]  : read "total board"
+    B /free/:pageId [get]   : read "free board"
+    B /info/:pageId [get]   : read "info board"
+    B /comment/postId/:pageId [get]: read "comment of postId" + pageId
+    B /:boardId/:pageId/:postId [get]: read "post(postId)" in boardId + pageId
+    B /comment/new [post]   : create new "comment"
+    B /comment/:ccodeId [post]: create new "sub-comment" of comment (ccodeId)
+    B /comment/:ccodeId [delete]: delete "comment" (ccodeId)
+    B /new [get]            : read "new post" page
+    B /new [post]           : "new post" process
+    B /review/:postId [post]: post-user check review ok
+    B /review/:postId [get] : read "post review" page
+    B /review/:postId [put] : update post process
+    B /list/:postId [delete]: delete post process
+    B /cancel [get]         : "review cancel" process
 
-    AC /info/page [get]     :
-    AC /info/post/:pageNum [get]:
-    AC /info/comment/:pageNum [get]:
-    AC /info/message/:status/:pageNum [get]:
-    AC /info/message [post] :
-    AC /info/message/delete [delete]:
-    AC /info/message/user [post]:
-    AC /info/info [get]     :
-    AC /info/info [post]    :
-    AC /info/pw [get]       :
-    AC /info/pw [post]      :
-    AC /info/dlt [get]      :
-    AC /info/dlt [post]     :
-    AC /user/info [post]    :
+    AC /info/page [get]     : read "MyPage" page
+    AC /info/post/:pageNum [get]: read "Mypage-post" page
+    AC /info/comment/:pageNum [get]: read "Mypage-comment" page
+    AC /info/message/:status/:pageNum [get]: read "Mypage-message" page
+    AC /info/message [post] : "message send" process
+    AC /info/message/delete [delete]: "message delete" process
+    AC /info/message/user [post]: user-info search for message
+    AC /info/info [get]     : read "Mypage-info" page
+    AC /info/info [post]    : "info change" process
+    AC /info/pw [get]       : read "Mypage-pw" page
+    AC /info/pw [post]      : "pw change" process
+    AC /info/dlt [get]      : read "Mypage-dlt" page
+    AC /info/dlt [post]     : "Account dlt" process
+    AC /user/info [post]    : user-info search for brief
 
-    S /:option/:keyword/:pageId [get]:
-    S /:option/:keyword/:pageId/:postId [get]:
+    S /:option/:keyword/:pageId [get]: search function
+    S /:option/:keyword/:pageId/:postId [get]: read post in search function
 
-    AD /member [get]            :
-    AD /member/:userId [get]    :
-    AD /member/dlt/:userId [get]:
-    AD /member/post/:userId [get]:
-    AD /member/comment/:userId [get]:
-    AD /board [get]             :
-    AD /board/dlt/:postId [get] :
+    AD /member [get]            : read "admin member" page
+    AD /member/:userId [get]    : read "member(userId) info"
+    AD /member/dlt/:userId [get]: delete "member(userId)"
+    AD /member/post/:userId [get]: read "post" of member(userId)
+    AD /member/comment/:userId [get]: read "comment" of member(userId)
+    AD /board [get]             : read "admin board" page
+    AD /board/dlt/:postId [get] : delete "post(postId)"
+
+    chat: socket.io
 
     chat : socket io     
 
