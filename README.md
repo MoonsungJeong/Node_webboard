@@ -7,12 +7,18 @@ This is practice project with **Node.js**.
 
 ---
 ### 1. How to set up
+#### 1-1. File list to set up
 
+* init_template.js
+* public/js/script_init.js
+* db.txt
+* web_board_data.sql
 
-
+#### 1-2. Process to set up
+##### ①. 
 ---
 ### 2. Project Plan
-#### 1. Service Definition
+#### 2-1. Service Definition
 
 General Idea
 * Traditional Web Board system
@@ -42,14 +48,14 @@ Database
 Chat
 * There is a chat function (no DB). Use Socket IO
 
-#### 2. Market Product (Web CMS)
+#### 2-2. Market Product (Web CMS)
 * Wordpress
 * Drupal
 * Joomla
 * XpressEngine
 * GNU Board
 
-#### 3. Minimum Visual Product
+#### 2-3. Minimum Visual Product
 |   |   |
 |--|--|    
 |1. Account|- Sign up|
@@ -68,14 +74,14 @@ Chat
 |       |- Search Function ( Filter: Title, Content, Author) |
 |5. Chat   |- Main Page. Chat Function (User only) |
 
-#### 4. Technology
+#### 2-4. Technology
 HTML, CSS, JavaScript, NodeJS, Mysql
 
 AJax, GmailAPI
 
 NPM: Express, Session-file-store, body-parser, helmet, sock-io, bcrypt, nodemailer, mysql, sanitizeHtml
 
-#### 5. Project Detail Design ( Page, Server, Database)
+#### 2-5. Project Detail Design ( Page, Server, Database)
  * Front Page List
     - Index(main)
     - Log in
@@ -238,7 +244,7 @@ AC : account, AD : admin, B : board, S : search
 |   |Date_sent   |ndate         |datetime       |N.N  |
 |   |Recv_del    |recv_del      |boolean        |N.N, Default 0|
 
-#### 6. Development Process
+#### 2-6. Development Process
 ##### ①. NodeJS server setting + PM2
 -> make index.html, image, css and send to client
 
