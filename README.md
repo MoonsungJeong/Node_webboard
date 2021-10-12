@@ -36,7 +36,7 @@ This is practice project with **Node.js**.
     hostname : 'http://192.168.1.223:3000'
 ##### ⑤. Use SQL in "db.txt" to set up database structure
 ##### ⑥. Use SQL in "web_board_data.sql" to insert example data into database
-#### 1-3. Email function (/lost/pw - Password search)
+#### 1-3. Email function for password search (/lost/pw - not necessary to run this project)
 ##### Fill in the "email" of "init.js" 
 ##### Gmail API is used
 ##### refer this website: https://dev.to/chandrapantachhetri/sending-emails-securely-using-node-js-nodemailer-smtp-gmail-and-oauth2-g3a
