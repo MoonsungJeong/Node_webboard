@@ -4,6 +4,7 @@ This is practice project with **Node.js**.
 ## summary
 1. How to set up
 2. Project Plan
+3. Extra
 
 ---
 ### 1. How to set up
@@ -15,7 +16,38 @@ This is practice project with **Node.js**.
 * web_board_data.sql
 
 #### 1-2. Process to set up
-##### ①. 
+##### ①. "npm install" to install modules into node_modules
+##### ②. Copy "init_template.js" and paste as "init.js"
+##### ③. Fill in the "connect" and "db" section of "init.js" (depend on your IP address)
+##### Example : 
+    connect:{
+        hostname:'192.168.1.223',
+        port:'3000',
+        address:'http:192.168.1.223:3000'
+    },
+    db:{
+        host:'127.0.0.1',
+        user:'root',
+        password:'P@ssw0rd',
+        database:'web_board'
+    },
+##### ④. Fill in the hostname of "script_init.js" 
+##### Example : 
+    hostname : 'http://192.168.1.223:3000'
+##### ⑤. Use SQL in "db.txt" to set up database structure
+##### ⑥. Use SQL in "web_board_data.sql" to insert example data into database
+#### 1-3. Email function (/lost/pw - Password search)
+##### Fill in the "email" of "init.js" 
+##### Gmail API is used
+##### refer this website: https://dev.to/chandrapantachhetri/sending-emails-securely-using-node-js-nodemailer-smtp-gmail-and-oauth2-g3a
+    email:{
+            address:'',
+            clientId:'',
+            clientSecret:'',
+            refreshToken:'',
+            accessToken:''
+    },
+##### address is "Email Address"
 ---
 ### 2. Project Plan
 #### 2-1. Service Definition
@@ -281,3 +313,12 @@ AC : account, AD : admin, B : board, S : search
 -admin
 
 -security setup
+
+---
+### 3. Extra
+#### This is my first Node project.
+#### I really tried my best to make it but there are many uncompleted point.
+- Validation check of front side is very simple.
+- Validation check of server side isn't existed (It was too late to change all process)
+#### Plase leave any comment as a "new issue" if you find something to fix or have a opinion about this project.
+#### Thank you :) 
